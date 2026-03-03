@@ -67,6 +67,17 @@
   outline-offset: 2px;
 }
 
+.tabs button:disabled {
+  background: #f3ece4;
+  border-color: #d8c5b3;
+  color: #a18c7a;
+  cursor: not-allowed;
+}
+
+.tabs button:disabled:focus-visible {
+  outline: none;
+}
+
 .age-gate {
   background: #fff;
   border: 1px solid #eddccb;

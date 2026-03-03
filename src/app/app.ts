@@ -5,7 +5,7 @@ import { TheWineryComponent } from './the-winery.component';
 import { WineDetailsComponent } from './wine-details.component';
 import { Wine, WineType } from './wine.model';
 
-type TabKey = 'family' | 'winery' | 'wines';
+type TabKey = 'family' | 'winery' | 'wines' | 'details';
 
 interface Tab {
   key: TabKey;
@@ -64,7 +64,7 @@ export class App {
   public readonly tabs: ReadonlyArray<Tab> = [
     { key: 'family', label: 'Our Family' },
     { key: 'winery', label: 'The Winery' },
-    { key: 'wines', label: 'Browse Produced Wines' }
+    { key: 'wines', label: 'Browse Produced Wines' },
   ];
 
   public readonly activeTab = signal<TabKey>('family');
@@ -94,13 +94,19 @@ export class App {
 
   public openWineDetails(wine: Wine): void {
     this.selectedWine.set(wine);
+    this.activeTab.set('details');
   }
 
   public closeWineDetails(): void {
     this.selectedWine.set(null);
+    this.activeTab.set('wines');
   }
 
   public setActiveTab(tab: TabKey): void {
+    if (tab === 'details' && !this.selectedWine()) {
+      return;
+    }
+
     this.activeTab.set(tab);
   }
 
