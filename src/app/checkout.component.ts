@@ -10,6 +10,15 @@ interface CheckoutTypeGroup {
   subtotal: number;
 }
 
+export interface CheckoutOrder {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  city: string;
+  address: string;
+}
+
 @Component({
   selector: 'app-checkout',
   standalone: true,
@@ -22,7 +31,7 @@ export class CheckoutComponent {
   public readonly total = input.required<number>();
 
   public readonly showDeliveryForm = signal(false);
-  public readonly submitOrder = output<void>();
+  public readonly submitOrder = output<CheckoutOrder>();
 
   public firstName = '';
   public lastName = '';
@@ -64,7 +73,14 @@ export class CheckoutComponent {
       return;
     }
 
-    this.submitOrder.emit();
+    this.submitOrder.emit({
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      phone: this.phone,
+      city: this.city,
+      address: this.address
+    });
     this.showDeliveryForm.set(false);
     form.resetForm();
   }

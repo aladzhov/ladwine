@@ -3,7 +3,7 @@ import { BrowseProducedWinesComponent } from './browse-produced-wines.component'
 import { OurFamilyComponent } from './our-family.component';
 import { TheWineryComponent } from './the-winery.component';
 import { WineDetailsComponent } from './wine-details.component';
-import { CheckoutComponent } from './checkout.component';
+import { CheckoutComponent, type CheckoutOrder } from './checkout.component';
 import { Wine, WineType } from './wine.model';
 
 type TabKey = 'family' | 'winery' | 'wines';
@@ -87,6 +87,7 @@ export class App {
   public readonly basket = signal<ReadonlyArray<Wine>>([]);
   public readonly showCheckout = signal(false);
   public readonly showOrderThanks = signal(false);
+  public readonly lastOrder = signal<CheckoutOrder | null>(null);
 
   public readonly basketTotal = computed(() => {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
@@ -133,18 +134,34 @@ export class App {
     this.showCheckout.set(false);
   }
 
-  public handleOrderSubmit(): void {
+  public handleOrderSubmit(order: CheckoutOrder): void {
     this.basket.set([]);
+    this.lastOrder.set(order);
     this.showOrderThanks.set(true);
   }
 
   public closeOrderThanks(): void {
+    const order = this.lastOrder();
+
+    if (order) {
+      void fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          purchaseName: `${order.firstName} ${order.lastName}`.trim(),
+          purchaseEmail: order.email,
+          wineryEmail: 'orders@ladwine.com'
+        })
+      });
+    }
+
+    this.lastOrder.set(null);
     this.showOrderThanks.set(false);
     this.showCheckout.set(false);
     this.selectedWine.set(null);
     this.activeTab.set('winery');
-
-
   }
 
   public setActiveTab(tab: TabKey): void {
