@@ -1,0 +1,24 @@
+<section class="wine-focus" aria-live="polite">
+  <button type="button" class="back-link" (click)="back.emit()">Back to wines</button>
+
+  <article class="wine-focus-card">
+    <p class="eyebrow">Estate Selection</p>
+    <h2>{{ wine().name }}</h2>
+    <p class="wine-focus-meta">{{ wine().type }} | Vintage {{ wine().year }}</p>
+    <p class="wine-focus-notes">{{ wine().notes }}</p>
+
+    <div class="wine-focus-grid">
+      <div>
+        <h3>Food Pairing</h3>
+        <p>{{ wine().pairWith }}</p>
+      </div>
+      <div>
+        <h3>Serving Advice</h3>
+        <p>
+          Serve at {{ wine().type === 'Red' ? '16-18 C' : wine().type === 'Sparkling' ? '6-8 C' : '9-11 C' }} and let
+          it open for a few minutes before tasting.
+        </p>
+      </div>
+    </div>
+  </article>
+</section>

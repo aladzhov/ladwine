@@ -16,4 +16,5 @@ export class BrowseProducedWinesComponent {
 
   public readonly typeFilterChange = output<WineType | 'All'>();
   public readonly searchTextChange = output<string>();
+  public readonly wineSelected = output<Wine>();
 }

@@ -72,6 +72,31 @@ describe('App', () => {
     expect(cards[0].textContent).toContain('Morning Mist Brut');
   });
 
+  it('opens a dedicated wine page when selecting a wine card', async () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+
+    const app = fixture.componentInstance;
+    app.confirmAdult();
+    app.setActiveTab('wines');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const firstWineButton = fixture.nativeElement.querySelector('.wine-card-button') as HTMLButtonElement;
+    firstWineButton.click();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.wine-focus-card h2')?.textContent).toContain('Old Oak Cabernet');
+    expect(compiled.querySelector('.tabs')).toBeNull();
+
+    const backButton = compiled.querySelector('.back-link') as HTMLButtonElement;
+    backButton.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.tabs')).not.toBeNull();
+  });
+
   it('shows restricted message when user confirms under 18', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();

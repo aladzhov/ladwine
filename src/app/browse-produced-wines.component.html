@@ -31,16 +31,17 @@
     } @else {
       @for (wine of filteredWines(); track wine.name) {
         <article class="wine-card">
-          <div class="wine-meta">
-            <span class="chip">{{ wine.type }}</span>
-            <span>{{ wine.year }}</span>
-          </div>
-          <h3>{{ wine.name }}</h3>
-          <p>{{ wine.notes }}</p>
-          <p class="pairing"><strong>Pairs with:</strong> {{ wine.pairWith }}</p>
+          <button type="button" class="wine-card-button" (click)="wineSelected.emit(wine)">
+            <div class="wine-meta">
+              <span class="chip">{{ wine.type }}</span>
+              <span>{{ wine.year }}</span>
+            </div>
+            <h3>{{ wine.name }}</h3>
+            <p>{{ wine.notes }}</p>
+            <p class="pairing"><strong>Pairs with:</strong> {{ wine.pairWith }}</p>
+          </button>
         </article>
       }
     }
   </div>
 </section>
-

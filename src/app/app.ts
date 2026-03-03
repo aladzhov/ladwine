@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { BrowseProducedWinesComponent } from './browse-produced-wines.component';
 import { OurFamilyComponent } from './our-family.component';
 import { TheWineryComponent } from './the-winery.component';
+import { WineDetailsComponent } from './wine-details.component';
 import { Wine, WineType } from './wine.model';
 
 type TabKey = 'family' | 'winery' | 'wines';
@@ -13,7 +14,7 @@ interface Tab {
 
 @Component({
   selector: 'app-root',
-  imports: [OurFamilyComponent, TheWineryComponent, BrowseProducedWinesComponent],
+  imports: [OurFamilyComponent, TheWineryComponent, BrowseProducedWinesComponent, WineDetailsComponent],
   templateUrl: './app.html',
   styleUrl: './winery.css'
 })
@@ -70,6 +71,7 @@ export class App {
   public readonly selectedType = signal<WineType | 'All'>('All');
   public readonly searchText = signal('');
   public readonly isAgeConfirmed = signal<boolean | null>(null);
+  public readonly selectedWine = signal<Wine | null>(null);
 
   public readonly filteredWines = computed(() => {
     const selected = this.selectedType();
@@ -88,6 +90,14 @@ export class App {
 
   public denyMinor(): void {
     this.isAgeConfirmed.set(false);
+  }
+
+  public openWineDetails(wine: Wine): void {
+    this.selectedWine.set(wine);
+  }
+
+  public closeWineDetails(): void {
+    this.selectedWine.set(null);
   }
 
   public setActiveTab(tab: TabKey): void {
