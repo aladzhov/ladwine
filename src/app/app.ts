@@ -3,9 +3,10 @@ import { BrowseProducedWinesComponent } from './browse-produced-wines.component'
 import { OurFamilyComponent } from './our-family.component';
 import { TheWineryComponent } from './the-winery.component';
 import { WineDetailsComponent } from './wine-details.component';
+import { CheckoutComponent } from './checkout.component';
 import { Wine, WineType } from './wine.model';
 
-type TabKey = 'family' | 'winery' | 'wines' | 'details';
+type TabKey = 'family' | 'winery' | 'wines' | 'details' | 'checkout';
 
 interface Tab {
   key: TabKey;
@@ -14,7 +15,13 @@ interface Tab {
 
 @Component({
   selector: 'app-root',
-  imports: [OurFamilyComponent, TheWineryComponent, BrowseProducedWinesComponent, WineDetailsComponent],
+  imports: [
+    OurFamilyComponent,
+    TheWineryComponent,
+    BrowseProducedWinesComponent,
+    WineDetailsComponent,
+    CheckoutComponent
+  ],
   templateUrl: './app.html',
   styleUrl: './winery.css'
 })
@@ -29,35 +36,40 @@ export class App {
       type: 'Red',
       year: 2022,
       notes: 'Dark cherry, cedar, and gentle spice with soft tannins.',
-      pairWith: 'Roasted lamb'
+      pairWith: 'Roasted lamb',
+      price: 24.9
     },
     {
       name: 'Sunny Hill Chardonnay',
       type: 'White',
       year: 2024,
       notes: 'Crisp citrus, pear, and a light touch of vanilla.',
-      pairWith: 'Sea bass or creamy pasta'
+      pairWith: 'Sea bass or creamy pasta',
+      price: 19.5
     },
     {
       name: 'Garden Rose',
       type: 'Rose',
       year: 2025,
       notes: 'Fresh strawberry and watermelon with floral finish.',
-      pairWith: 'Summer salads'
+      pairWith: 'Summer salads',
+      price: 17.9
     },
     {
       name: 'Morning Mist Brut',
       type: 'Sparkling',
       year: 2023,
       notes: 'Fine bubbles with green apple and toasted brioche.',
-      pairWith: 'Celebration appetizers'
+      pairWith: 'Celebration appetizers',
+      price: 28.4
     },
     {
       name: 'Estate Merlot',
       type: 'Red',
       year: 2021,
       notes: 'Plum and cocoa aromas with velvety texture.',
-      pairWith: 'Mushroom risotto'
+      pairWith: 'Mushroom risotto',
+      price: 22.3
     }
   ]);
 
@@ -72,6 +84,11 @@ export class App {
   public readonly searchText = signal('');
   public readonly isAgeConfirmed = signal<boolean | null>(null);
   public readonly selectedWine = signal<Wine | null>(null);
+  public readonly basket = signal<ReadonlyArray<Wine>>([]);
+
+  public readonly basketTotal = computed(() => {
+    return this.basket().reduce((sum, wine) => sum + wine.price, 0);
+  });
 
   public readonly filteredWines = computed(() => {
     const selected = this.selectedType();
@@ -100,6 +117,19 @@ export class App {
   public closeWineDetails(): void {
     this.selectedWine.set(null);
     this.activeTab.set('wines');
+  }
+
+  public addToBasket(wine: Wine): void {
+    this.basket.update((basket) => [...basket, wine]);
+    this.activeTab.set('checkout');
+  }
+
+  public removeFromBasket(index: number): void {
+    this.basket.update((basket) => basket.filter((_, i) => i !== index));
+  }
+
+  public clearBasket(): void {
+    this.basket.set([]);
   }
 
   public setActiveTab(tab: TabKey): void {

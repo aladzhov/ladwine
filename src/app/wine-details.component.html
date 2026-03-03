@@ -3,6 +3,7 @@
     <p class="eyebrow">Estate Selection</p>
     <h2>{{ wine().name }}</h2>
     <p class="wine-focus-meta">{{ wine().type }} | Vintage {{ wine().year }}</p>
+    <p class="wine-price">Price: EUR {{ wine().price.toFixed(2) }}</p>
     <p class="wine-focus-notes">{{ wine().notes }}</p>
 
     <div class="wine-focus-grid">
@@ -17,6 +18,11 @@
           it open for a few minutes before tasting.
         </p>
       </div>
+    </div>
+
+    <div class="wine-actions">
+      <button type="button" class="action-btn" (click)="back.emit()">Back to wines</button>
+      <button type="button" class="action-btn action-btn-primary" (click)="addToBasket.emit(wine())">Add to basket</button>
     </div>
   </article>
 </section>

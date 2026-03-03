@@ -6,5 +6,5 @@ export interface Wine {
   year: number;
   notes: string;
   pairWith: string;
+  price: number;
 }
-

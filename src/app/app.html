@@ -60,8 +60,17 @@
 
     @if (activeTab() === 'details') {
       @if (selectedWine(); as wine) {
-        <app-wine-details [wine]="wine" (back)="closeWineDetails()" />
+        <app-wine-details [wine]="wine" (back)="closeWineDetails()" (addToBasket)="addToBasket($event)" />
       }
+    }
+
+    @if (activeTab() === 'checkout') {
+      <app-checkout
+        [basket]="basket()"
+        [total]="basketTotal()"
+        (removeWine)="removeFromBasket($event)"
+        (clearBasket)="clearBasket()"
+      />
     }
   } @else if (isAgeConfirmed() === false) {
     <section class="age-gate" aria-live="polite">

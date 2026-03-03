@@ -1,0 +1,28 @@
+<section class="panel checkout-panel" role="tabpanel" aria-labelledby="checkout-tab">
+  <div class="checkout-header">
+    <h2>Checkout</h2>
+    <p class="checkout-total">Total: {{ total() | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
+  </div>
+
+  @if (basket().length === 0) {
+    <p class="checkout-empty">Your basket is empty. Add wines from the details tab.</p>
+  } @else {
+    <div class="checkout-list">
+      @for (wine of basket(); track wine.name + '-' + $index; let i = $index) {
+        <article class="checkout-item">
+          <div>
+            <h3>{{ wine.name }}</h3>
+            <p>{{ wine.type }} | {{ wine.year }}</p>
+          </div>
+          <div class="checkout-item-actions">
+            <p>{{ wine.price | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
+            <button type="button" (click)="removeWine.emit(i)">Remove</button>
+          </div>
+        </article>
+      }
+    </div>
+
+    <button type="button" class="clear-btn" (click)="clearBasket.emit()">Clear Basket</button>
+  }
+</section>
+
