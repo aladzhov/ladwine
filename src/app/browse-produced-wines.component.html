@@ -1,0 +1,46 @@
+<section class="panel" role="tabpanel" aria-labelledby="wines-tab">
+  <div class="wines-header">
+    <h2>Browse Produced Wines</h2>
+    <p class="helper">Filter by style or search by name and tasting notes.</p>
+  </div>
+
+  <div class="controls" role="group" aria-label="Wine filters">
+    <div class="type-filters">
+      <button type="button" [class.active]="selectedType() === 'All'" (click)="typeFilterChange.emit('All')">All</button>
+      @for (type of wineTypes(); track type) {
+        <button type="button" [class.active]="selectedType() === type" (click)="typeFilterChange.emit(type)">
+          {{ type }}
+        </button>
+      }
+    </div>
+
+    <label class="search">
+      <span>Search</span>
+      <input
+        type="search"
+        [value]="searchText()"
+        (input)="searchTextChange.emit($any($event.target).value)"
+        placeholder="Try cherry, sparkling, or merlot"
+      />
+    </label>
+  </div>
+
+  <div class="wine-grid">
+    @if (filteredWines().length === 0) {
+      <p class="empty">No wines match your current filters.</p>
+    } @else {
+      @for (wine of filteredWines(); track wine.name) {
+        <article class="wine-card">
+          <div class="wine-meta">
+            <span class="chip">{{ wine.type }}</span>
+            <span>{{ wine.year }}</span>
+          </div>
+          <h3>{{ wine.name }}</h3>
+          <p>{{ wine.notes }}</p>
+          <p class="pairing"><strong>Pairs with:</strong> {{ wine.pairWith }}</p>
+        </article>
+      }
+    }
+  </div>
+</section>
+

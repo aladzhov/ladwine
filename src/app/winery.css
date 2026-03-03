@@ -1,0 +1,94 @@
+:host {
+  color: #2f2a24;
+  display: block;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.page {
+  background: linear-gradient(180deg, #f7f0e7 0%, #fffaf5 55%, #f7f0e7 100%);
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 2rem 1rem 3rem;
+}
+
+.hero {
+  background: linear-gradient(135deg, #74290f, #9f4320, #d17a34);
+  border-radius: 16px;
+  color: #fff;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.12rem;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.intro {
+  line-height: 1.6;
+  margin: 0.9rem auto 0;
+  max-width: 56ch;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.tabs button {
+  background: #fff;
+  border: 1px solid #cfbaa5;
+  border-radius: 999px;
+  color: #5c3724;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.45rem 0.95rem;
+}
+
+.tabs button.active {
+  background: #74290f;
+  border-color: #74290f;
+  color: #fff;
+}
+
+.tabs button:focus-visible {
+  outline: 2px solid #d17a34;
+  outline-offset: 2px;
+}
+
+.age-gate {
+  background: #fff;
+  border: 1px solid #eddccb;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
+  margin-top: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.age-gate h2 {
+  color: #74290f;
+  margin: 0 0 0.75rem;
+}
+
+.age-gate p {
+  line-height: 1.6;
+  margin: 0.4rem 0;
+}
+
+@media (max-width: 640px) {
+  .tabs button {
+    width: 100%;
+  }
+}

@@ -1,6 +1,31 @@
-# Ladwine
+# Ladwine Family Winery
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+Small Angular website for a family winery with three core sections:
+
+- Family story and values
+- Winery details and vineyard approach
+- Produced wines browsing with filter and search
+
+## Quick start
+
+```bash
+npm install
+npm run start
+```
+
+Then open `http://localhost:4200/`.
+
+## Run tests
+
+```bash
+npm run test
+```
+
+## Build
+
+```bash
+npm run build
+```
 
 ## Development server
 
@@ -24,24 +49,6 @@ For a complete list of available schematics (such as `components`, `directives`,
 
 ```bash
 ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
 ```
 
 ## Running end-to-end tests

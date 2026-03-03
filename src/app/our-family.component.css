@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #eddccb;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
+  margin-top: 1rem;
+  padding: 1.25rem;
+}
+
+h2 {
+  color: #74290f;
+  margin: 0 0 0.75rem;
+}
+
+p {
+  line-height: 1.6;
+}
+

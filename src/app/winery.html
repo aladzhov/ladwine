@@ -1,0 +1,44 @@
+<main class="page">
+  <header class="hero">
+    <p class="eyebrow">Family Owned Since 1988</p>
+    <h1>{{ familyName }}</h1>
+    <p class="intro">
+      Three generations caring for our vines, crafting small-batch wines, and welcoming guests to our valley home.
+    </p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Winery information tabs">
+    @for (tab of tabs; track tab.key) {
+      <button
+        type="button"
+        role="tab"
+        [attr.id]="tab.key + '-tab'"
+        [class.active]="activeTab() === tab.key"
+        [attr.aria-selected]="activeTab() === tab.key"
+        (click)="setActiveTab(tab.key)"
+      >
+        {{ tab.label }}
+      </button>
+    }
+  </nav>
+
+  @if (activeTab() === 'family') {
+    <app-our-family />
+  }
+
+  @if (activeTab() === 'winery') {
+    <app-the-winery />
+  }
+
+  @if (activeTab() === 'wines') {
+    <app-browse-produced-wines
+      [wineTypes]="wineTypes"
+      [selectedType]="selectedType()"
+      [searchText]="searchText()"
+      [filteredWines]="filteredWines()"
+      (typeFilterChange)="setTypeFilter($event)"
+      (searchTextChange)="setSearchText($event)"
+    />
+  }
+</main>
+
