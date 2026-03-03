@@ -7,7 +7,7 @@ const mg = mailgun.client({
   key: process.env["NETLIFY_EMAILS_PROVIDER_API_KEY"] || '',
 });
 
-export const handler = async (event) => {
+export const handler = async (event: { httpMethod: string; body: string; }) => {
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };

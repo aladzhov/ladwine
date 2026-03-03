@@ -150,7 +150,7 @@ export class App {
       message: 'I love your Merlot!'
     };
 
-    fetch('/.netlify/functions/send-email', {
+    fetch('/.src/netlify/functions/send-email', {
       method: 'POST',
       body: JSON.stringify(feedbackData),
     })
