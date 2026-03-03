@@ -144,19 +144,7 @@ export class App {
     this.selectedWine.set(null);
     this.activeTab.set('winery');
 
-    const feedbackData = {
-      name: 'Customer Name',
-      email: 'customer@example.com',
-      message: 'I love your Merlot!'
-    };
 
-    fetch('/.src/netlify/functions/send-email', {
-      method: 'POST',
-      body: JSON.stringify(feedbackData),
-    })
-      .then(response => response.json())
-      .then(data => alert('Sent!'))
-      .catch(error => console.error('Error:', error));
   }
 
   public setActiveTab(tab: TabKey): void {
