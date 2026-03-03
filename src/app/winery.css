@@ -78,6 +78,41 @@
   outline: none;
 }
 
+.tab-row {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.tabs {
+  margin-top: 0;
+}
+
+.checkout-cta {
+  background: #fff;
+  border: 1px solid #cfbaa5;
+  border-radius: 999px;
+  color: #5c3724;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.45rem 0.95rem;
+  white-space: nowrap;
+}
+
+.checkout-cta.active {
+  background: #74290f;
+  border-color: #74290f;
+  color: #fff;
+}
+
+.checkout-cta:focus-visible {
+  outline: 2px solid #d17a34;
+  outline-offset: 2px;
+}
+
 .age-gate {
   background: #fff;
   border: 1px solid #eddccb;
@@ -160,6 +195,16 @@
 }
 
 @media (max-width: 640px) {
+  .tab-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tabs,
+  .checkout-cta {
+    width: 100%;
+  }
+
   .tabs button {
     width: 100%;
   }

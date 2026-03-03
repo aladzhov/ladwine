@@ -6,7 +6,7 @@ import { WineDetailsComponent } from './wine-details.component';
 import { CheckoutComponent } from './checkout.component';
 import { Wine, WineType } from './wine.model';
 
-type TabKey = 'family' | 'winery' | 'wines' | 'details' | 'checkout';
+type TabKey = 'family' | 'winery' | 'wines';
 
 interface Tab {
   key: TabKey;
@@ -76,7 +76,7 @@ export class App {
   public readonly tabs: ReadonlyArray<Tab> = [
     { key: 'family', label: 'Our Family' },
     { key: 'winery', label: 'The Winery' },
-    { key: 'wines', label: 'Browse Produced Wines' },
+    { key: 'wines', label: 'Browse Produced Wines' }
   ];
 
   public readonly activeTab = signal<TabKey>('family');
@@ -85,6 +85,7 @@ export class App {
   public readonly isAgeConfirmed = signal<boolean | null>(null);
   public readonly selectedWine = signal<Wine | null>(null);
   public readonly basket = signal<ReadonlyArray<Wine>>([]);
+  public readonly showCheckout = signal(false);
 
   public readonly basketTotal = computed(() => {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
@@ -111,17 +112,16 @@ export class App {
 
   public openWineDetails(wine: Wine): void {
     this.selectedWine.set(wine);
-    this.activeTab.set('details');
+    this.activeTab.set('wines');
+    this.showCheckout.set(false);
   }
 
   public closeWineDetails(): void {
     this.selectedWine.set(null);
-    this.activeTab.set('wines');
   }
 
   public addToBasket(wine: Wine): void {
     this.basket.update((basket) => [...basket, wine]);
-    this.activeTab.set('checkout');
   }
 
   public removeFromBasket(index: number): void {
@@ -132,11 +132,16 @@ export class App {
     this.basket.set([]);
   }
 
-  public setActiveTab(tab: TabKey): void {
-    if (tab === 'details' && !this.selectedWine()) {
-      return;
-    }
+  public openCheckout(): void {
+    this.showCheckout.set(true);
+  }
 
+  public closeCheckout(): void {
+    this.showCheckout.set(false);
+  }
+
+  public setActiveTab(tab: TabKey): void {
+    this.showCheckout.set(false);
     this.activeTab.set(tab);
   }
 

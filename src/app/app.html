@@ -22,55 +22,63 @@
       </p>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="Winery information tabs">
-      @for (tab of tabs; track tab.key) {
-        <button
-          type="button"
-          role="tab"
-          [attr.id]="tab.key + '-tab'"
-          [class.active]="activeTab() === tab.key"
-          [attr.aria-selected]="activeTab() === tab.key"
-          [disabled]="tab.key === 'details' && !selectedWine()"
-          (click)="setActiveTab(tab.key)"
-        >
-          {{ tab.label }}
-        </button>
-      }
-    </nav>
+    <div class="tab-row">
+      <nav class="tabs" role="tablist" aria-label="Winery information tabs">
+        @for (tab of tabs; track tab.key) {
+          <button
+            type="button"
+            role="tab"
+            [attr.id]="tab.key + '-tab'"
+            [class.active]="activeTab() === tab.key && !showCheckout()"
+            [attr.aria-selected]="activeTab() === tab.key && !showCheckout()"
+            (click)="setActiveTab(tab.key)"
+          >
+            {{ tab.label }}
+          </button>
+        }
+      </nav>
 
-    @if (activeTab() === 'family') {
-      <app-our-family />
-    }
+      <button
+        type="button"
+        class="checkout-cta"
+        [class.active]="showCheckout()"
+        (click)="showCheckout() ? closeCheckout() : openCheckout()"
+      >
+        Checkout ({{ basket().length }})
+      </button>
+    </div>
 
-    @if (activeTab() === 'winery') {
-      <app-the-winery />
-    }
-
-    @if (activeTab() === 'wines') {
-      <app-browse-produced-wines
-        [wineTypes]="wineTypes"
-        [selectedType]="selectedType()"
-        [searchText]="searchText()"
-        [filteredWines]="filteredWines()"
-        (typeFilterChange)="setTypeFilter($event)"
-        (searchTextChange)="setSearchText($event)"
-        (wineSelected)="openWineDetails($event)"
-      />
-    }
-
-    @if (activeTab() === 'details') {
-      @if (selectedWine(); as wine) {
-        <app-wine-details [wine]="wine" (back)="closeWineDetails()" (addToBasket)="addToBasket($event)" />
-      }
-    }
-
-    @if (activeTab() === 'checkout') {
+    @if (showCheckout()) {
       <app-checkout
         [basket]="basket()"
         [total]="basketTotal()"
         (removeWine)="removeFromBasket($event)"
         (clearBasket)="clearBasket()"
       />
+    } @else {
+      @if (activeTab() === 'family') {
+        <app-our-family />
+      }
+
+      @if (activeTab() === 'winery') {
+        <app-the-winery />
+      }
+
+      @if (activeTab() === 'wines') {
+        @if (selectedWine(); as wine) {
+          <app-wine-details [wine]="wine" (back)="closeWineDetails()" (addToBasket)="addToBasket($event)" />
+        } @else {
+          <app-browse-produced-wines
+            [wineTypes]="wineTypes"
+            [selectedType]="selectedType()"
+            [searchText]="searchText()"
+            [filteredWines]="filteredWines()"
+            (typeFilterChange)="setTypeFilter($event)"
+            (searchTextChange)="setSearchText($event)"
+            (wineSelected)="openWineDetails($event)"
+          />
+        }
+      }
     }
   } @else if (isAgeConfirmed() === false) {
     <section class="age-gate" aria-live="polite">
