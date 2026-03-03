@@ -19,6 +19,7 @@
     "@angular/material": "~21.2.0",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
+    "@netlify/emails": "^1.1.0",
     "@netlify/functions": "^5.1.2",
     "form-data": "^4.0.5",
     "mailgun.js": "^12.7.0",
@@ -33,6 +34,7 @@
     "@angular/material": "^21.2.0",
     "@types/node": "^25.3.3",
     "jsdom": "^28.0.0",
+    "netlify-cli": "^24.0.1",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"

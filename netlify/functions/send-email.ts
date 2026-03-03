@@ -15,9 +15,9 @@ const handler: Handler = async function(event) {
     wineryEmail: string;
   };
 
-  await fetch(`${process.env["URL"]}/.emails/purchase`, {
+  await fetch(`${process.env.URL}/.netlify/functions/emails/purchase`, {
     headers: {
-      "netlify-emails-secret": process.env["NETLIFY_EMAILS_SECRET"] as string,
+      "netlify-emails-secret": process.env.NETLIFY_EMAILS_SECRET as string,
     },
     method: "POST",
     body: JSON.stringify({
