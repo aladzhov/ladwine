@@ -1,27 +1,71 @@
 <section class="panel checkout-panel" role="region" aria-label="Checkout">
-  <div class="checkout-header">
-    <h2>Checkout</h2>
-    <p class="checkout-total">Total: {{ total() | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
-  </div>
-
-  @if (basket().length === 0) {
-    <p class="checkout-empty">Your basket is empty. Add wines from a wine details page.</p>
-  } @else {
-    <div class="checkout-list">
-      @for (wine of basket(); track wine.name + '-' + $index; let i = $index) {
-        <article class="checkout-item">
-          <div>
-            <h3>{{ wine.name }}</h3>
-            <p>{{ wine.type }} | {{ wine.year }}</p>
-          </div>
-          <div class="checkout-item-actions">
-            <p>{{ wine.price | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
-            <button type="button" (click)="removeWine.emit(i)">Remove</button>
-          </div>
-        </article>
-      }
+  @if (!showDeliveryForm()) {
+    <div class="checkout-header">
+      <h2>Checkout</h2>
+      <p class="checkout-total">Total: {{ total() | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
     </div>
 
-    <button type="button" class="clear-btn" (click)="clearBasket.emit()">Clear Basket</button>
+    @if (basket().length === 0) {
+      <p class="checkout-empty">Your basket is empty. Add wines from a wine details page.</p>
+    } @else {
+      <div class="checkout-list">
+        @for (group of groupedByType(); track group.type) {
+          <article class="checkout-item">
+            <div>
+              <h3>{{ group.type }}</h3>
+              <p>{{ group.quantity }} bottle(s)</p>
+            </div>
+            <div class="checkout-item-actions">
+              <p>{{ group.subtotal | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
+            </div>
+          </article>
+        }
+      </div>
+
+      <div class="actions-row">
+        <button type="button" class="proceed-btn" (click)="proceedToDelivery()">Proceed</button>
+      </div>
+    }
+  } @else {
+    <div class="checkout-header">
+      <h2>Delivery Details</h2>
+      <button type="button" class="back-btn" (click)="backToCheckout()">Back</button>
+    </div>
+
+    <form class="delivery-form" #deliveryForm="ngForm" (ngSubmit)="submitDelivery(deliveryForm)">
+      <label>
+        <span>First name</span>
+        <input type="text" name="firstName" [(ngModel)]="firstName" required />
+      </label>
+
+      <label>
+        <span>Last name</span>
+        <input type="text" name="lastName" [(ngModel)]="lastName" required />
+      </label>
+
+      <label>
+        <span>E-mail</span>
+        <input type="email" name="email" [(ngModel)]="email" required />
+      </label>
+
+      <label>
+        <span>Phone</span>
+        <input type="tel" name="phone" [(ngModel)]="phone" required />
+      </label>
+
+      <label>
+        <span>City</span>
+        <input type="text" name="city" [(ngModel)]="city" required />
+      </label>
+
+      <label>
+        <span>Address</span>
+        <input type="text" name="address" [(ngModel)]="address" required />
+      </label>
+
+      <div class="actions-row">
+        <button type="submit" class="submit-btn" [disabled]="deliveryForm.invalid">Submit</button>
+      </div>
+    </form>
   }
 </section>

@@ -41,4 +41,24 @@ describe('App', () => {
     const basketRows = fixture.nativeElement.querySelectorAll('.checkout-item');
     expect(basketRows.length).toBe(1);
   });
+
+  it('shows order thank-you modal and redirects to The Winery on close', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+
+    const app = fixture.componentInstance;
+    app.confirmAdult();
+    app.handleOrderSubmit();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('#order-thanks-title')?.textContent).toContain('Thank you for your order');
+
+    const closeButton = compiled.querySelector('#order-thanks-title')?.parentElement?.querySelector('button') as HTMLButtonElement;
+    closeButton.click();
+    fixture.detectChanges();
+
+    expect(app.activeTab()).toBe('winery');
+    expect(compiled.querySelector('.panel h2')?.textContent).toContain('The Winery');
+  });
 });

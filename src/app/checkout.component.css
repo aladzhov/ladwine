@@ -65,19 +65,62 @@ h2 {
   gap: 0.35rem;
 }
 
-.checkout-item-actions button,
-.clear-btn {
-  background: #fff;
-  border: 1px solid #cfbaa5;
+.proceed-btn,
+.back-btn,
+.submit-btn {
+  background: #74290f;
+  border: 1px solid #74290f;
   border-radius: 999px;
-  color: #5c3724;
+  color: #fff;
   cursor: pointer;
   font: inherit;
   font-weight: 600;
-  padding: 0.35rem 0.75rem;
+  padding: 0.45rem 0.95rem;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.proceed-btn {
+  margin-top: 0;
+}
+
+.back-btn {
+  background: #fff;
+  color: #5c3724;
+  border-color: #cfbaa5;
+}
+
+.submit-btn {
+  min-width: 120px;
 }
 
 .clear-btn {
   margin-top: 1rem;
 }
 
+.delivery-form {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.delivery-form label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.delivery-form span {
+  color: #6d5b49;
+  font-size: 0.92rem;
+}
+
+.delivery-form input {
+  border: 1px solid #cfbaa5;
+  border-radius: 8px;
+  font: inherit;
+  padding: 0.5rem 0.65rem;
+}

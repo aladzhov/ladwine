@@ -86,6 +86,7 @@ export class App {
   public readonly selectedWine = signal<Wine | null>(null);
   public readonly basket = signal<ReadonlyArray<Wine>>([]);
   public readonly showCheckout = signal(false);
+  public readonly showOrderThanks = signal(false);
 
   public readonly basketTotal = computed(() => {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
@@ -124,20 +125,24 @@ export class App {
     this.basket.update((basket) => [...basket, wine]);
   }
 
-  public removeFromBasket(index: number): void {
-    this.basket.update((basket) => basket.filter((_, i) => i !== index));
-  }
-
-  public clearBasket(): void {
-    this.basket.set([]);
-  }
-
   public openCheckout(): void {
     this.showCheckout.set(true);
   }
 
   public closeCheckout(): void {
     this.showCheckout.set(false);
+  }
+
+  public handleOrderSubmit(): void {
+    this.basket.set([]);
+    this.showOrderThanks.set(true);
+  }
+
+  public closeOrderThanks(): void {
+    this.showOrderThanks.set(false);
+    this.showCheckout.set(false);
+    this.selectedWine.set(null);
+    this.activeTab.set('winery');
   }
 
   public setActiveTab(tab: TabKey): void {

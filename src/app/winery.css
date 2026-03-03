@@ -9,6 +9,17 @@
   margin: 0 auto;
   max-width: 960px;
   padding: 2rem 1rem 3rem;
+  position: relative;
+}
+
+.site-content {
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+.page.site-dimmed .site-content {
+  filter: brightness(0.55);
+  pointer-events: none;
+  user-select: none;
 }
 
 .hero {
@@ -135,13 +146,13 @@
 
 .age-modal-backdrop {
   align-items: center;
-  background: rgb(39 21 10 / 52%);
-  border-radius: 16px;
+  background: transparent;
   display: flex;
+  inset: 0;
   justify-content: center;
-  margin-bottom: 1rem;
-  min-height: 380px;
   padding: 1rem;
+  position: fixed;
+  z-index: 1000;
 }
 
 .age-modal {
