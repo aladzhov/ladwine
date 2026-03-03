@@ -87,8 +87,73 @@
   margin: 0.4rem 0;
 }
 
+.age-modal-backdrop {
+  align-items: center;
+  background: rgb(39 21 10 / 52%);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  min-height: 380px;
+  padding: 1rem;
+}
+
+.age-modal {
+  background: #fff8f1;
+  border: 1px solid #e7c8ab;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgb(64 30 9 / 22%);
+  max-width: 520px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.age-modal h2 {
+  color: #74290f;
+  margin: 0;
+}
+
+.age-modal p {
+  line-height: 1.55;
+  margin: 0.85rem 0 0;
+}
+
+.age-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+.age-btn {
+  background: #fff;
+  border: 1px solid #cfbaa5;
+  border-radius: 999px;
+  color: #5c3724;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+}
+
+.age-btn-primary {
+  background: #74290f;
+  border-color: #74290f;
+  color: #fff;
+}
+
+.age-btn:focus-visible {
+  outline: 2px solid #d17a34;
+  outline-offset: 2px;
+}
+
 @media (max-width: 640px) {
   .tabs button {
+    width: 100%;
+  }
+
+  .age-btn {
     width: 100%;
   }
 }

@@ -1,5 +1,19 @@
 <main class="page">
-  @if (isAgeConfirmed()) {
+  @if (isAgeConfirmed() === null) {
+    <section class="age-modal-backdrop" aria-live="assertive">
+      <div class="age-modal" role="dialog" aria-modal="true" aria-labelledby="age-title">
+        <p class="eyebrow">Age Confirmation</p>
+        <h2 id="age-title">Are you 18 years old or older?</h2>
+        <p>Please confirm your age before entering the winery website.</p>
+        <div class="age-actions">
+          <button type="button" class="age-btn age-btn-primary" (click)="confirmAdult()">Yes, I am 18+</button>
+          <button type="button" class="age-btn" (click)="denyMinor()">No, I am under 18</button>
+        </div>
+      </div>
+    </section>
+  }
+
+  @if (isAgeConfirmed() === true) {
     <header class="hero">
       <p class="eyebrow">Family Owned Since 1988</p>
       <h1>{{ familyName }}</h1>
@@ -41,7 +55,7 @@
         (searchTextChange)="setSearchText($event)"
       />
     }
-  } @else {
+  } @else if (isAgeConfirmed() === false) {
     <section class="age-gate" aria-live="polite">
       <h2>Age Restricted</h2>
       <p>You must be at least 18 years old to enter this site.</p>

@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { BrowseProducedWinesComponent } from './browse-produced-wines.component';
 import { OurFamilyComponent } from './our-family.component';
 import { TheWineryComponent } from './the-winery.component';
@@ -17,7 +17,7 @@ interface Tab {
   templateUrl: './app.html',
   styleUrl: './winery.css'
 })
-export class App implements OnInit {
+export class App {
   public readonly familyName = 'Ladwine Family Winery';
 
   public readonly wineTypes: ReadonlyArray<WineType> = ['Red', 'White', 'Rose', 'Sparkling'];
@@ -69,12 +69,7 @@ export class App implements OnInit {
   public readonly activeTab = signal<TabKey>('family');
   public readonly selectedType = signal<WineType | 'All'>('All');
   public readonly searchText = signal('');
-  public readonly isAgeConfirmed = signal(false);
-
-  public ngOnInit(): void {
-    const isAdult = window.confirm('Are you 18 years old or older?');
-    this.isAgeConfirmed.set(isAdult);
-  }
+  public readonly isAgeConfirmed = signal<boolean | null>(null);
 
   public readonly filteredWines = computed(() => {
     const selected = this.selectedType();
@@ -86,6 +81,14 @@ export class App implements OnInit {
       return matchesType && matchesSearch;
     });
   });
+
+  public confirmAdult(): void {
+    this.isAgeConfirmed.set(true);
+  }
+
+  public denyMinor(): void {
+    this.isAgeConfirmed.set(false);
+  }
 
   public setActiveTab(tab: TabKey): void {
     this.activeTab.set(tab);
