@@ -9,11 +9,16 @@
       <p class="checkout-empty">Your basket is empty. Add wines from a wine details page.</p>
     } @else {
       <div class="checkout-list">
-        @for (group of groupedByType(); track group.type) {
+        @for (group of groupedByType(); track group.name + group.packaging) {
           <article class="checkout-item">
             <div>
-              <h3>{{ group.type }}</h3>
-              <p>{{ group.quantity }} bottle(s)</p>
+              <h3>{{ group.name }}</h3>
+              <p>{{ group.packaging === 'bag-in-box' ? '3L Bag-in-box' : 'Bottle' }}</p>
+            </div>
+            <div class="checkout-item-quantity">
+              <button type="button" class="qty-btn" (click)="onDecreaseQuantity(group.name, group.packaging)">−</button>
+              <span class="qty-display">{{ group.quantity }}</span>
+              <button type="button" class="qty-btn" (click)="onIncreaseQuantity(group.name, group.packaging)">+</button>
             </div>
             <div class="checkout-item-actions">
               <p>{{ group.subtotal | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
@@ -23,7 +28,15 @@
       </div>
 
       <div class="actions-row">
-        <button type="button" class="proceed-btn" (click)="proceedToDelivery()">Proceed</button>
+        <button
+          type="button"
+          class="proceed-btn"
+          (click)="proceedToDelivery()"
+          [disabled]="!canProceed()"
+          [title]="!canProceed() ? 'Minimum order is €50' : ''"
+        >
+          Proceed
+        </button>
       </div>
     }
   } @else {

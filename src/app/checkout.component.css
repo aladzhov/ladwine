@@ -47,6 +47,7 @@ h2 {
   display: flex;
   justify-content: space-between;
   padding: 0.8rem;
+  gap: 1rem;
 }
 
 .checkout-item h3 {
@@ -56,6 +57,40 @@ h2 {
 .checkout-item p {
   color: #6d5b49;
   margin: 0.25rem 0 0;
+}
+
+.checkout-item-quantity {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.qty-btn {
+  background: #eddccb;
+  border: 1px solid #cfbaa5;
+  border-radius: 6px;
+  color: #5c3724;
+  cursor: pointer;
+  font-weight: 600;
+  min-width: 32px;
+  padding: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.qty-btn:hover {
+  background: #dfcab5;
+  border-color: #b5a495;
+}
+
+.qty-btn:active {
+  background: #d1b8a3;
+}
+
+.qty-display {
+  color: #5c3724;
+  font-weight: 600;
+  min-width: 30px;
+  text-align: center;
 }
 
 .checkout-item-actions {
@@ -86,6 +121,14 @@ h2 {
 
 .proceed-btn {
   margin-top: 0;
+}
+
+.proceed-btn:disabled {
+  background: #cfbaa5;
+  border-color: #b5a495;
+  color: #8b7a6f;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .back-btn {

@@ -168,6 +168,20 @@ export class App {
     this.showOrderThanks.set(true);
   }
 
+  public increaseItemQuantity(name: string, packaging: string): void {
+    const wine = this.basket().find(w => w.name === name && (w.packaging || 'bottle') === packaging);
+    if (wine) {
+      this.basket.update(basket => [...basket, wine]);
+    }
+  }
+
+  public decreaseItemQuantity(name: string, packaging: string): void {
+    const index = this.basket().findIndex(w => w.name === name && (w.packaging || 'bottle') === packaging);
+    if (index !== -1) {
+      this.basket.update(basket => basket.filter((_, i) => i !== index));
+    }
+  }
+
   public closeOrderThanks(): void {
     const order = this.lastOrder();
 

@@ -64,7 +64,7 @@
       </div>
 
       @if (showCheckout()) {
-        <app-checkout [basket]="basket()" [total]="basketTotal()" (submitOrder)="handleOrderSubmit($event)" />
+        <app-checkout [basket]="basket()" [total]="basketTotal()" (submitOrder)="handleOrderSubmit($event)" (increaseQty)="increaseItemQuantity($event.name, $event.packaging)" (decreaseQty)="decreaseItemQuantity($event.name, $event.packaging)" />
       } @else {
         @if (activeTab() === 'family') {
           <app-our-family />
