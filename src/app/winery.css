@@ -119,6 +119,22 @@
   color: #fff;
 }
 
+.checkout-cta.pulse {
+  animation: checkout-pulse 0.32s ease;
+}
+
+@keyframes checkout-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .checkout-cta:focus-visible {
   outline: 2px solid #d17a34;
   outline-offset: 2px;

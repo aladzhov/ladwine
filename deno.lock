@@ -23,6 +23,7 @@
         "npm:@angular/material@^21.2.0",
         "npm:@angular/platform-browser@^21.2.0",
         "npm:@angular/router@^21.2.0",
+        "npm:@netlify/emails@^1.1.0",
         "npm:@netlify/functions@^5.1.2",
         "npm:@types/node@^25.3.3",
         "npm:form-data@^4.0.5",

@@ -1,12 +1,11 @@
-import { DOCUMENT } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, signal } from '@angular/core';
-import { BrowseProducedWinesComponent } from './browse-produced-wines.component';
-import { OurFamilyComponent } from './our-family.component';
-import { TheWineryComponent } from './the-winery.component';
-import { WineDetailsComponent } from './wine-details.component';
-import { CheckoutComponent, type CheckoutOrder } from './checkout.component';
-import { Wine, WineType } from './wine.model';
+import {HttpClient} from '@angular/common/http';
+import {Component, computed, inject, signal} from '@angular/core';
+import {BrowseProducedWinesComponent} from './browse-produced-wines.component';
+import {OurFamilyComponent} from './our-family.component';
+import {TheWineryComponent} from './the-winery.component';
+import {WineDetailsComponent} from './wine-details.component';
+import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
+import {Wine, WineType} from './wine.model';
 
 type TabKey = 'family' | 'winery' | 'wines';
 
@@ -29,7 +28,6 @@ interface Tab {
 })
 export class App {
   private readonly http = inject(HttpClient);
-  private readonly document = inject(DOCUMENT);
 
   public readonly familyName = 'Ladwine Family Winery';
 
@@ -98,6 +96,7 @@ export class App {
   public readonly showCheckout = signal(false);
   public readonly showOrderThanks = signal(false);
   public readonly lastOrder = signal<CheckoutOrder | null>(null);
+  public readonly checkoutPulse = signal(false);
 
   public readonly basketTotal = computed(() => {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
@@ -133,41 +132,13 @@ export class App {
   }
 
   public addToBasket(wine: Wine): void {
-    this.animateWineToCheckout();
     this.basket.update((basket) => [...basket, wine]);
+    this.pulseCheckout();
   }
 
-  private animateWineToCheckout(): void {
-    const source = this.document.querySelector('.wine-image') as HTMLImageElement | null;
-    const target = this.document.querySelector('.checkout-cta') as HTMLElement | null;
-
-    if (!source || !target) {
-      return;
-    }
-
-    const sourceRect = source.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
-    const clone = source.cloneNode(true) as HTMLImageElement;
-
-    clone.classList.add('fly-image');
-    clone.style.left = `${sourceRect.left}px`;
-    clone.style.top = `${sourceRect.top}px`;
-    clone.style.width = `${sourceRect.width}px`;
-    clone.style.height = `${sourceRect.height}px`;
-
-    this.document.body.appendChild(clone);
-
-    const deltaX = targetRect.left + targetRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
-    const deltaY = targetRect.top + targetRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
-
-    requestAnimationFrame(() => {
-      clone.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.2)`;
-      clone.style.opacity = '0.1';
-    });
-
-    clone.addEventListener('transitionend', () => {
-      clone.remove();
-    }, { once: true });
+  private pulseCheckout(): void {
+    this.checkoutPulse.set(true);
+    window.setTimeout(() => this.checkoutPulse.set(false), 320);
   }
 
   public openCheckout(): void {

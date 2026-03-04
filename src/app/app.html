@@ -56,6 +56,7 @@
           type="button"
           class="checkout-cta"
           [class.active]="showCheckout()"
+          [class.pulse]="checkoutPulse()"
           (click)="showCheckout() ? closeCheckout() : openCheckout()"
         >
           Checkout ({{ basket().length }})
