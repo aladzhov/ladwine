@@ -148,7 +148,7 @@ export class App {
 
     if (order) {
       this.http
-        .post('/.netlify/functions/emails/purchase', {
+        .post('/.netlify/functions/purchase', {
           purchaseName: order.name,
           purchaseEmail: order.email
         })
