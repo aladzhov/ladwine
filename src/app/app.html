@@ -27,25 +27,15 @@
   }
 
   @if (isAgeConfirmed() !== false) {
-    <app-header (headerClick)="setActiveTab('winery')" />
+    <app-header
+      [tabs]="tabs"
+      [activeTab]="activeTab()"
+      (tabSelect)="setActiveTab($event)"
+      (headerClick)="setActiveTab('winery')"
+    />
 
     <div class="site-content">
       <div class="tab-row">
-        <nav class="tabs" role="tablist" aria-label="Winery information tabs">
-          @for (tab of tabs; track tab.key) {
-            <button
-              type="button"
-              role="tab"
-              [attr.id]="tab.key + '-tab'"
-              [class.active]="activeTab() === tab.key && !showCheckout()"
-              [attr.aria-selected]="activeTab() === tab.key && !showCheckout()"
-              (click)="setActiveTab(tab.key)"
-            >
-              {{ tab.label }}
-            </button>
-          }
-        </nav>
-
         @if (basket().length > 0) {
           <button
             type="button"
@@ -74,6 +64,10 @@
 
         @if (activeTab() === 'winery') {
           <app-the-winery />
+        }
+
+        @if (activeTab() === 'vineyards') {
+          <app-vineyards />
         }
 
         @if (activeTab() === 'wines') {

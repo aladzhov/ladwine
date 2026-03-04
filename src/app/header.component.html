@@ -28,10 +28,37 @@
 </div>
 
 <header class="hero" (click)="onHeaderClick()" (keydown)="onKeyDown($event)" role="button" tabindex="0">
+  <div class="menu-selector">
+    <button
+      type="button"
+      class="menu-toggle"
+      (click)="toggleMenuDropdown($event)"
+      aria-label="Select section"
+      [attr.aria-expanded]="showMenuDropdown()"
+    >
+      {{ getActiveTabLabel() }}
+      <span class="dropdown-arrow">▼</span>
+    </button>
+
+    @if (showMenuDropdown()) {
+      <div class="menu-dropdown">
+        @for (tab of tabs(); track tab.key) {
+          <button
+            type="button"
+            class="menu-option"
+            [class.active]="activeTab() === tab.key"
+            (click)="selectTab(tab.key, $event)"
+          >
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+    }
+  </div>
+
   <p class="eyebrow">{{ familyOwnedSince() }}</p>
   <h1>{{ familyName() }}</h1>
   <p class="intro">
     {{ familyIntro() }}
   </p>
 </header>
-

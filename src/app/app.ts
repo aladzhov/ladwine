@@ -3,13 +3,14 @@ import {Component, computed, inject, signal} from '@angular/core';
 import {BrowseProducedWinesComponent} from './browse-produced-wines.component';
 import {OurFamilyComponent} from './our-family.component';
 import {TheWineryComponent} from './the-winery.component';
+import {VineyardsComponent} from './vineyards.component';
 import {WineDetailsComponent} from './wine-details.component';
 import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
 import {HeaderComponent} from './header.component';
 import {FooterComponent} from './footer.component';
 import {Wine} from './wine.model';
 
-type TabKey = 'family' | 'winery' | 'wines';
+type TabKey = 'family' | 'winery' | 'vineyards' | 'wines';
 
 interface Tab {
   key: TabKey;
@@ -23,6 +24,7 @@ interface Tab {
     FooterComponent,
     OurFamilyComponent,
     TheWineryComponent,
+    VineyardsComponent,
     BrowseProducedWinesComponent,
     WineDetailsComponent,
     CheckoutComponent
@@ -83,6 +85,7 @@ export class App {
 
   public readonly tabs: ReadonlyArray<Tab> = [
     { key: 'winery', label: 'Winery' },
+    { key: 'vineyards', label: 'Vineyards' },
     { key: 'family', label: 'History' },
     { key: 'wines', label: 'Wines' }
   ];
