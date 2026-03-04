@@ -1,0 +1,51 @@
+<footer class="footer">
+  <div class="footer-content">
+    <!-- Social Links -->
+    <div class="social-links">
+      @for (social of socialLinks; track social.name) {
+        <a
+          [href]="social.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="social.name"
+          class="social-link"
+        >
+          <span class="social-icon">{{ social.icon }}</span>
+          <span class="social-name">{{ social.name }}</span>
+        </a>
+      }
+    </div>
+
+    <!-- Main Footer Content -->
+    <div class="footer-main">
+      <!-- Company Info -->
+      <div class="company-info">
+        <h2 class="company-name">Ladwine Family Winery</h2>
+        <p class="company-address">Vinogradets village</p>
+        <p class="company-phone">+359 12345</p>
+        <p class="company-email">ladwine{{'@'}}test.com</p>
+      </div>
+
+      <!-- Newsletter Subscription -->
+      <div class="newsletter">
+        <h3>Stay Updated</h3>
+        <p>Subscribe to our newsletter for the latest wines and special offers.</p>
+        <form class="newsletter-form" (ngSubmit)="subscribe()">
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="Enter your email"
+            required
+            class="newsletter-input"
+          />
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+        @if (subscriptionMessage()) {
+          <p class="subscription-message">{{ subscriptionMessage() }}</p>
+        }
+      </div>
+    </div>
+  </div>
+</footer>
+

@@ -92,5 +92,9 @@
       <p>Please come back when you meet the legal drinking age in your region.</p>
     </section>
   }
+
+  @if (isAgeConfirmed() !== false) {
+    <app-footer />
+  }
 </main>
 

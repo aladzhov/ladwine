@@ -6,6 +6,7 @@ import {TheWineryComponent} from './the-winery.component';
 import {WineDetailsComponent} from './wine-details.component';
 import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
 import {HeaderComponent} from './header.component';
+import {FooterComponent} from './footer.component';
 import {Wine, WineType} from './wine.model';
 
 type TabKey = 'family' | 'winery' | 'wines';
@@ -19,6 +20,7 @@ interface Tab {
   selector: 'app-root',
   imports: [
     HeaderComponent,
+    FooterComponent,
     OurFamilyComponent,
     TheWineryComponent,
     BrowseProducedWinesComponent,
