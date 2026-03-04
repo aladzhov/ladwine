@@ -22,31 +22,41 @@ p {
   line-height: 1.6;
 }
 
-.winery-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.alternating-content {
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
-  align-items: start;
   margin-top: 1.5rem;
 }
 
-.winery-text {
+.alternating-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.alternating-row.reverse > .alternating-text {
+  order: 2;
+}
+
+.alternating-row.reverse > .alternating-figure {
+  order: 1;
+}
+
+.alternating-text {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  order: 1;
 }
 
-.winery-images {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.winery-figure {
+.alternating-figure {
   margin: 0;
+  order: 2;
 }
 
-.winery-image {
+.alternating-image {
   width: 100%;
   height: auto;
   border-radius: 8px;
@@ -62,9 +72,25 @@ figcaption {
 }
 
 @media (max-width: 768px) {
-  .winery-content {
+  .alternating-row {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .alternating-row.reverse > .alternating-text {
+    order: auto;
+  }
+
+  .alternating-row.reverse > .alternating-figure {
+    order: auto;
+  }
+
+  .alternating-text {
+    order: auto;
+  }
+
+  .alternating-figure {
+    order: auto;
   }
 }
 
