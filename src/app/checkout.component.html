@@ -34,13 +34,8 @@
 
     <form class="delivery-form" #deliveryForm="ngForm" (ngSubmit)="submitDelivery(deliveryForm)">
       <label>
-        <span>First name</span>
-        <input type="text" name="firstName" [(ngModel)]="firstName" required />
-      </label>
-
-      <label>
-        <span>Last name</span>
-        <input type="text" name="lastName" [(ngModel)]="lastName" required />
+        <span>Full name</span>
+        <input type="text" name="name" [(ngModel)]="name" required />
       </label>
 
       <label>
@@ -51,11 +46,6 @@
       <label>
         <span>Phone</span>
         <input type="tel" name="phone" [(ngModel)]="phone" required />
-      </label>
-
-      <label>
-        <span>City</span>
-        <input type="text" name="city" [(ngModel)]="city" required />
       </label>
 
       <label>

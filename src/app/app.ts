@@ -150,7 +150,7 @@ export class App {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          purchaseName: `${order.firstName} ${order.lastName}`.trim(),
+          purchaseName: order.name,
           purchaseEmail: order.email,
           wineryEmail: 'orders@ladwine.com'
         })

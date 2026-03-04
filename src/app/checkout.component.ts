@@ -11,11 +11,9 @@ interface CheckoutTypeGroup {
 }
 
 export interface CheckoutOrder {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   phone: string;
-  city: string;
   address: string;
 }
 
@@ -33,12 +31,10 @@ export class CheckoutComponent {
   public readonly showDeliveryForm = signal(false);
   public readonly submitOrder = output<CheckoutOrder>();
 
-  public firstName = '';
-  public lastName = '';
-  public email = '';
-  public phone = '';
-  public city = '';
-  public address = '';
+  public name = 'Атанас Ладжов';
+  public email = 'ladjo@gbg.bg';
+  public phone = '123';
+  public address = 'София';
 
   public readonly groupedByType = computed<ReadonlyArray<CheckoutTypeGroup>>(() => {
     const map = new Map<WineType, CheckoutTypeGroup>();
@@ -74,11 +70,9 @@ export class CheckoutComponent {
     }
 
     this.submitOrder.emit({
-      firstName: this.firstName,
-      lastName: this.lastName,
+      name: this.name,
       email: this.email,
       phone: this.phone,
-      city: this.city,
       address: this.address
     });
     this.showDeliveryForm.set(false);
