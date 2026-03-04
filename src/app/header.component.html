@@ -4,14 +4,16 @@
     class="language-toggle"
     (click)="toggleLanguageDropdown($event)"
     [attr.aria-label]="'Select language'"
+    aria-haspopup="menu"
     [attr.aria-expanded]="showLanguageDropdown()"
   >
+    <span class="toggle-icon" aria-hidden="true">🌐</span>
     {{ getLanguageLabel(selectedLanguage()) }}
     <span class="dropdown-arrow">▼</span>
   </button>
 
   @if (showLanguageDropdown()) {
-    <div class="language-dropdown">
+    <div class="language-dropdown" role="menu" aria-label="Language menu">
       @for (lang of languages; track lang.code) {
         <button
           type="button"
@@ -19,6 +21,7 @@
           [class.active]="selectedLanguage() === lang.code"
           (click)="selectLanguage(lang.code, $event)"
           [attr.aria-label]="'Switch to ' + lang.label"
+          role="menuitem"
         >
           {{ lang.label }}
         </button>
@@ -34,20 +37,23 @@
       class="menu-toggle"
       (click)="toggleMenuDropdown($event)"
       aria-label="Select section"
+      aria-haspopup="menu"
       [attr.aria-expanded]="showMenuDropdown()"
     >
+      <span class="toggle-icon" aria-hidden="true">☰</span>
       {{ getActiveTabLabel() }}
       <span class="dropdown-arrow">▼</span>
     </button>
 
     @if (showMenuDropdown()) {
-      <div class="menu-dropdown">
+      <div class="menu-dropdown" role="menu" aria-label="Section menu">
         @for (tab of tabs(); track tab.key) {
           <button
             type="button"
             class="menu-option"
             [class.active]="activeTab() === tab.key"
             (click)="selectTab(tab.key, $event)"
+            role="menuitem"
           >
             {{ tab.label }}
           </button>

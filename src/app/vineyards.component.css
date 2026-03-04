@@ -78,18 +78,18 @@ figcaption {
   }
 
   .alternating-row.reverse > .alternating-text {
-    order: auto;
+    order: 0;
   }
 
   .alternating-row.reverse > .alternating-figure {
-    order: auto;
+    order: 0;
   }
 
   .alternating-text {
-    order: auto;
+    order: 0;
   }
 
   .alternating-figure {
-    order: auto;
+    order: 0;
   }
 }
