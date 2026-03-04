@@ -5,21 +5,48 @@
 }
 
 .page {
-  background: linear-gradient(180deg, #f7f0e7 0%, #fffaf5 55%, #f7f0e7 100%);
-  margin: 0 auto;
-  max-width: 960px;
-  padding: 2rem 1rem 3rem;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('/images/vineyard-close-up.jpg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-height: 100vh;
+  padding: 0;
   position: relative;
 }
 
 .site-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
   transition: filter 0.2s ease, opacity 0.2s ease;
+  width: 100%;
 }
 
 .page.site-dimmed .site-content {
   filter: brightness(0.55);
   pointer-events: none;
   user-select: none;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid #eddccb;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
+  flex: 1;
+  margin-top: 1rem;
+  padding: 1.25rem;
+}
+
+.checkout-panel {
+  flex: none;
 }
 
 

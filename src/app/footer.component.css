@@ -1,9 +1,8 @@
 .footer {
-  background: linear-gradient(135deg, #74290f, #9f4320, #d17a34);
+  background: transparent;
   border-radius: 16px;
   color: #fff;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin: 1rem;
   padding: 1.5rem 1.5rem 1rem;
 }
 

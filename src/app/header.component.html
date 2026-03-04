@@ -1,33 +1,33 @@
+<div class="language-selector">
+  <button
+    type="button"
+    class="language-toggle"
+    (click)="toggleLanguageDropdown($event)"
+    [attr.aria-label]="'Select language'"
+    [attr.aria-expanded]="showLanguageDropdown()"
+  >
+    {{ getLanguageLabel(selectedLanguage()) }}
+    <span class="dropdown-arrow">▼</span>
+  </button>
+
+  @if (showLanguageDropdown()) {
+    <div class="language-dropdown">
+      @for (lang of languages; track lang.code) {
+        <button
+          type="button"
+          class="language-option"
+          [class.active]="selectedLanguage() === lang.code"
+          (click)="selectLanguage(lang.code, $event)"
+          [attr.aria-label]="'Switch to ' + lang.label"
+        >
+          {{ lang.label }}
+        </button>
+      }
+    </div>
+  }
+</div>
+
 <header class="hero" (click)="onHeaderClick()" (keydown)="onKeyDown($event)" role="button" tabindex="0">
-  <div class="language-selector">
-    <button
-      type="button"
-      class="language-toggle"
-      (click)="toggleLanguageDropdown($event)"
-      [attr.aria-label]="'Select language'"
-      [attr.aria-expanded]="showLanguageDropdown()"
-    >
-      {{ getLanguageLabel(selectedLanguage()) }}
-      <span class="dropdown-arrow">▼</span>
-    </button>
-
-    @if (showLanguageDropdown()) {
-      <div class="language-dropdown">
-        @for (lang of languages; track lang.code) {
-          <button
-            type="button"
-            class="language-option"
-            [class.active]="selectedLanguage() === lang.code"
-            (click)="selectLanguage(lang.code, $event)"
-            [attr.aria-label]="'Switch to ' + lang.label"
-          >
-            {{ lang.label }}
-          </button>
-        }
-      </div>
-    }
-  </div>
-
   <p class="eyebrow">{{ familyOwnedSince() }}</p>
   <h1>{{ familyName() }}</h1>
   <p class="intro">

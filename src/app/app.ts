@@ -159,11 +159,8 @@ export class App {
   }
 
   public openCheckout(): void {
+    this.selectedWine.set(null);
     this.showCheckout.set(true);
-  }
-
-  public closeCheckout(): void {
-    this.showCheckout.set(false);
   }
 
   public handleOrderSubmit(order: CheckoutOrder): void {

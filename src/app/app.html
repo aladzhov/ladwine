@@ -52,7 +52,7 @@
           [class.active]="showCheckout()"
           [class.pulse]="checkoutPulse()"
           [disabled]="basket().length === 0"
-          (click)="showCheckout() ? closeCheckout() : openCheckout()"
+          (click)="openCheckout()"
         >
           Checkout ({{ basket().length }})
         </button>

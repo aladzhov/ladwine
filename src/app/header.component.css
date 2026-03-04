@@ -1,5 +1,5 @@
 .hero {
-  background: linear-gradient(135deg, #74290f, #9f4320, #d17a34);
+  background: transparent;
   border-radius: 16px;
   color: #fff;
   cursor: pointer;
@@ -15,10 +15,10 @@
 }
 
 .language-selector {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   right: 1rem;
-  z-index: 10;
+  z-index: 100;
 }
 
 .language-toggle {
