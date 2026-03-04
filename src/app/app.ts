@@ -1,4 +1,5 @@
-import { Component, computed, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, computed, inject, signal } from '@angular/core';
 import { BrowseProducedWinesComponent } from './browse-produced-wines.component';
 import { OurFamilyComponent } from './our-family.component';
 import { TheWineryComponent } from './the-winery.component';
@@ -26,6 +27,8 @@ interface Tab {
   styleUrl: './winery.css'
 })
 export class App {
+  private readonly http = inject(HttpClient);
+
   public readonly familyName = 'Ladwine Family Winery';
 
   public readonly wineTypes: ReadonlyArray<WineType> = ['Red', 'White', 'Rose', 'Sparkling'];
@@ -144,17 +147,16 @@ export class App {
     const order = this.lastOrder();
 
     if (order) {
-      void fetch('/.netlify/functions/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+      this.http
+        .post('/.netlify/functions/emails/purchase', {
           purchaseName: order.name,
-          purchaseEmail: order.email,
-          wineryEmail: 'orders@ladwine.com'
+          purchaseEmail: order.email
         })
-      });
+        .subscribe({
+          error: () => {
+            // Keep UX flow unchanged even if email delivery fails.
+          }
+        });
     }
 
     this.lastOrder.set(null);
