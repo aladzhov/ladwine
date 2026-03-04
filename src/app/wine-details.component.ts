@@ -13,4 +13,5 @@ export class WineDetailsComponent {
   public readonly back = output();
   public readonly addToBasket = output<Wine>();
   public readonly addSixPack = output<Wine>();
+  public readonly addBagInBox = output<Wine>();
 }

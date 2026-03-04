@@ -132,12 +132,20 @@ export class App {
   }
 
   public addToBasket(wine: Wine): void {
-    this.basket.update((basket) => [...basket, wine]);
+    const bottleWine: Wine = { ...wine, packaging: 'bottle'}
+    this.basket.update((basket) => [...basket, bottleWine]);
     this.pulseCheckout();
   }
 
   public addSixPack(wine: Wine): void {
-    this.basket.update((basket) => [...basket, wine, wine, wine, wine, wine, wine]);
+    const bottleWine: Wine = { ...wine, packaging: 'bottle'}
+    this.basket.update((basket) => [...basket, bottleWine, bottleWine, bottleWine, bottleWine, bottleWine, bottleWine]);
+    this.pulseCheckout();
+  }
+
+  public addBagInBox(wine: Wine): void {
+    const bagInBoxWine: Wine = { ...wine, packaging: 'bag-in-box' };
+    this.basket.update((basket) => [...basket, bagInBoxWine]);
     this.pulseCheckout();
   }
 

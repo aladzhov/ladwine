@@ -76,7 +76,7 @@
 
         @if (activeTab() === 'wines') {
           @if (selectedWine(); as wine) {
-            <app-wine-details [wine]="wine" (back)="closeWineDetails()" (addToBasket)="addToBasket($event)" (addSixPack)="addSixPack($event)" />
+            <app-wine-details [wine]="wine" (back)="closeWineDetails()" (addToBasket)="addToBasket($event)" (addSixPack)="addSixPack($event)" (addBagInBox)="addBagInBox($event)" />
           } @else {
             <app-browse-produced-wines
               [wineTypes]="wineTypes"
