@@ -1,8 +1,37 @@
 <header class="hero" (click)="onHeaderClick()" (keydown)="onKeyDown($event)" role="button" tabindex="0">
-  <p class="eyebrow">Family Owned Since 1988</p>
-  <h1>{{ familyName }}</h1>
+  <div class="language-selector">
+    <button
+      type="button"
+      class="language-toggle"
+      (click)="toggleLanguageDropdown($event)"
+      [attr.aria-label]="'Select language'"
+      [attr.aria-expanded]="showLanguageDropdown()"
+    >
+      {{ getLanguageLabel(selectedLanguage()) }}
+      <span class="dropdown-arrow">▼</span>
+    </button>
+
+    @if (showLanguageDropdown()) {
+      <div class="language-dropdown">
+        @for (lang of languages; track lang.code) {
+          <button
+            type="button"
+            class="language-option"
+            [class.active]="selectedLanguage() === lang.code"
+            (click)="selectLanguage(lang.code, $event)"
+            [attr.aria-label]="'Switch to ' + lang.label"
+          >
+            {{ lang.label }}
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <p class="eyebrow">{{ familyOwnedSince() }}</p>
+  <h1>{{ familyName() }}</h1>
   <p class="intro">
-    Three generations caring for our vines, crafting small-batch wines, and welcoming guests to our valley home.
+    {{ familyIntro() }}
   </p>
 </header>
 
