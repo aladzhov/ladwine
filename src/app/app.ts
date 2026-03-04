@@ -82,9 +82,9 @@ export class App {
   ]);
 
   public readonly tabs: ReadonlyArray<Tab> = [
-    { key: 'winery', label: 'The Winery' },
-    { key: 'family', label: 'Our History' },
-    { key: 'wines', label: 'Our Wines' }
+    { key: 'winery', label: 'Winery' },
+    { key: 'family', label: 'History' },
+    { key: 'wines', label: 'Wines' }
   ];
 
   public readonly activeTab = signal<TabKey>('winery');

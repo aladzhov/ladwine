@@ -1,17 +1,19 @@
 <section class="panel" role="tabpanel" aria-labelledby="wines-tab">
 
-  <div class="wine-grid">
+  <div class="wine-accordion">
     @for (wine of wines(); track wine.name) {
-      <article class="wine-card">
-        <button type="button" class="wine-card-button" (click)="wineSelected.emit(wine)">
-          <div class="wine-meta">
-            <span class="chip">{{ wine.type }}</span>
-            <span>{{ wine.year }}</span>
+      <article class="accordion-item" (click)="wineSelected.emit(wine)">
+        <div class="accordion-item-inner">
+          <div class="accordion-image">
+            <img [src]="wine.imageSrc" [alt]="wine.name" class="wine-thumbnail" />
           </div>
-          <h3>{{ wine.name }}</h3>
-          <p>{{ wine.notes }}</p>
-          <p class="pairing"><strong>Pairs with:</strong> {{ wine.pairWith }}</p>
-        </button>
+          <div class="accordion-content">
+            <h3>{{ wine.name }}</h3>
+            <p class="wine-type">{{ wine.type }} | {{ wine.year }}</p>
+            <p class="wine-notes">{{ wine.notes }}</p>
+            <p class="wine-pairing"><strong>Pairs with:</strong> {{ wine.pairWith }}</p>
+          </div>
+        </div>
       </article>
     }
   </div>

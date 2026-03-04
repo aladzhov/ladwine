@@ -3,7 +3,7 @@
 }
 
 .panel {
-  background: #fff;
+  background: rgb(255 255 255 / 80%);
   border: 1px solid #eddccb;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
@@ -87,56 +87,110 @@ p {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.wine-card {
+.wine-accordion {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  height: 400px;
+  overflow: hidden;
+}
+
+.accordion-item {
   background: #fffcf8;
   border: 1px solid #ecd7c0;
   border-radius: 10px;
-  padding: 0.9rem;
-}
-
-.wine-card-button {
-  background: transparent;
-  border: 0;
-  color: inherit;
   cursor: pointer;
-  display: block;
-  font: inherit;
-  padding: 0;
-  text-align: left;
-  width: 100%;
-}
-
-.wine-card:hover {
-  border-color: #d7b495;
-  box-shadow: 0 6px 16px rgb(75 42 10 / 10%);
-}
-
-.wine-card-button:focus-visible {
-  outline: 2px solid #d17a34;
-  outline-offset: 3px;
-}
-
-.wine-card h3 {
-  margin: 0.45rem 0;
-}
-
-.wine-meta {
-  color: #6d5b49;
   display: flex;
-  font-size: 0.9rem;
-  justify-content: space-between;
+  flex-direction: column;
+  flex: 0 1 calc(100% / 6);
+  min-width: calc(100% / 6);
+  overflow: hidden;
+  transition: flex-basis 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+  margin: 0;
+  position: relative;
 }
 
-.chip {
-  background: #f3e4d4;
-  border-radius: 999px;
+.accordion-item:hover {
+  flex-basis: 100%;
+  box-shadow: 0 6px 16px rgb(75 42 10 / 10%);
+  z-index: 10;
+}
+
+.accordion-item-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.accordion-image {
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wine-thumbnail {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.accordion-content {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 245, 0.95));
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  opacity: 0;
+  padding: 1rem;
+  transition: opacity 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  pointer-events: none;
+}
+
+.accordion-item:hover .accordion-content {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.accordion-content h3 {
   color: #74290f;
-  font-weight: 600;
-  padding: 0.1rem 0.6rem;
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.25;
 }
 
-.pairing {
-  margin-bottom: 0;
+.wine-type {
+  color: #6d5b49;
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.wine-notes {
+  color: #5c3724;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0.25rem 0 0;
+}
+
+.wine-pairing {
+  color: #6d5b49;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  margin: 0.5rem 0 0;
 }
 
 .empty {

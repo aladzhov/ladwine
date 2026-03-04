@@ -294,6 +294,12 @@ app-footer {
   z-index: 1100;
 }
 
+app-our-family .panel,
+app-the-winery .panel,
+app-checkout .panel {
+  background: rgb(255 255 255 / 80%) !important;
+}
+
 @media (max-width: 640px) {
   .tab-row {
     align-items: stretch;

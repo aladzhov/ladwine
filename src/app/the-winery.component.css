@@ -3,7 +3,7 @@
 }
 
 .panel {
-  background: #fff;
+  background: rgb(255 255 255 / 80%);
   border: 1px solid #eddccb;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
@@ -93,4 +93,3 @@ figcaption {
     order: auto;
   }
 }
-
