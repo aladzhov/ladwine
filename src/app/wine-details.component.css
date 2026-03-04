@@ -37,6 +37,17 @@
   text-transform: uppercase;
 }
 
+.wine-hero {
+  align-items: flex-start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 320px 1fr;
+}
+
+.wine-copy {
+  min-width: 0;
+}
+
 .wine-focus-meta {
   color: #6d5b49;
   font-weight: 600;
@@ -93,4 +104,20 @@
   background: #74290f;
   border-color: #74290f;
   color: #fff;
+}
+
+.wine-image {
+  border: 1px solid #eddccb;
+  border-radius: 10px;
+  display: block;
+  height: 260px;
+  margin: 0;
+  object-fit: cover;
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .wine-hero {
+    grid-template-columns: 1fr;
+  }
 }

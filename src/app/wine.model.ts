@@ -7,4 +7,5 @@ export interface Wine {
   notes: string;
   pairWith: string;
   price: number;
+  imageSrc: string;
 }

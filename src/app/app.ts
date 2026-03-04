@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { BrowseProducedWinesComponent } from './browse-produced-wines.component';
@@ -28,6 +29,7 @@ interface Tab {
 })
 export class App {
   private readonly http = inject(HttpClient);
+  private readonly document = inject(DOCUMENT);
 
   public readonly familyName = 'Ladwine Family Winery';
 
@@ -40,7 +42,8 @@ export class App {
       year: 2022,
       notes: 'Dark cherry, cedar, and gentle spice with soft tannins.',
       pairWith: 'Roasted lamb',
-      price: 24.9
+      price: 24.9,
+      imageSrc: '/images/wines/old-oak-cabernet.png'
     },
     {
       name: 'Sunny Hill Chardonnay',
@@ -48,7 +51,8 @@ export class App {
       year: 2024,
       notes: 'Crisp citrus, pear, and a light touch of vanilla.',
       pairWith: 'Sea bass or creamy pasta',
-      price: 19.5
+      price: 19.5,
+      imageSrc: '/images/wines/sunny-hill-chardonnay.png'
     },
     {
       name: 'Garden Rose',
@@ -56,7 +60,8 @@ export class App {
       year: 2025,
       notes: 'Fresh strawberry and watermelon with floral finish.',
       pairWith: 'Summer salads',
-      price: 17.9
+      price: 17.9,
+      imageSrc: '/images/wines/garden-rose.png'
     },
     {
       name: 'Morning Mist Brut',
@@ -64,7 +69,8 @@ export class App {
       year: 2023,
       notes: 'Fine bubbles with green apple and toasted brioche.',
       pairWith: 'Celebration appetizers',
-      price: 28.4
+      price: 28.4,
+      imageSrc: '/images/wines/morning-mist-brut.png'
     },
     {
       name: 'Estate Merlot',
@@ -72,7 +78,8 @@ export class App {
       year: 2021,
       notes: 'Plum and cocoa aromas with velvety texture.',
       pairWith: 'Mushroom risotto',
-      price: 22.3
+      price: 22.3,
+      imageSrc: '/images/wines/estate-merlot.png'
     }
   ]);
 
@@ -126,7 +133,41 @@ export class App {
   }
 
   public addToBasket(wine: Wine): void {
+    this.animateWineToCheckout();
     this.basket.update((basket) => [...basket, wine]);
+  }
+
+  private animateWineToCheckout(): void {
+    const source = this.document.querySelector('.wine-image') as HTMLImageElement | null;
+    const target = this.document.querySelector('.checkout-cta') as HTMLElement | null;
+
+    if (!source || !target) {
+      return;
+    }
+
+    const sourceRect = source.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const clone = source.cloneNode(true) as HTMLImageElement;
+
+    clone.classList.add('fly-image');
+    clone.style.left = `${sourceRect.left}px`;
+    clone.style.top = `${sourceRect.top}px`;
+    clone.style.width = `${sourceRect.width}px`;
+    clone.style.height = `${sourceRect.height}px`;
+
+    this.document.body.appendChild(clone);
+
+    const deltaX = targetRect.left + targetRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
+    const deltaY = targetRect.top + targetRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
+
+    requestAnimationFrame(() => {
+      clone.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.2)`;
+      clone.style.opacity = '0.1';
+    });
+
+    clone.addEventListener('transitionend', () => {
+      clone.remove();
+    }, { once: true });
   }
 
   public openCheckout(): void {
