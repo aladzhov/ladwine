@@ -175,8 +175,10 @@
 
 @media (max-width: 640px) {
   .menu-selector {
-    top: 0.35rem;
-    left: 0.35rem;
+    position: fixed;
+    top: 0.4rem;
+    left: 0.4rem;
+    z-index: 100;
     width: auto;
   }
 
@@ -259,7 +261,11 @@
 
 @media (max-width: 420px) {
   .menu-selector {
-    width: 98px;
+    position: fixed;
+    top: 0.35rem;
+    left: 0.35rem;
+    z-index: 100;
+    width: auto;
   }
 
   .menu-toggle:not(.expanded),
