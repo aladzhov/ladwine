@@ -5,6 +5,7 @@ import {OurFamilyComponent} from './our-family.component';
 import {TheWineryComponent} from './the-winery.component';
 import {WineDetailsComponent} from './wine-details.component';
 import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
+import {HeaderComponent} from './header.component';
 import {Wine, WineType} from './wine.model';
 
 type TabKey = 'family' | 'winery' | 'wines';
@@ -17,6 +18,7 @@ interface Tab {
 @Component({
   selector: 'app-root',
   imports: [
+    HeaderComponent,
     OurFamilyComponent,
     TheWineryComponent,
     BrowseProducedWinesComponent,
@@ -29,7 +31,6 @@ interface Tab {
 export class App {
   private readonly http = inject(HttpClient);
 
-  public readonly familyName = 'Ladwine Family Winery';
 
   public readonly wineTypes: ReadonlyArray<WineType> = ['Red', 'White', 'Rose', 'Sparkling'];
 
@@ -82,12 +83,12 @@ export class App {
   ]);
 
   public readonly tabs: ReadonlyArray<Tab> = [
-    { key: 'family', label: 'Our Family' },
     { key: 'winery', label: 'The Winery' },
+    { key: 'family', label: 'Our Family' },
     { key: 'wines', label: 'Browse Produced Wines' }
   ];
 
-  public readonly activeTab = signal<TabKey>('family');
+  public readonly activeTab = signal<TabKey>('winery');
   public readonly selectedType = signal<WineType | 'All'>('All');
   public readonly searchText = signal('');
   public readonly isAgeConfirmed = signal<boolean | null>(null);

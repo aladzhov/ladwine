@@ -1,0 +1,38 @@
+.hero {
+  background: linear-gradient(135deg, #74290f, #9f4320, #d17a34);
+  border-radius: 16px;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero:hover {
+  box-shadow: 0 4px 16px rgba(116, 41, 15, 0.3);
+  transform: translateY(-2px);
+}
+
+.hero:active {
+  transform: translateY(0);
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.12rem;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.intro {
+  line-height: 1.6;
+  margin: 0.9rem auto 0;
+  max-width: 56ch;
+}
+

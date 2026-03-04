@@ -28,13 +28,7 @@
 
   @if (isAgeConfirmed() !== false) {
     <div class="site-content">
-      <header class="hero">
-        <p class="eyebrow">Family Owned Since 1988</p>
-        <h1>{{ familyName }}</h1>
-        <p class="intro">
-          Three generations caring for our vines, crafting small-batch wines, and welcoming guests to our valley home.
-        </p>
-      </header>
+      <app-header (headerClick)="setActiveTab('winery')" />
 
       <div class="tab-row">
         <nav class="tabs" role="tablist" aria-label="Winery information tabs">
