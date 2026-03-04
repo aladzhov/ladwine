@@ -10,6 +10,7 @@ import { Wine } from './wine.model';
 })
 export class WineDetailsComponent {
   public readonly wine = input.required<Wine>();
-  public readonly back = output<void>();
+  public readonly back = output();
   public readonly addToBasket = output<Wine>();
+  public readonly addSixPack = output<Wine>();
 }

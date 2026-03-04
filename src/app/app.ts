@@ -136,6 +136,11 @@ export class App {
     this.pulseCheckout();
   }
 
+  public addSixPack(wine: Wine): void {
+    this.basket.update((basket) => [...basket, wine, wine, wine, wine, wine, wine]);
+    this.pulseCheckout();
+  }
+
   private pulseCheckout(): void {
     this.checkoutPulse.set(true);
     window.setTimeout(() => this.checkoutPulse.set(false), 320);
