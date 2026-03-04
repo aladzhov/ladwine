@@ -25,14 +25,11 @@ export class TranslationService {
   public readonly translations = computed(() => this.translationsData());
 
   constructor() {
-    // Load initial translations
-    this.loadTranslations(this.currentLanguage());
-
     // Watch for language changes and load translations
     effect(() => {
       const lang = this.currentLanguage();
       this.loadTranslations(lang);
-    });
+    }, { allowSignalWrites: true });
   }
 
   private loadTranslations(language: Language): void {

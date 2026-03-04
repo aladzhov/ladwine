@@ -24,8 +24,9 @@
                 "input": "public"
               },
               {
-                "glob": "**/*",
-                "input": "src/assets"
+                "glob": "**/*.json",
+                "input": "src/assets",
+                "output": "/assets"
               }
             ],
             "styles": ["src/material-theme.scss", "src/styles.css"]
