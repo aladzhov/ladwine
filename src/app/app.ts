@@ -86,8 +86,8 @@ export class App {
 
   public readonly tabs: ReadonlyArray<Tab> = [
     { key: 'winery', label: 'The Winery' },
-    { key: 'family', label: 'Our Family' },
-    { key: 'wines', label: 'Browse Produced Wines' }
+    { key: 'family', label: 'Our History' },
+    { key: 'wines', label: 'Our Wines' }
   ];
 
   public readonly activeTab = signal<TabKey>('winery');
@@ -167,6 +167,20 @@ export class App {
   }
 
   public handleOrderSubmit(order: CheckoutOrder): void {
+    if (order) {
+      this.http
+        .post('/.netlify/functions/purchase', {
+          purchaseName: order.name,
+          purchaseEmail: order.email,
+          basket: this.basket()
+        })
+        .subscribe({
+          error: () => {
+            // Keep UX flow unchanged even if email delivery fails.
+          }
+        });
+    }
+
     this.basket.set([]);
     this.lastOrder.set(order);
     this.showOrderThanks.set(true);
@@ -187,21 +201,6 @@ export class App {
   }
 
   public closeOrderThanks(): void {
-    const order = this.lastOrder();
-
-    if (order) {
-      this.http
-        .post('/.netlify/functions/purchase', {
-          purchaseName: order.name,
-          purchaseEmail: order.email
-        })
-        .subscribe({
-          error: () => {
-            // Keep UX flow unchanged even if email delivery fails.
-          }
-        });
-    }
-
     this.lastOrder.set(null);
     this.showOrderThanks.set(false);
     this.showCheckout.set(false);

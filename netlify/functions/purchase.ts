@@ -1,5 +1,64 @@
 import type { Handler } from "@netlify/functions";
 
+type BasketItem = {
+  name: string;
+  packaging?: string;
+  price: number;
+};
+
+const formatPackaging = (packaging?: string) => {
+  if (!packaging || packaging === "bottle") {
+    return "Bottle";
+  }
+  if (packaging === "bag-in-box") {
+    return "3L Bag-in-box";
+  }
+  return packaging;
+};
+
+const formatBasketSummary = (basket: BasketItem[]) => {
+  if (basket.length === 0) {
+    return "<tr><td colspan=\"3\">(No items)</td></tr>";
+  }
+
+  const map = new Map<string, { label: string; quantity: number; subtotal: number }>();
+  let subtotal = 0;
+
+  for (const item of basket) {
+    const packaging = formatPackaging(item.packaging);
+    const key = `${item.name}|${packaging}`;
+    const label = `${item.name} (${packaging})`;
+    const current = map.get(key);
+    subtotal += item.price;
+
+    if (current) {
+      current.quantity += 1;
+      current.subtotal += item.price;
+    } else {
+      map.set(key, { label, quantity: 1, subtotal: item.price });
+    }
+  }
+
+  const rows = Array.from(map.values())
+    .map(
+      (entry) =>
+        `<tr><td>${entry.label}</td><td>${entry.quantity}</td><td>${entry.subtotal.toFixed(2)}</td></tr>`
+    )
+    .join("");
+
+  const deliveryFee = subtotal >= 200 ? 0 : 10;
+  const total = subtotal + deliveryFee;
+  const tax = total * 0.2;
+
+  const deliveryRow =
+    deliveryFee > 0
+      ? `<tr><td>Delivery</td><td></td><td>${deliveryFee.toFixed(2)}</td></tr>`
+      : `<tr><td>Delivery</td><td></td><td>0.00</td></tr>`;
+  const totalRow = `<tr><td><strong>Total (20% Tax)</strong></td><td></td><td><strong>${total.toFixed(2)} (${tax.toFixed(2)})</strong></td></tr>`;
+
+  return `${rows}${deliveryRow}${totalRow}`;
+};
+
 const handler: Handler = async function(event) {
   if (event.body === null) {
     return {
@@ -11,7 +70,10 @@ const handler: Handler = async function(event) {
   const requestBody = JSON.parse(event.body) as {
     purchaseName: string;
     purchaseEmail: string;
+    basket?: BasketItem[];
   };
+
+  const basketSummary = formatBasketSummary(requestBody.basket ?? []);
 
   const response = await fetch(
     `${process.env.URL}/.netlify/functions/emails/purchase`,
@@ -27,6 +89,7 @@ const handler: Handler = async function(event) {
         subject: "Expect your order soon!",
         parameters: {
           customerName: requestBody.purchaseName,
+          basketSummary,
         },
       }),
     });

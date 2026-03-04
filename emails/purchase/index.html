@@ -3,11 +3,28 @@
   <head>
     <style>
       body { font-family: Arial, sans-serif; }
+      table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+      th, td { border: 1px solid #e6d9cc; padding: 8px; text-align: left; }
+      th { background: #f6f2ee; }
     </style>
   </head>
   <body>
     <h1>Order Confirmation</h1>
     <p>Hi {{customerName}}, your order has been confirmed!</p>
-    <p>Thank you for your purchase.</p>
+    <p>Thank you for your purchase!</p>
+    <br />
+    <h2>Your order :</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Wine</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{{basketSummary}}}
+      </tbody>
+    </table>
   </body>
 </html>
