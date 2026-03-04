@@ -27,9 +27,9 @@
   }
 
   @if (isAgeConfirmed() !== false) {
-    <div class="site-content">
-      <app-header (headerClick)="setActiveTab('winery')" />
+    <app-header (headerClick)="setActiveTab('winery')" />
 
+    <div class="site-content">
       <div class="tab-row">
         <nav class="tabs" role="tablist" aria-label="Winery information tabs">
           @for (tab of tabs; track tab.key) {
@@ -85,6 +85,10 @@
           }
         }
       }
+
+      @if (isAgeConfirmed() !== false) {
+        <app-footer />
+      }
     </div>
   } @else {
     <section class="age-gate" aria-live="polite">
@@ -92,10 +96,6 @@
       <p>You must be at least 18 years old to enter this site.</p>
       <p>Please come back when you meet the legal drinking age in your region.</p>
     </section>
-  }
-
-  @if (isAgeConfirmed() !== false) {
-    <app-footer />
   }
 </main>
 

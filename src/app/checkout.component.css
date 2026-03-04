@@ -9,6 +9,8 @@
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
   margin-top: 1rem;
   padding: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .checkout-header {

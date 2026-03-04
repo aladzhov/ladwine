@@ -23,6 +23,8 @@
   border-radius: 12px;
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
   padding: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .wine-focus-card h2 {
