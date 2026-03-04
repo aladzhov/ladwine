@@ -1,22 +1,5 @@
 <footer class="footer">
   <div class="footer-content">
-    <!-- Social Links -->
-    <div class="social-links">
-      @for (social of socialLinks; track social.name) {
-        <a
-          [href]="social.url"
-          target="_blank"
-          rel="noopener noreferrer"
-          [attr.aria-label]="social.name"
-          class="social-link"
-        >
-          <span class="social-icon">{{ social.icon }}</span>
-          <span class="social-name">{{ social.name }}</span>
-        </a>
-      }
-    </div>
-
-    <!-- Main Footer Content -->
     <div class="footer-main">
       <!-- Company Info -->
       <div class="company-info">
@@ -24,6 +7,22 @@
         <p class="company-address">Vinogradets village</p>
         <p class="company-phone">+359 12345</p>
         <p class="company-email">office{{'@'}}ladwine.com</p>
+      </div>
+
+      <!-- Social Links (center) -->
+      <div class="social-links" aria-label="Social links">
+        @for (social of socialLinks; track social.name) {
+          <a
+            [href]="social.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="social.name"
+            class="social-link"
+          >
+            <span class="social-icon">{{ social.icon }}</span>
+            <span class="social-name">{{ social.name }}</span>
+          </a>
+        }
       </div>
 
       <!-- Newsletter Subscription -->
@@ -48,4 +47,3 @@
     </div>
   </div>
 </footer>
-
