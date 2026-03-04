@@ -100,6 +100,30 @@ h2 {
   gap: 0.35rem;
 }
 
+.checkout-summary {
+  border-top: 1px solid #ecd7c0;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.summary-line {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #6d5b49;
+}
+
+.summary-total {
+  border-top: 2px solid #cfbaa5;
+  color: #5c3724;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+}
+
 .proceed-btn,
 .back-btn,
 .submit-btn {
@@ -114,9 +138,16 @@ h2 {
 }
 
 .actions-row {
+  align-items: center;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 1rem;
+}
+
+.free-delivery-info {
+  color: #5c3724;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .proceed-btn {

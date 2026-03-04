@@ -51,6 +51,7 @@
           class="checkout-cta"
           [class.active]="showCheckout()"
           [class.pulse]="checkoutPulse()"
+          [disabled]="basket().length === 0"
           (click)="showCheckout() ? closeCheckout() : openCheckout()"
         >
           Checkout ({{ basket().length }})

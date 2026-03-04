@@ -105,6 +105,7 @@ export class App {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
   });
 
+
   public readonly filteredWines = computed(() => {
     const selected = this.selectedType();
     const search = this.searchText().trim().toLowerCase();

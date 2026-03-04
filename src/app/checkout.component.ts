@@ -71,10 +71,29 @@ export class CheckoutComponent {
     return this.total() >= 50;
   }
 
-  public proceedToDelivery(): void {
-    if (this.canProceed()) {
-      this.showDeliveryForm.set(true);
+  public readonly freeDeliveryMessage = computed(() => {
+    const total = this.total();
+    const freeDeliveryThreshold = 200;
+
+    if (total >= freeDeliveryThreshold) {
+      return 'Free delivery! 🎉';
     }
+
+    const remaining = freeDeliveryThreshold - total;
+    return `€${remaining.toFixed(2)} until free delivery`;
+  });
+
+  public readonly deliveryFee = computed(() => {
+    const freeDeliveryThreshold = 200;
+    return this.basket().length > 0 && this.total() < freeDeliveryThreshold ? 10 : 0;
+  });
+
+  public readonly finalTotal = computed(() => {
+    return this.total() + this.deliveryFee();
+  });
+
+  public proceedToDelivery(): void {
+    this.showDeliveryForm.set(true);
   }
 
   public backToCheckout(): void {

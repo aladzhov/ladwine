@@ -2,7 +2,7 @@
   @if (!showDeliveryForm()) {
     <div class="checkout-header">
       <h2>Checkout</h2>
-      <p class="checkout-total">Total: {{ total() | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
+      <p class="checkout-total">Total: {{ finalTotal() | currency: 'EUR' : 'symbol' : '1.2-2' }}</p>
     </div>
 
     @if (basket().length === 0) {
@@ -27,7 +27,25 @@
         }
       </div>
 
+      <div class="checkout-summary">
+        <div class="summary-line">
+          <span>Subtotal:</span>
+          <span>{{ total() | currency: 'EUR' : 'symbol' : '1.2-2' }}</span>
+        </div>
+        @if (deliveryFee() > 0) {
+          <div class="summary-line">
+            <span>Delivery:</span>
+            <span>{{ deliveryFee() | currency: 'EUR' : 'symbol' : '1.2-2' }}</span>
+          </div>
+        }
+        <div class="summary-line summary-total">
+          <span>Total:</span>
+          <span>{{ finalTotal() | currency: 'EUR' : 'symbol' : '1.2-2' }}</span>
+        </div>
+      </div>
+
       <div class="actions-row">
+        <span class="free-delivery-info">{{ freeDeliveryMessage() }}</span>
         <button
           type="button"
           class="proceed-btn"
