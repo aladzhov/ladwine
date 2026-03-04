@@ -7,7 +7,7 @@ import {WineDetailsComponent} from './wine-details.component';
 import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
 import {HeaderComponent} from './header.component';
 import {FooterComponent} from './footer.component';
-import {Wine, WineType} from './wine.model';
+import {Wine} from './wine.model';
 
 type TabKey = 'family' | 'winery' | 'wines';
 
@@ -32,9 +32,6 @@ interface Tab {
 })
 export class App {
   private readonly http = inject(HttpClient);
-
-
-  public readonly wineTypes: ReadonlyArray<WineType> = ['Red', 'White', 'Rose', 'Sparkling'];
 
   public readonly wines = signal<ReadonlyArray<Wine>>([
     {
@@ -91,8 +88,6 @@ export class App {
   ];
 
   public readonly activeTab = signal<TabKey>('winery');
-  public readonly selectedType = signal<WineType | 'All'>('All');
-  public readonly searchText = signal('');
   public readonly isAgeConfirmed = signal<boolean | null>(null);
   public readonly selectedWine = signal<Wine | null>(null);
   public readonly basket = signal<ReadonlyArray<Wine>>([]);
@@ -103,18 +98,6 @@ export class App {
 
   public readonly basketTotal = computed(() => {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
-  });
-
-
-  public readonly filteredWines = computed(() => {
-    const selected = this.selectedType();
-    const search = this.searchText().trim().toLowerCase();
-
-    return this.wines().filter((wine) => {
-      const matchesType = selected === 'All' || wine.type === selected;
-      const matchesSearch = !search || wine.name.toLowerCase().includes(search) || wine.notes.toLowerCase().includes(search);
-      return matchesType && matchesSearch;
-    });
   });
 
   public confirmAdult(): void {
@@ -208,13 +191,5 @@ export class App {
   public setActiveTab(tab: TabKey): void {
     this.showCheckout.set(false);
     this.activeTab.set(tab);
-  }
-
-  public setTypeFilter(type: WineType | 'All'): void {
-    this.selectedType.set(type);
-  }
-
-  public setSearchText(value: string): void {
-    this.searchText.set(value);
   }
 }

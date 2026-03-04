@@ -5,7 +5,7 @@
 }
 
 .page {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('/images/vineyard-close-up.jpg');
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('/images/site-background.jpg');
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -132,14 +132,43 @@ app-footer {
   cursor: pointer;
   font: inherit;
   font-weight: 700;
-  padding: 0.45rem 0.95rem;
+  padding: 0.5rem 1rem;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.basket-icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+}
+
+.basket-count {
+  background: #74290f;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.3rem;
 }
 
 .checkout-cta.active {
   background: #74290f;
   border-color: #74290f;
   color: #fff;
+}
+
+.checkout-cta.active .basket-count {
+  background: #fff;
+  color: #74290f;
 }
 
 .checkout-cta:disabled {

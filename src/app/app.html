@@ -46,16 +46,23 @@
           }
         </nav>
 
-        <button
-          type="button"
-          class="checkout-cta"
-          [class.active]="showCheckout()"
-          [class.pulse]="checkoutPulse()"
-          [disabled]="basket().length === 0"
-          (click)="openCheckout()"
-        >
-          Checkout ({{ basket().length }})
-        </button>
+        @if (basket().length > 0) {
+          <button
+            type="button"
+            class="checkout-cta"
+            [class.active]="showCheckout()"
+            [class.pulse]="checkoutPulse()"
+            (click)="openCheckout()"
+            aria-label="Checkout basket"
+          >
+            <svg class="basket-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="basket-count">{{ basket().length }}</span>
+          </button>
+        }
       </div>
 
       @if (showCheckout()) {
@@ -74,12 +81,7 @@
             <app-wine-details [wine]="wine" (back)="closeWineDetails()" (addToBasket)="addToBasket($event)" (addSixPack)="addSixPack($event)" (addBagInBox)="addBagInBox($event)" />
           } @else {
             <app-browse-produced-wines
-              [wineTypes]="wineTypes"
-              [selectedType]="selectedType()"
-              [searchText]="searchText()"
-              [filteredWines]="filteredWines()"
-              (typeFilterChange)="setTypeFilter($event)"
-              (searchTextChange)="setSearchText($event)"
+              [wines]="wines()"
               (wineSelected)="openWineDetails($event)"
             />
           }
