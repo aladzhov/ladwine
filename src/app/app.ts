@@ -151,15 +151,25 @@ export class App {
 
   public handleOrderSubmit(order: CheckoutOrder): void {
     if (order) {
+      const payload = {
+        purchaseName: order.name,
+        purchaseEmail: order.email,
+        basket: this.basket()
+      };
+
       this.http
-        .post('/.netlify/functions/purchase', {
-          purchaseName: order.name,
-          purchaseEmail: order.email,
-          basket: this.basket()
-        })
+        .post('/.netlify/functions/purchase-customer-mail', payload)
         .subscribe({
           error: () => {
             // Keep UX flow unchanged even if email delivery fails.
+          }
+        });
+
+      this.http
+        .post('/.netlify/functions/purchase-discord', payload)
+        .subscribe({
+          error: () => {
+            // Keep UX flow unchanged even if Discord delivery fails.
           }
         });
     }

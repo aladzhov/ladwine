@@ -92,7 +92,8 @@ const handler: Handler = async function(event) {
           basketSummary,
         },
       }),
-    });
+    }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
