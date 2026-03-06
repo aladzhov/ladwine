@@ -16,12 +16,10 @@ const formatPackaging = (packaging?: string) => {
   return packaging;
 };
 
-const buildBasketLines = (basket: BasketItem[]) => {
+const buildOrderSummary = (basket: BasketItem[]) => {
   if (basket.length === 0) {
     return {
-      lines: ["(No items)"],
-      subtotal: 0,
-      deliveryFee: 0,
+      order: "(No items)",
       total: 0,
       tax: 0,
     };
@@ -46,16 +44,32 @@ const buildBasketLines = (basket: BasketItem[]) => {
   }
 
   const lines = Array.from(map.values()).map(
-    (entry) => `${entry.label} x${entry.quantity} - $${entry.subtotal.toFixed(2)}`
+    (entry) => `${entry.label} x${entry.quantity} - ${entry.subtotal.toFixed(2)}`
   );
+
   const deliveryFee = subtotal >= 200 ? 0 : 10;
   const total = subtotal + deliveryFee;
   const tax = total * 0.2;
 
-  return { lines, subtotal, deliveryFee, total, tax };
+  lines.push(`Delivery - ${deliveryFee.toFixed(2)}`);
+
+  return {
+    order: lines.join("\n"),
+    total: Number(total.toFixed(2)),
+    tax: Number(tax.toFixed(2)),
+  };
 };
 
 const handler: Handler = async function(event) {
+  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK;
+
+  if (!webhookUrl) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify("GOOGLE_SHEETS_WEBHOOK is not configured"),
+    };
+  }
+
   if (event.body === null) {
     return {
       statusCode: 400,
@@ -69,33 +83,30 @@ const handler: Handler = async function(event) {
     basket?: BasketItem[];
   };
 
-  const basketInfo = buildBasketLines(requestBody.basket ?? []);
-  const messageLines = [
-    `New order from ${requestBody.purchaseName} (${requestBody.purchaseEmail})`,
-    "",
-    ...basketInfo.lines,
-    `Delivery: $${basketInfo.deliveryFee.toFixed(2)}`,
-    `Total (20% Tax): $${basketInfo.total.toFixed(2)} (Tax $${basketInfo.tax.toFixed(2)})`,
-  ];
+  const summary = buildOrderSummary(requestBody.basket ?? []);
 
-  const response = await fetch(process.env.DISCORD_WEBHOOK_URL, {
+  const response = await fetch(webhookUrl, {
     method: "POST",
     headers: {
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      content: messageLines.join("\n"),
+      name: requestBody.purchaseName,
+      email: requestBody.purchaseEmail,
+      order: summary.order,
+      total: summary.total,
+      tax: summary.tax,
     }),
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Discord webhook error: ${errorText}`);
+    throw new Error(`Google Sheets webhook error: ${errorText}`);
   }
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: "Discord notification sent" }),
+    body: JSON.stringify({ message: "Google Sheets order sent" }),
   };
 };
 

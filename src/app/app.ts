@@ -172,6 +172,14 @@ export class App {
             // Keep UX flow unchanged even if Discord delivery fails.
           }
         });
+
+      this.http
+        .post('/.netlify/functions/purchase-google', payload)
+        .subscribe({
+          error: () => {
+            // Keep UX flow unchanged even if Google Sheets delivery fails.
+          }
+        });
     }
 
     this.basket.set([]);
