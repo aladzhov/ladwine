@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {BrowseProducedWinesComponent} from './browse-produced-wines.component';
 import {OurFamilyComponent} from './our-family.component';
 import {TheWineryComponent} from './the-winery.component';
@@ -9,6 +9,7 @@ import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
 import {HeaderComponent} from './header.component';
 import {FooterComponent} from './footer.component';
 import {Wine} from './wine.model';
+import {CookieService} from './cookie.service';
 
 type TabKey = 'family' | 'winery' | 'vineyards' | 'wines';
 
@@ -34,6 +35,7 @@ interface Tab {
 })
 export class App {
   private readonly http = inject(HttpClient);
+  private readonly cookieService = inject(CookieService);
 
   public readonly wines = signal<ReadonlyArray<Wine>>([
     {
@@ -102,6 +104,62 @@ export class App {
   public readonly basketTotal = computed(() => {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
   });
+
+  constructor() {
+    this.loadBasketFromCookie();
+    this.loadAgeConfirmationFromCookie();
+
+    // Save basket to cookie whenever it changes
+    effect(() => {
+      const basket = this.basket();
+      this.saveBasketToCookie(basket);
+    });
+
+    // Save age confirmation to cookie whenever it changes
+    effect(() => {
+      const confirmed = this.isAgeConfirmed();
+      this.saveAgeConfirmationToCookie(confirmed);
+    });
+  }
+
+  private loadBasketFromCookie(): void {
+    const cookieValue = this.cookieService.getCookie('ladwine_basket');
+    if (cookieValue) {
+      try {
+        const parsed = JSON.parse(decodeURIComponent(cookieValue)) as Wine[];
+        this.basket.set(parsed);
+      } catch {
+        // Invalid cookie, ignore
+      }
+    }
+  }
+
+  private saveBasketToCookie(basket: ReadonlyArray<Wine>): void {
+    const cookieValue = JSON.stringify(basket);
+    this.cookieService.setCookie('ladwine_basket', cookieValue, 24);
+  }
+
+  private loadAgeConfirmationFromCookie(): void {
+    const cookieValue = this.cookieService.getCookie('ladwine_age_confirmed');
+    if (cookieValue) {
+      try {
+        const confirmed = JSON.parse(decodeURIComponent(cookieValue)) as boolean;
+        this.isAgeConfirmed.set(confirmed);
+      } catch {
+        // Invalid cookie, ignore
+      }
+    }
+  }
+
+  private saveAgeConfirmationToCookie(confirmed: boolean | null): void {
+    if (confirmed === null) {
+      // Remove cookie if confirmation is reset to null
+      this.cookieService.deleteCookie('ladwine_age_confirmed');
+    } else {
+      const cookieValue = JSON.stringify(confirmed);
+      this.cookieService.setCookie('ladwine_age_confirmed', cookieValue, 24);
+    }
+  }
 
   public confirmAdult(): void {
     this.isAgeConfirmed.set(true);
@@ -183,6 +241,7 @@ export class App {
     }
 
     this.basket.set([]);
+    this.cookieService.deleteCookie('ladwine_basket');
     this.lastOrder.set(order);
     this.showOrderThanks.set(true);
   }
