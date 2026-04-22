@@ -71,9 +71,11 @@ const handler: Handler = async function(event) {
     purchaseName: string;
     purchaseEmail: string;
     basket?: BasketItem[];
+    deliveryAddress?: string;
   };
 
   const basketSummary = formatBasketSummary(requestBody.basket ?? []);
+  const deliveryInfo = requestBody.deliveryAddress || 'Personal address';
 
   const response = await fetch(
     `${process.env.URL}/.netlify/functions/emails/purchase`,
@@ -90,6 +92,7 @@ const handler: Handler = async function(event) {
         parameters: {
           customerName: requestBody.purchaseName,
           basketSummary,
+          deliveryInfo,
         },
       }),
     }

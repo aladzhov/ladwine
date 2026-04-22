@@ -67,14 +67,17 @@ const handler: Handler = async function(event) {
     purchaseName: string;
     purchaseEmail: string;
     basket?: BasketItem[];
+    deliveryAddress?: string;
   };
 
   const basketInfo = buildBasketLines(requestBody.basket ?? []);
+  const deliveryInfo = requestBody.deliveryAddress || 'Personal address';
   const messageLines = [
     `New order from ${requestBody.purchaseName} (${requestBody.purchaseEmail})`,
+    `Delivery: ${deliveryInfo}`,
     "",
     ...basketInfo.lines,
-    `Delivery: $${basketInfo.deliveryFee.toFixed(2)}`,
+    `Delivery Fee: $${basketInfo.deliveryFee.toFixed(2)}`,
     `Total (20% Tax): $${basketInfo.total.toFixed(2)} (Tax $${basketInfo.tax.toFixed(2)})`,
   ];
 

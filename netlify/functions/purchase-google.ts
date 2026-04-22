@@ -81,9 +81,11 @@ const handler: Handler = async function(event) {
     purchaseName: string;
     purchaseEmail: string;
     basket?: BasketItem[];
+    deliveryAddress?: string;
   };
 
   const summary = buildOrderSummary(requestBody.basket ?? []);
+  const deliveryInfo = requestBody.deliveryAddress || 'Personal address';
 
   const response = await fetch(webhookUrl, {
     method: "POST",
@@ -94,6 +96,7 @@ const handler: Handler = async function(event) {
       name: requestBody.purchaseName,
       email: requestBody.purchaseEmail,
       order: summary.order,
+      delivery: deliveryInfo,
       total: summary.total,
       tax: summary.tax,
     }),

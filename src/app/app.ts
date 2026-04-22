@@ -212,7 +212,8 @@ export class App {
       const payload = {
         purchaseName: order.name,
         purchaseEmail: order.email,
-        basket: this.basket()
+        basket: this.basket(),
+        deliveryAddress: order.deliveryAddress
       };
 
       this.http

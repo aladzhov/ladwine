@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "netlify:build": "netlify build",
+    "netlify:dev": "netlify dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

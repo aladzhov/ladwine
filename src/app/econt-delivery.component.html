@@ -1,0 +1,56 @@
+<div class="econt-delivery">
+  <div class="econt-selection">
+    @if (isLoading()) {
+      <p class="loading-message">Зареждане на офиси ...</p>
+    } @else if (error()) {
+      <p class="error-message">{{ error() }}</p>
+      <button type="button" class="retry-btn" (click)="loadEcontOffices()">Retry</button>
+    } @else {
+      <div class="office-search">
+        <label>
+          <span>Search by city or address</span>
+          <input
+            type="text"
+            name="searchTerm"
+            placeholder="e.g. София, Пловдив..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchChange($event)"
+          />
+        </label>
+      </div>
+
+      <div class="office-list">
+        @if (filteredOffices().length === 0) {
+          <p class="no-offices">No offices found matching your search.</p>
+        } @else {
+          @for (office of filteredOffices(); track office.id) {
+            <label class="office-option">
+              <input
+                type="radio"
+                name="selectedOffice"
+                [value]="office.id"
+                [checked]="selectedOfficeId() === office.id"
+                (change)="selectOffice(office.id)"
+              />
+              <div class="office-details">
+                <span class="office-name">{{ office.name }}</span>
+                <span class="office-address">{{ office.address.city.name }}, {{ office.address.fullAddress }}</span>
+              </div>
+            </label>
+          }
+        }
+      </div>
+
+      @if (selectedOfficeId()) {
+        <div class="selected-office-info">
+          <strong>Избран офис :</strong>
+          @if (getSelectedOffice(); as office) {
+            <p>{{ office.address.fullAddress }}</p>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>
+
+

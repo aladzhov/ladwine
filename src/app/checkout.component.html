@@ -64,29 +64,66 @@
     </div>
 
     <form class="delivery-form" #deliveryForm="ngForm" (ngSubmit)="submitDelivery(deliveryForm)">
-      <label>
-        <span>Full name</span>
-        <input type="text" name="name" [(ngModel)]="name" required />
-      </label>
+      <div class="delivery-method-section">
+        <h3>Delivery Method</h3>
 
-      <label>
-        <span>E-mail</span>
-        <input type="email" name="email" [(ngModel)]="email" required />
-      </label>
+        <div class="delivery-methods">
+          <label class="delivery-method-option">
+            <input
+              type="radio"
+              name="deliveryMethod"
+              value="personal"
+              [checked]="deliveryMethod() === 'personal'"
+              (change)="setDeliveryMethod('personal')"
+            />
+            <span>Personal Address</span>
+          </label>
 
-      <label>
-        <span>Phone</span>
-        <input type="tel" name="phone" [(ngModel)]="phone" required />
-      </label>
+          <label class="delivery-method-option">
+            <input
+              type="radio"
+              name="deliveryMethod"
+              value="econt"
+              [checked]="deliveryMethod() === 'econt'"
+              (change)="setDeliveryMethod('econt')"
+            />
+            <span>Econt Office</span>
+          </label>
+        </div>
 
-      <label>
-        <span>Address</span>
-        <input type="text" name="address" [(ngModel)]="address" required />
-      </label>
+        <label>
+          <span>Full name</span>
+          <input type="text" name="name" [(ngModel)]="name" (focusout)="validateForm()" required />
+        </label>
+
+        <label>
+          <span>E-mail</span>
+          <input type="email" name="email" [(ngModel)]="email" (focusout)="validateForm()" required />
+        </label>
+
+        <label>
+          <span>Phone</span>
+          <input type="tel" name="phone" [(ngModel)]="phone" (focusout)="validateForm()" required />
+        </label>
+
+        @if (deliveryMethod() === 'econt') {
+          <app-econt-delivery (officeSelected)="onEcontOfficeSelected($event)"></app-econt-delivery>
+        } @else {
+          <label>
+            <span>Address</span>
+            <input type="text" name="address" [(ngModel)]="address" (focusout)="validateForm()" required />
+          </label>
+        }
+      </div>
 
       <div class="actions-row">
         <span></span>
-        <button type="submit" class="submit-btn" [disabled]="deliveryForm.invalid">Submit</button>
+        <button type="submit"
+                class="submit-btn"
+                [ngClass]="{ 'submit-btn--disabled': !isDeliveryFormValid() }"
+                [disabled]="!isDeliveryFormValid()">
+          Place Order
+        </button>
       </div>
     </form>
   }

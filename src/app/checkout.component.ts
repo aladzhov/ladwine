@@ -1,8 +1,11 @@
-import { CurrencyPipe } from '@angular/common';
-import { Component, computed, input, output, signal } from '@angular/core';
+import {CurrencyPipe, NgClass} from '@angular/common';
+import { Component, computed, input, output, signal, viewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import { Wine, PackagingType } from './wine.model';
+import { EcontDeliveryComponent } from './econt-delivery.component';
+
+type DeliveryMethod = 'personal' | 'econt';
 
 interface CheckoutWineGroup {
   name: string;
@@ -16,6 +19,7 @@ export interface CheckoutOrder {
   email: string;
   phone: string;
   address: string;
+  deliveryAddress?: string; // Can be Econt office or personal address
 }
 
 interface QuantityChange {
@@ -26,7 +30,7 @@ interface QuantityChange {
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CurrencyPipe, FormsModule],
+  imports: [CurrencyPipe, FormsModule, EcontDeliveryComponent, NgClass],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
@@ -35,9 +39,12 @@ export class CheckoutComponent {
   public readonly total = input.required<number>();
 
   public readonly showDeliveryForm = signal(false);
+  public readonly deliveryMethod = signal<DeliveryMethod>('personal');
   public readonly submitOrder = output<CheckoutOrder>();
   public readonly increaseQty = output<QuantityChange>();
   public readonly decreaseQty = output<QuantityChange>();
+
+  public readonly econtDelivery = viewChild(EcontDeliveryComponent);
 
   public name = 'Атанас Ладжов';
   public email = 'ladjo@gbg.bg';
@@ -92,6 +99,13 @@ export class CheckoutComponent {
     return this.total() + this.deliveryFee();
   });
 
+  public isDeliveryFormValid(): boolean {
+    return this.name.trim().length > 0
+      && this.email.trim().length > 0
+      && this.phone.trim().length > 0
+      && this.address.trim().length > 0;
+  }
+
   public proceedToDelivery(): void {
     this.showDeliveryForm.set(true);
   }
@@ -108,8 +122,35 @@ export class CheckoutComponent {
     this.decreaseQty.emit({ name, packaging });
   }
 
+  public setDeliveryMethod(method: DeliveryMethod): void {
+    if (this.deliveryMethod() !== method) {
+      this.address = '';
+      this.deliveryMethod.set(method);
+      this.validateForm();
+    }
+  }
+
+  public onEcontOfficeSelected(event: { fullAddress: string }): void {
+    this.address = event.fullAddress;
+  }
+
+  public validateForm(): void {
+    // Trigger computed signal evaluation
+    this.isDeliveryFormValid();
+  }
+
   public submitDelivery(form: NgForm): void {
     if (form.invalid) {
+      return;
+    }
+
+    const econtComponent = this.econtDelivery();
+    const deliveryAddress = this.deliveryMethod() === 'econt'
+      ? econtComponent?.getSelectedOfficeAddress() ?? ''
+      : this.address;
+
+    if (this.deliveryMethod() === 'econt' && !deliveryAddress) {
+      alert('Please select an Econt office');
       return;
     }
 
@@ -117,7 +158,8 @@ export class CheckoutComponent {
       name: this.name,
       email: this.email,
       phone: this.phone,
-      address: this.address
+      address: this.address,
+      deliveryAddress: deliveryAddress || this.address
     });
     this.showDeliveryForm.set(false);
     form.resetForm();
