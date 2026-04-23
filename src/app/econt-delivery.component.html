@@ -6,46 +6,63 @@
       <p class="error-message">{{ error() }}</p>
       <button type="button" class="retry-btn" (click)="loadEcontOffices()">Retry</button>
     } @else {
-      <div class="office-search">
-        <label>
-          <span>Search by city or address</span>
-          <input
-            type="text"
-            name="searchTerm"
-            placeholder="e.g. София, Пловдив..."
-            [ngModel]="searchTerm()"
-            (ngModelChange)="onSearchChange($event)"
-          />
-        </label>
-      </div>
+      @if (locationStatus() === 'asking') {
+        <div class="location-banner">
+          <span class="material-icons location-icon">my_location</span>
+          <span>Позволете достъп до местоположението, за да изберем най-близкия офис за вас.</span>
+        </div>
+      }
 
-      <div class="office-list">
-        @if (filteredOffices().length === 0) {
-          <p class="no-offices">No offices found matching your search.</p>
-        } @else {
-          @for (office of filteredOffices(); track office.id) {
-            <label class="office-option">
+      <div class="econt-layout">
+        <!-- Map -->
+        <div class="econt-map-container">
+          <div #mapContainer class="leaflet-map"></div>
+        </div>
+
+        <!-- Office list -->
+        <div class="econt-list-container">
+          <div class="office-search">
+            <label>
+              <span>Search by city or address</span>
               <input
-                type="radio"
-                name="selectedOffice"
-                [value]="office.id"
-                [checked]="selectedOfficeId() === office.id"
-                (change)="selectOffice(office.id)"
+                type="text"
+                name="searchTerm"
+                placeholder="e.g. София, Пловдив..."
+                [ngModel]="searchTerm()"
+                (ngModelChange)="onSearchChange($event)"
               />
-              <div class="office-details">
-                <span class="office-name">{{ office.name }}</span>
-                <span class="office-address">{{ office.address.city.name }}, {{ office.address.fullAddress }}</span>
-              </div>
             </label>
-          }
-        }
+          </div>
+
+          <div class="office-list">
+            @if (filteredOffices().length === 0) {
+              <p class="no-offices">No offices found matching your search.</p>
+            } @else {
+              @for (office of filteredOffices(); track office.id) {
+                <label class="office-option" [class.office-selected]="selectedOfficeId() === office.id" [attr.data-office-id]="office.id">
+                  <input
+                    type="radio"
+                    name="selectedOffice"
+                    [value]="office.id"
+                    [checked]="selectedOfficeId() === office.id"
+                    (change)="selectOffice(office.id)"
+                  />
+                  <div class="office-details">
+                    <span class="office-name">{{ office.name }}</span>
+                    <span class="office-address">{{ office.address.city.name }}, {{ office.address.fullAddress }}</span>
+                  </div>
+                </label>
+              }
+            }
+          </div>
+        </div>
       </div>
 
       @if (selectedOfficeId()) {
         <div class="selected-office-info">
           <strong>Избран офис :</strong>
           @if (getSelectedOffice(); as office) {
-            <p>{{ office.address.fullAddress }}</p>
+            <p>{{ office.name }}</p>
           }
         </div>
       }
