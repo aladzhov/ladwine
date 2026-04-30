@@ -89,6 +89,17 @@
             />
             <span>Econt Office</span>
           </label>
+
+          <label class="delivery-method-option">
+            <input
+              type="radio"
+              name="deliveryMethod"
+              value="speedy"
+              [checked]="deliveryMethod() === 'speedy'"
+              (change)="setDeliveryMethod('speedy')"
+            />
+            <span>Speedy Office</span>
+          </label>
         </div>
 
         <label>
@@ -108,11 +119,66 @@
 
         @if (deliveryMethod() === 'econt') {
           <app-econt-delivery (officeSelected)="onEcontOfficeSelected($event)"></app-econt-delivery>
+        } @else if (deliveryMethod() === 'speedy') {
+          <app-speedy-delivery (officeSelected)="onSpeedyOfficeSelected($event)"></app-speedy-delivery>
         } @else {
           <label>
             <span>Address</span>
             <input type="text" name="address" [(ngModel)]="address" (focusout)="validateForm()" required />
           </label>
+        }
+      </div>
+
+      <div class="delivery-method-section">
+        <h3>Payment Method</h3>
+
+        <div class="delivery-methods">
+          <label class="delivery-method-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="card-on-delivery"
+              [checked]="paymentMethod() === 'card-on-delivery'"
+              (change)="setPaymentMethod('card-on-delivery')"
+            />
+            <span>💵 Card on Delivery</span>
+          </label>
+
+          <label class="delivery-method-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="card-online-mypos"
+              [checked]="paymentMethod() === 'card-online-mypos'"
+              (change)="setPaymentMethod('card-online-mypos')"
+            />
+            <span>💳 Pay Online (myPOS)</span>
+          </label>
+
+          <label class="delivery-method-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="card-online-revolut"
+              [checked]="paymentMethod() === 'card-online-revolut'"
+              (change)="setPaymentMethod('card-online-revolut')"
+            />
+            <span>💳 Pay Online (Revolut)</span>
+          </label>
+        </div>
+
+        @if (paymentMethod() === 'card-online-mypos') {
+          <app-mypos-payment
+            [amount]="finalTotal()"
+            [customerEmail]="email"
+            [customerName]="name"
+          ></app-mypos-payment>
+        } @else if (paymentMethod() === 'card-online-revolut') {
+          <app-revolut-payment
+            [amount]="finalTotal()"
+            [customerEmail]="email"
+            [customerName]="name"
+          ></app-revolut-payment>
         }
       </div>
 

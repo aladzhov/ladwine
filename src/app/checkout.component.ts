@@ -4,8 +4,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 
 import { Wine, PackagingType } from './wine.model';
 import { EcontDeliveryComponent } from './econt-delivery.component';
+import { SpeedyDeliveryComponent } from './speedy-delivery.component';
+import { MyPosPaymentComponent } from './mypos-payment.component';
+import { RevolutPaymentComponent } from './revolut-payment.component';
 
-type DeliveryMethod = 'personal' | 'econt';
+type DeliveryMethod = 'personal' | 'econt' | 'speedy';
+type PaymentMethod = 'card-on-delivery' | 'card-online-mypos' | 'card-online-revolut';
 
 interface CheckoutWineGroup {
   name: string;
@@ -19,7 +23,8 @@ export interface CheckoutOrder {
   email: string;
   phone: string;
   address: string;
-  deliveryAddress?: string; // Can be Econt office or personal address
+  deliveryAddress?: string;
+  paymentMethod?: PaymentMethod;
 }
 
 interface QuantityChange {
@@ -30,7 +35,7 @@ interface QuantityChange {
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CurrencyPipe, FormsModule, EcontDeliveryComponent, NgClass],
+  imports: [CurrencyPipe, FormsModule, EcontDeliveryComponent, SpeedyDeliveryComponent, MyPosPaymentComponent, RevolutPaymentComponent, NgClass],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
@@ -40,11 +45,13 @@ export class CheckoutComponent {
 
   public readonly showDeliveryForm = signal(false);
   public readonly deliveryMethod = signal<DeliveryMethod>('personal');
+  public readonly paymentMethod = signal<PaymentMethod>('card-on-delivery');
   public readonly submitOrder = output<CheckoutOrder>();
   public readonly increaseQty = output<QuantityChange>();
   public readonly decreaseQty = output<QuantityChange>();
 
   public readonly econtDelivery = viewChild(EcontDeliveryComponent);
+  public readonly speedyDelivery = viewChild(SpeedyDeliveryComponent);
 
   public name = 'Атанас Ладжов';
   public email = 'ladjo@gbg.bg';
@@ -134,6 +141,14 @@ export class CheckoutComponent {
     this.address = event.fullAddress;
   }
 
+  public onSpeedyOfficeSelected(event: { fullAddress: string }): void {
+    this.address = event.fullAddress;
+  }
+
+  public setPaymentMethod(method: PaymentMethod): void {
+    this.paymentMethod.set(method);
+  }
+
   public validateForm(): void {
     // Trigger computed signal evaluation
     this.isDeliveryFormValid();
@@ -145,13 +160,21 @@ export class CheckoutComponent {
     }
 
     const econtComponent = this.econtDelivery();
-    const deliveryAddress = this.deliveryMethod() === 'econt'
-      ? econtComponent?.getSelectedOfficeAddress() ?? ''
-      : this.address;
+    const speedyComponent = this.speedyDelivery();
+    let deliveryAddress = this.address;
 
-    if (this.deliveryMethod() === 'econt' && !deliveryAddress) {
-      alert('Please select an Econt office');
-      return;
+    if (this.deliveryMethod() === 'econt') {
+      deliveryAddress = econtComponent?.getSelectedOfficeAddress() ?? '';
+      if (!deliveryAddress) {
+        alert('Please select an Econt office');
+        return;
+      }
+    } else if (this.deliveryMethod() === 'speedy') {
+      deliveryAddress = speedyComponent?.getSelectedOfficeAddress() ?? '';
+      if (!deliveryAddress) {
+        alert('Please select a Speedy office');
+        return;
+      }
     }
 
     this.submitOrder.emit({
@@ -159,7 +182,8 @@ export class CheckoutComponent {
       email: this.email,
       phone: this.phone,
       address: this.address,
-      deliveryAddress: deliveryAddress || this.address
+      deliveryAddress: deliveryAddress || this.address,
+      paymentMethod: this.paymentMethod()
     });
     this.showDeliveryForm.set(false);
     form.resetForm();

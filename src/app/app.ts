@@ -1,5 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, computed, effect, inject, signal} from '@angular/core';
+import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 import {BrowseProducedWinesComponent} from './browse-produced-wines.component';
 import {OurFamilyComponent} from './our-family.component';
 import {TheWineryComponent} from './the-winery.component';
@@ -9,6 +10,7 @@ import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
 import {HeaderComponent} from './header.component';
 import {FooterComponent} from './footer.component';
 import {Wine} from './wine.model';
+import {WINES} from './wines.data';
 import {CookieService} from './cookie.service';
 
 type TabKey = 'family' | 'winery' | 'vineyards' | 'wines';
@@ -21,6 +23,7 @@ interface Tab {
 @Component({
   selector: 'app-root',
   imports: [
+    RouterOutlet,
     HeaderComponent,
     FooterComponent,
     OurFamilyComponent,
@@ -36,54 +39,10 @@ interface Tab {
 export class App {
   private readonly http = inject(HttpClient);
   private readonly cookieService = inject(CookieService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  public readonly wines = signal<ReadonlyArray<Wine>>([
-    {
-      name: 'Old Oak Cabernet',
-      type: 'Red',
-      year: 2022,
-      notes: 'Dark cherry, cedar, and gentle spice with soft tannins.',
-      pairWith: 'Roasted lamb',
-      price: 24.9,
-      imageSrc: '/images/wines/old-oak-cabernet.png'
-    },
-    {
-      name: 'Sunny Hill Chardonnay',
-      type: 'White',
-      year: 2024,
-      notes: 'Crisp citrus, pear, and a light touch of vanilla.',
-      pairWith: 'Sea bass or creamy pasta',
-      price: 19.5,
-      imageSrc: '/images/wines/sunny-hill-chardonnay.png'
-    },
-    {
-      name: 'Garden Rose',
-      type: 'Rose',
-      year: 2025,
-      notes: 'Fresh strawberry and watermelon with floral finish.',
-      pairWith: 'Summer salads',
-      price: 17.9,
-      imageSrc: '/images/wines/garden-rose.png'
-    },
-    {
-      name: 'Morning Mist Brut',
-      type: 'Sparkling',
-      year: 2023,
-      notes: 'Fine bubbles with green apple and toasted brioche.',
-      pairWith: 'Celebration appetizers',
-      price: 28.4,
-      imageSrc: '/images/wines/morning-mist-brut.png'
-    },
-    {
-      name: 'Estate Merlot',
-      type: 'Red',
-      year: 2021,
-      notes: 'Plum and cocoa aromas with velvety texture.',
-      pairWith: 'Mushroom risotto',
-      price: 22.3,
-      imageSrc: '/images/wines/estate-merlot.png'
-    }
-  ]);
+  public readonly wines = signal<ReadonlyArray<Wine>>(WINES);
 
   public readonly tabs: ReadonlyArray<Tab> = [
     { key: 'winery', label: 'Winery' },
@@ -119,6 +78,30 @@ export class App {
     effect(() => {
       const confirmed = this.isAgeConfirmed();
       this.saveAgeConfirmationToCookie(confirmed);
+    });
+
+    // Sync route → signals on navigation
+    this.router.events.subscribe(() => {
+      const snapshot = this.route.firstChild?.snapshot;
+      if (!snapshot) return;
+
+      const tab = snapshot.data['tab'] as string;
+      const slug = snapshot.params['slug'] as string | undefined;
+
+      if (tab === 'checkout') {
+        this.showCheckout.set(true);
+        this.selectedWine.set(null);
+      } else if (tab) {
+        this.showCheckout.set(false);
+        this.activeTab.set(tab as TabKey);
+
+        if (slug) {
+          const wine = this.wines().find(w => w.slug === slug) || null;
+          this.selectedWine.set(wine);
+        } else {
+          this.selectedWine.set(null);
+        }
+      }
     });
   }
 
@@ -173,10 +156,12 @@ export class App {
     this.selectedWine.set(wine);
     this.activeTab.set('wines');
     this.showCheckout.set(false);
+    this.router.navigate(['/wines', wine.slug]);
   }
 
   public closeWineDetails(): void {
     this.selectedWine.set(null);
+    this.router.navigate(['/wines']);
   }
 
   public addToBasket(wine: Wine): void {
@@ -205,6 +190,7 @@ export class App {
   public openCheckout(): void {
     this.selectedWine.set(null);
     this.showCheckout.set(true);
+    this.router.navigate(['/checkout']);
   }
 
   public handleOrderSubmit(order: CheckoutOrder): void {
@@ -267,10 +253,18 @@ export class App {
     this.showCheckout.set(false);
     this.selectedWine.set(null);
     this.activeTab.set('winery');
+    this.router.navigate(['/winery']);
   }
 
   public setActiveTab(tab: TabKey): void {
     this.showCheckout.set(false);
     this.activeTab.set(tab);
+    const routeMap: Record<TabKey, string> = {
+      winery: '/winery',
+      family: '/history',
+      vineyards: '/vineyards',
+      wines: '/wines'
+    };
+    this.router.navigate([routeMap[tab]]);
   }
 }

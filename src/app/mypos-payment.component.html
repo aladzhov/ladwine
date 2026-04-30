@@ -1,0 +1,33 @@
+<div class="mypos-payment">
+  <div class="payment-info">
+    <div class="payment-icon">💳</div>
+    <p class="payment-description">
+      You will be redirected to <strong>myPOS</strong> secure checkout to complete your payment of
+      <strong>{{ amount() | currency: currency() : 'symbol' : '1.2-2' }}</strong>.
+    </p>
+  </div>
+
+  @if (error()) {
+    <div class="payment-error">
+      <span>⚠️ {{ error() }}</span>
+    </div>
+  }
+
+  <button
+    type="button"
+    class="pay-now-btn"
+    [disabled]="isProcessing()"
+    (click)="initiatePayment()"
+  >
+    @if (isProcessing()) {
+      <span class="spinner"></span> Processing…
+    } @else {
+      Pay Now with myPOS
+    }
+  </button>
+
+  <p class="payment-note">
+    Secure payment powered by myPOS. Your card details are handled directly by myPOS — we never see them.
+  </p>
+</div>
+

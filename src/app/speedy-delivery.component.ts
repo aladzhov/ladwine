@@ -6,31 +6,34 @@ import * as L from 'leaflet';
 import { Office, sortOffices } from './office.model';
 import { OfficeSearchService } from './office-search.service';
 
-// Raw Econt API types (internal only)
-interface EcontApiOffice {
+// Raw Speedy API types (matches https://api.speedy.bg/api/docs/ sections 3.18 + 3.4.3)
+// English address fields are added by our proxy (speedy-offices.ts) which merges BG + EN calls.
+interface SpeedyApiOffice {
   id: number;
   name: string;
   nameEn: string;
   address: {
-    city: { name: string; nameEn: string; country: { code2: string } };
-    fullAddress: string;
-    fullAddressEn: string;
-    location: { latitude: string; longitude: string };
+    siteName: string;
+    fullAddressString: string;
+    siteNameEn: string;
+    fullAddressStringEn: string;
+    x: number;
+    y: number;
   };
 }
 
-interface EcontApiResponse {
-  offices: EcontApiOffice[];
+interface SpeedyApiResponse {
+  offices: SpeedyApiOffice[];
 }
 
 @Component({
-  selector: 'app-econt-delivery',
+  selector: 'app-speedy-delivery',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './econt-delivery.component.html',
-  styleUrl: './econt-delivery.component.css'
+  templateUrl: './speedy-delivery.component.html',
+  styleUrl: './speedy-delivery.component.css'
 })
-export class EcontDeliveryComponent implements OnInit, OnDestroy {
+export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
   private readonly http = inject(HttpClient);
   private readonly searchService = inject(OfficeSearchService);
 
@@ -65,7 +68,7 @@ export class EcontDeliveryComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.loadEcontOffices();
+    this.loadSpeedyOffices();
   }
 
   ngOnDestroy(): void {
@@ -111,31 +114,29 @@ export class EcontDeliveryComponent implements OnInit, OnDestroy {
     }
   }
 
-  private mapEcontToOffice(raw: EcontApiOffice): Office {
+  private mapSpeedyToOffice(raw: SpeedyApiOffice): Office {
     return {
       id: raw.id,
       name: raw.name,
       nameEn: raw.nameEn,
-      city: raw.address.city.name,
-      cityEn: raw.address.city.nameEn,
-      fullAddress: raw.address.fullAddress,
-      fullAddressEn: raw.address.fullAddressEn,
-      latitude: parseFloat(raw.address.location.latitude),
-      longitude: parseFloat(raw.address.location.longitude),
+      city: raw.address.siteName,
+      cityEn: raw.address.siteNameEn,
+      fullAddress: raw.address.fullAddressString,
+      fullAddressEn: raw.address.fullAddressStringEn,
+      latitude: raw.address.y,
+      longitude: raw.address.x,
     };
   }
 
-  public loadEcontOffices(): void {
+  public loadSpeedyOffices(): void {
     this.isLoading.set(true);
     this.error.set(null);
 
     this.http
-      .get<EcontApiResponse>('https://ee.econt.com/services/Nomenclatures/NomenclaturesService.getOffices.json')
+      .get<SpeedyApiResponse>('/.netlify/functions/speedy-offices')
       .subscribe({
         next: (response) => {
-          const mapped = response.offices
-            .filter(o => o.address.city.country.code2 === 'BG')
-            .map(o => this.mapEcontToOffice(o));
+          const mapped = (response.offices || []).map(o => this.mapSpeedyToOffice(o));
           const sorted = sortOffices(mapped);
           this.offices.set(sorted);
           this.filteredOffices.set(sorted);
@@ -147,8 +148,8 @@ export class EcontDeliveryComponent implements OnInit, OnDestroy {
           }, 0);
         },
         error: (err) => {
-          console.error('Error loading Econt offices:', err);
-          this.error.set('Failed to load Econt offices. Please try again.');
+          console.error('Error loading Speedy offices:', err);
+          this.error.set('Failed to load Speedy offices. Please try again.');
           this.isLoading.set(false);
         }
       });
@@ -189,7 +190,7 @@ export class EcontDeliveryComponent implements OnInit, OnDestroy {
 
   private scrollListToOffice(officeId: number): void {
     setTimeout(() => {
-      const el = document.querySelector(`[data-office-id="${officeId}"]`);
+      const el = document.querySelector(`[data-speedy-office-id="${officeId}"]`);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 0);
   }
@@ -235,6 +236,7 @@ export class EcontDeliveryComponent implements OnInit, OnDestroy {
   public getSelectedOfficeAddress(): string {
     const office = this.getSelectedOffice();
     if (!office) return '';
-    return `Econt Office: ${office.name}, ${office.fullAddress}`;
+    return `Speedy Office: ${office.name}, ${office.fullAddress}`;
   }
 }
+

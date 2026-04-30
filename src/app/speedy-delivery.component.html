@@ -1,10 +1,10 @@
-<div class="econt-delivery">
-  <div class="econt-selection">
+<div class="speedy-delivery">
+  <div class="speedy-selection">
     @if (isLoading()) {
-      <p class="loading-message">Зареждане на офиси ...</p>
+      <p class="loading-message">Зареждане на офиси на Speedy ...</p>
     } @else if (error()) {
       <p class="error-message">{{ error() }}</p>
-      <button type="button" class="retry-btn" (click)="loadEcontOffices()">Retry</button>
+      <button type="button" class="retry-btn" (click)="loadSpeedyOffices()">Retry</button>
     } @else {
       @if (locationStatus() === 'asking') {
         <div class="location-banner">
@@ -13,20 +13,20 @@
         </div>
       }
 
-      <div class="econt-layout">
+      <div class="speedy-layout">
         <!-- Map -->
-        <div class="econt-map-container">
+        <div class="speedy-map-container">
           <div #mapContainer class="leaflet-map"></div>
         </div>
 
         <!-- Office list -->
-        <div class="econt-list-container">
+        <div class="speedy-list-container">
           <div class="office-search">
             <label>
               <span>Search by city or address</span>
               <input
                 type="text"
-                name="searchTerm"
+                name="speedySearchTerm"
                 placeholder="e.g. София, Пловдив..."
                 [ngModel]="searchTerm()"
                 (ngModelChange)="onSearchChange($event)"
@@ -39,10 +39,10 @@
               <p class="no-offices">No offices found matching your search.</p>
             } @else {
               @for (office of filteredOffices(); track office.id) {
-                <label class="office-option" [class.office-selected]="selectedOfficeId() === office.id" [attr.data-office-id]="office.id">
+                <label class="office-option" [class.office-selected]="selectedOfficeId() === office.id" [attr.data-speedy-office-id]="office.id">
                   <input
                     type="radio"
-                    name="selectedOffice"
+                    name="selectedSpeedyOffice"
                     [value]="office.id"
                     [checked]="selectedOfficeId() === office.id"
                     (change)="selectOffice(office.id)"
@@ -62,12 +62,11 @@
         <div class="selected-office-info">
           <strong>Chosen office/APM :</strong>
           @if (getSelectedOffice(); as office) {
-            <p>{{ office.fullAddress }}</p>
+            <p>{{ office.name }} — {{ office.fullAddress }}</p>
           }
         </div>
       }
     }
   </div>
 </div>
-
 
