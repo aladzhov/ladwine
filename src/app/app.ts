@@ -210,26 +210,28 @@ export class App {
   public handleOrderSubmit(order: CheckoutOrder): void {
     if (!order) return;
 
-    // Verify reCAPTCHA server-side first
-    if (order.recaptchaToken) {
-      this.http
-        .post<{ success: boolean }>('/.netlify/functions/verify-recaptcha', { token: order.recaptchaToken })
-        .subscribe({
-          next: (result) => {
-            if (result.success) {
-              this.processOrder(order);
-            } else {
-              alert('reCAPTCHA verification failed. Please try again.');
-            }
-          },
-          error: () => {
-            alert('reCAPTCHA verification failed. Please try again.');
-          }
-        });
-    } else {
-      // Fallback: process without reCAPTCHA (shouldn't happen with UI validation)
-      this.processOrder(order);
+    if (!order.recaptchaToken) {
+      alert('reCAPTCHA verification is required. Please try again.');
+      return;
     }
+
+    this.http
+      .post<{ success: boolean; message?: string }>('/.netlify/functions/verify-recaptcha', { token: order.recaptchaToken })
+      .subscribe({
+        next: (result) => {
+          if (result.success) {
+            this.processOrder(order);
+          } else {
+            console.error('reCAPTCHA verification rejected:', result);
+            alert(result.message || 'reCAPTCHA verification failed. Please try again.');
+          }
+        },
+        error: (err) => {
+          const body = err?.error;
+          console.error('reCAPTCHA verification error:', body || err);
+          alert(body?.message || 'reCAPTCHA verification failed. Please try again.');
+        }
+      });
   }
 
   private processOrder(order: CheckoutOrder): void {

@@ -182,17 +182,13 @@
         }
       </div>
 
-      <div class="recaptcha-container">
-        <div #recaptchaContainer></div>
-      </div>
-
       <div class="actions-row">
-        <span></span>
+        <span class="recaptcha-note">Protected by reCAPTCHA</span>
         <button type="submit"
                 class="submit-btn"
-                [ngClass]="{ 'submit-btn--disabled': !isDeliveryFormValid() }"
-                [disabled]="!isDeliveryFormValid()">
-          Place Order
+                [ngClass]="{ 'submit-btn--disabled': !isDeliveryFormValid() || isSubmitting() }"
+                [disabled]="!isDeliveryFormValid() || isSubmitting()">
+          {{ isSubmitting() ? 'Verifying…' : 'Place Order' }}
         </button>
       </div>
     </form>

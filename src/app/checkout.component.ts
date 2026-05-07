@@ -1,5 +1,5 @@
 import {CurrencyPipe, NgClass} from '@angular/common';
-import { AfterViewChecked, Component, computed, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { Component, computed, input, output, signal, viewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import { Wine, PackagingType } from './wine.model';
@@ -8,10 +8,13 @@ import { SpeedyDeliveryComponent } from './speedy-delivery.component';
 import { MyPosPaymentComponent } from './mypos-payment.component';
 import { RevolutPaymentComponent } from './revolut-payment.component';
 
-declare const grecaptcha: any;
-
 type DeliveryMethod = 'personal' | 'econt' | 'speedy';
 type PaymentMethod = 'card-on-delivery' | 'card-online-mypos' | 'card-online-revolut';
+
+type RecaptchaV3Api = {
+  ready: (cb: () => void) => void;
+  execute: (siteKey: string, options: { action: string }) => Promise<string>;
+};
 
 interface CheckoutWineGroup {
   name: string;
@@ -42,7 +45,7 @@ interface QuantityChange {
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
-export class CheckoutComponent implements AfterViewChecked {
+export class CheckoutComponent {
   public readonly basket = input.required<ReadonlyArray<Wine>>();
   public readonly total = input.required<number>();
 
@@ -55,43 +58,16 @@ export class CheckoutComponent implements AfterViewChecked {
 
   public readonly econtDelivery = viewChild(EcontDeliveryComponent);
   public readonly speedyDelivery = viewChild(SpeedyDeliveryComponent);
-  private readonly recaptchaContainer = viewChild<ElementRef>('recaptchaContainer');
 
   public name = 'Атанас Ладжов';
   public email = 'ladjo@gbg.bg';
   public phone = '123';
   public address = 'София';
 
-  public readonly recaptchaToken = signal<string | null>(null);
-  private recaptchaWidgetId: number | null = null;
-  private recaptchaRendered = false;
+  public readonly isSubmitting = signal(false);
 
   private static readonly RECAPTCHA_SITE_KEY = '6LfTg94sAAAAALGoUz-2_XfP0_SFJsXtUikZ4w_r';
-
-  ngAfterViewChecked(): void {
-    this.tryRenderRecaptcha();
-  }
-
-  private tryRenderRecaptcha(): void {
-    const container = this.recaptchaContainer();
-    if (!container || this.recaptchaRendered) return;
-    if (typeof grecaptcha === 'undefined' || !grecaptcha.render) return;
-
-    this.recaptchaRendered = true;
-    this.recaptchaWidgetId = grecaptcha.render(container.nativeElement, {
-      sitekey: CheckoutComponent.RECAPTCHA_SITE_KEY,
-      callback: (token: string) => this.recaptchaToken.set(token),
-      'expired-callback': () => this.recaptchaToken.set(null),
-    });
-  }
-
-  public resetRecaptcha(): void {
-    if (this.recaptchaWidgetId !== null && typeof grecaptcha !== 'undefined') {
-      grecaptcha.reset(this.recaptchaWidgetId);
-    }
-    this.recaptchaToken.set(null);
-    this.recaptchaRendered = false;
-  }
+  private static readonly RECAPTCHA_ACTION = 'checkout_submit';
 
   public readonly groupedByType = computed<ReadonlyArray<CheckoutWineGroup>>(() => {
     const map = new Map<string, CheckoutWineGroup>();
@@ -145,8 +121,7 @@ export class CheckoutComponent implements AfterViewChecked {
     return this.name.trim().length > 0
       && this.email.trim().length > 0
       && this.phone.trim().length > 0
-      && this.address.trim().length > 0
-      && this.recaptchaToken() !== null;
+      && this.address.trim().length > 0;
   }
 
   public proceedToDelivery(): void {
@@ -186,14 +161,15 @@ export class CheckoutComponent implements AfterViewChecked {
   }
 
   public validateForm(): void {
-    // Trigger computed signal evaluation
     this.isDeliveryFormValid();
   }
 
-  public submitDelivery(form: NgForm): void {
-    if (form.invalid) {
+  public async submitDelivery(form: NgForm): Promise<void> {
+    if (form.invalid || this.isSubmitting()) {
       return;
     }
+
+    this.isSubmitting.set(true);
 
     const econtComponent = this.econtDelivery();
     const speedyComponent = this.speedyDelivery();
@@ -203,14 +179,27 @@ export class CheckoutComponent implements AfterViewChecked {
       deliveryAddress = econtComponent?.getSelectedOfficeAddress() ?? '';
       if (!deliveryAddress) {
         alert('Please select an Econt office');
+        this.isSubmitting.set(false);
         return;
       }
     } else if (this.deliveryMethod() === 'speedy') {
       deliveryAddress = speedyComponent?.getSelectedOfficeAddress() ?? '';
       if (!deliveryAddress) {
         alert('Please select a Speedy office');
+        this.isSubmitting.set(false);
         return;
       }
+    }
+
+    // Execute reCAPTCHA v3 invisibly
+    let recaptchaToken: string;
+    try {
+      recaptchaToken = await this.executeRecaptcha();
+    } catch (error) {
+      console.error('reCAPTCHA v3 execution failed:', error);
+      alert('reCAPTCHA verification could not be completed. Please refresh the page and try again.');
+      this.isSubmitting.set(false);
+      return;
     }
 
     this.submitOrder.emit({
@@ -220,10 +209,30 @@ export class CheckoutComponent implements AfterViewChecked {
       address: this.address,
       deliveryAddress: deliveryAddress || this.address,
       paymentMethod: this.paymentMethod(),
-      recaptchaToken: this.recaptchaToken() || undefined
+      recaptchaToken
     });
     this.showDeliveryForm.set(false);
-    this.resetRecaptcha();
+    this.isSubmitting.set(false);
     form.resetForm();
+  }
+
+  private executeRecaptcha(): Promise<string> {
+    const recaptcha = this.getRecaptcha();
+    if (!recaptcha?.ready || !recaptcha.execute) {
+      return Promise.reject(new Error('Google reCAPTCHA v3 script is not loaded'));
+    }
+
+    return new Promise((resolve, reject) => {
+      recaptcha.ready(() => {
+        recaptcha
+          .execute(CheckoutComponent.RECAPTCHA_SITE_KEY, { action: CheckoutComponent.RECAPTCHA_ACTION })
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  private getRecaptcha(): RecaptchaV3Api | undefined {
+    return (globalThis as typeof globalThis & { grecaptcha?: RecaptchaV3Api }).grecaptcha;
   }
 }

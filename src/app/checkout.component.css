@@ -248,6 +248,11 @@ h2 {
   padding: 0.5rem 0.65rem;
 }
 
+.recaptcha-note {
+  color: #6d5b49;
+  font-size: 0.85rem;
+}
+
 .recaptcha-container {
   display: flex;
   justify-content: flex-end;
