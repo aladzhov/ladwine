@@ -208,38 +208,61 @@ export class App {
   }
 
   public handleOrderSubmit(order: CheckoutOrder): void {
-    if (order) {
-      const payload = {
-        purchaseName: order.name,
-        purchaseEmail: order.email,
-        basket: this.basket(),
-        deliveryAddress: order.deliveryAddress
-      };
+    if (!order) return;
 
+    // Verify reCAPTCHA server-side first
+    if (order.recaptchaToken) {
       this.http
-        .post('/.netlify/functions/purchase-customer-mail', payload)
+        .post<{ success: boolean }>('/.netlify/functions/verify-recaptcha', { token: order.recaptchaToken })
         .subscribe({
+          next: (result) => {
+            if (result.success) {
+              this.processOrder(order);
+            } else {
+              alert('reCAPTCHA verification failed. Please try again.');
+            }
+          },
           error: () => {
-            // Keep UX flow unchanged even if email delivery fails.
+            alert('reCAPTCHA verification failed. Please try again.');
           }
         });
-
-      this.http
-        .post('/.netlify/functions/purchase-discord', payload)
-        .subscribe({
-          error: () => {
-            // Keep UX flow unchanged even if Discord delivery fails.
-          }
-        });
-
-      this.http
-        .post('/.netlify/functions/purchase-google', payload)
-        .subscribe({
-          error: () => {
-            // Keep UX flow unchanged even if Google Sheets delivery fails.
-          }
-        });
+    } else {
+      // Fallback: process without reCAPTCHA (shouldn't happen with UI validation)
+      this.processOrder(order);
     }
+  }
+
+  private processOrder(order: CheckoutOrder): void {
+    const payload = {
+      purchaseName: order.name,
+      purchaseEmail: order.email,
+      basket: this.basket(),
+      deliveryAddress: order.deliveryAddress
+    };
+
+    this.http
+      .post('/.netlify/functions/purchase-customer-mail', payload)
+      .subscribe({
+        error: () => {
+          // Keep UX flow unchanged even if email delivery fails.
+        }
+      });
+
+    this.http
+      .post('/.netlify/functions/purchase-discord', payload)
+      .subscribe({
+        error: () => {
+          // Keep UX flow unchanged even if Discord delivery fails.
+        }
+      });
+
+    this.http
+      .post('/.netlify/functions/purchase-google', payload)
+      .subscribe({
+        error: () => {
+          // Keep UX flow unchanged even if Google Sheets delivery fails.
+        }
+      });
 
     this.basket.set([]);
     this.cookieService.deleteCookie('ladwine_basket');

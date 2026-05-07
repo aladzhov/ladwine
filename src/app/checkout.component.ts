@@ -1,5 +1,5 @@
 import {CurrencyPipe, NgClass} from '@angular/common';
-import { Component, computed, input, output, signal, viewChild } from '@angular/core';
+import { AfterViewChecked, Component, computed, ElementRef, input, output, signal, viewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import { Wine, PackagingType } from './wine.model';
@@ -7,6 +7,8 @@ import { EcontDeliveryComponent } from './econt-delivery.component';
 import { SpeedyDeliveryComponent } from './speedy-delivery.component';
 import { MyPosPaymentComponent } from './mypos-payment.component';
 import { RevolutPaymentComponent } from './revolut-payment.component';
+
+declare const grecaptcha: any;
 
 type DeliveryMethod = 'personal' | 'econt' | 'speedy';
 type PaymentMethod = 'card-on-delivery' | 'card-online-mypos' | 'card-online-revolut';
@@ -25,6 +27,7 @@ export interface CheckoutOrder {
   address: string;
   deliveryAddress?: string;
   paymentMethod?: PaymentMethod;
+  recaptchaToken?: string;
 }
 
 interface QuantityChange {
@@ -39,7 +42,7 @@ interface QuantityChange {
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements AfterViewChecked {
   public readonly basket = input.required<ReadonlyArray<Wine>>();
   public readonly total = input.required<number>();
 
@@ -52,11 +55,43 @@ export class CheckoutComponent {
 
   public readonly econtDelivery = viewChild(EcontDeliveryComponent);
   public readonly speedyDelivery = viewChild(SpeedyDeliveryComponent);
+  private readonly recaptchaContainer = viewChild<ElementRef>('recaptchaContainer');
 
   public name = 'Атанас Ладжов';
   public email = 'ladjo@gbg.bg';
   public phone = '123';
   public address = 'София';
+
+  public readonly recaptchaToken = signal<string | null>(null);
+  private recaptchaWidgetId: number | null = null;
+  private recaptchaRendered = false;
+
+  private static readonly RECAPTCHA_SITE_KEY = '6LfTg94sAAAAALGoUz-2_XfP0_SFJsXtUikZ4w_r';
+
+  ngAfterViewChecked(): void {
+    this.tryRenderRecaptcha();
+  }
+
+  private tryRenderRecaptcha(): void {
+    const container = this.recaptchaContainer();
+    if (!container || this.recaptchaRendered) return;
+    if (typeof grecaptcha === 'undefined' || !grecaptcha.render) return;
+
+    this.recaptchaRendered = true;
+    this.recaptchaWidgetId = grecaptcha.render(container.nativeElement, {
+      sitekey: CheckoutComponent.RECAPTCHA_SITE_KEY,
+      callback: (token: string) => this.recaptchaToken.set(token),
+      'expired-callback': () => this.recaptchaToken.set(null),
+    });
+  }
+
+  public resetRecaptcha(): void {
+    if (this.recaptchaWidgetId !== null && typeof grecaptcha !== 'undefined') {
+      grecaptcha.reset(this.recaptchaWidgetId);
+    }
+    this.recaptchaToken.set(null);
+    this.recaptchaRendered = false;
+  }
 
   public readonly groupedByType = computed<ReadonlyArray<CheckoutWineGroup>>(() => {
     const map = new Map<string, CheckoutWineGroup>();
@@ -110,7 +145,8 @@ export class CheckoutComponent {
     return this.name.trim().length > 0
       && this.email.trim().length > 0
       && this.phone.trim().length > 0
-      && this.address.trim().length > 0;
+      && this.address.trim().length > 0
+      && this.recaptchaToken() !== null;
   }
 
   public proceedToDelivery(): void {
@@ -183,9 +219,11 @@ export class CheckoutComponent {
       phone: this.phone,
       address: this.address,
       deliveryAddress: deliveryAddress || this.address,
-      paymentMethod: this.paymentMethod()
+      paymentMethod: this.paymentMethod(),
+      recaptchaToken: this.recaptchaToken() || undefined
     });
     this.showDeliveryForm.set(false);
+    this.resetRecaptcha();
     form.resetForm();
   }
 }

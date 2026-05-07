@@ -247,3 +247,9 @@ h2 {
   font: inherit;
   padding: 0.5rem 0.65rem;
 }
+
+.recaptcha-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0 0.5rem;
+}
