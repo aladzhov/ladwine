@@ -1,0 +1,50 @@
+.legal-panel {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  line-height: 1.7;
+  color: #3e2723;
+}
+
+.legal-panel h2 {
+  color: #74290f;
+  margin-bottom: 0.25rem;
+}
+
+.legal-panel .last-updated {
+  font-size: 0.85rem;
+  color: #8d6e63;
+  margin-bottom: 1.5rem;
+}
+
+.legal-panel h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #5d1e04;
+}
+
+.legal-panel p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.legal-panel ul {
+  margin: 0.5rem 0 0.5rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.legal-panel li {
+  margin-bottom: 0.3rem;
+}
+
+.legal-panel a {
+  color: #74290f;
+  text-decoration: underline;
+}
+
+.legal-panel a:hover {
+  color: #5d1e04;
+}
+

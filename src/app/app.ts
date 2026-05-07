@@ -9,6 +9,9 @@ import {WineDetailsComponent} from './wine-details.component';
 import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
 import {HeaderComponent} from './header.component';
 import {FooterComponent} from './footer.component';
+import {TermsComponent} from './terms.component';
+import {PrivacyPolicyComponent} from './privacy-policy.component';
+import {DeliveryInfoComponent} from './delivery-info.component';
 import {Wine} from './wine.model';
 import {WINES} from './wines.data';
 import {CookieService} from './cookie.service';
@@ -31,7 +34,10 @@ interface Tab {
     VineyardsComponent,
     BrowseProducedWinesComponent,
     WineDetailsComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    TermsComponent,
+    PrivacyPolicyComponent,
+    DeliveryInfoComponent
   ],
   templateUrl: './app.html',
   styleUrl: './winery.css'
@@ -56,6 +62,7 @@ export class App {
   public readonly selectedWine = signal<Wine | null>(null);
   public readonly basket = signal<ReadonlyArray<Wine>>([]);
   public readonly showCheckout = signal(false);
+  public readonly activeLegalPage = signal<'terms' | 'privacy' | 'delivery-info' | null>(null);
   public readonly showOrderThanks = signal(false);
   public readonly lastOrder = signal<CheckoutOrder | null>(null);
   public readonly checkoutPulse = signal(false);
@@ -91,8 +98,14 @@ export class App {
       if (tab === 'checkout') {
         this.showCheckout.set(true);
         this.selectedWine.set(null);
+        this.activeLegalPage.set(null);
+      } else if (tab === 'terms' || tab === 'privacy' || tab === 'delivery-info') {
+        this.activeLegalPage.set(tab);
+        this.showCheckout.set(false);
+        this.selectedWine.set(null);
       } else if (tab) {
         this.showCheckout.set(false);
+        this.activeLegalPage.set(null);
         this.activeTab.set(tab as TabKey);
 
         if (slug) {
@@ -190,6 +203,7 @@ export class App {
   public openCheckout(): void {
     this.selectedWine.set(null);
     this.showCheckout.set(true);
+    this.activeLegalPage.set(null);
     this.router.navigate(['/checkout']);
   }
 
@@ -258,6 +272,7 @@ export class App {
 
   public setActiveTab(tab: TabKey): void {
     this.showCheckout.set(false);
+    this.activeLegalPage.set(null);
     this.activeTab.set(tab);
     const routeMap: Record<TabKey, string> = {
       winery: '/winery',
@@ -266,5 +281,12 @@ export class App {
       wines: '/wines'
     };
     this.router.navigate([routeMap[tab]]);
+  }
+
+  public navigateToLegalPage(page: 'terms' | 'privacy' | 'delivery-info'): void {
+    this.showCheckout.set(false);
+    this.selectedWine.set(null);
+    this.activeLegalPage.set(page);
+    this.router.navigate([`/${page}`]);
   }
 }
