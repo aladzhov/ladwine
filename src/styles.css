@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Hide reCAPTCHA v3 badge – branding is included in Terms & Privacy Policy pages per Google's policy */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
+

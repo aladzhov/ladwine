@@ -1,5 +1,5 @@
 <router-outlet style="display:none"></router-outlet>
-<main class="page" [class.site-dimmed]="isAgeConfirmed() === null || showOrderThanks()">
+<main class="page" [class.site-dimmed]="isAgeConfirmed() === null || showOrderThanks() || errorPopupMessage()">
   @if (isAgeConfirmed() === null) {
     <section class="age-modal-backdrop" aria-live="assertive">
       <div class="age-modal" role="dialog" aria-modal="true" aria-labelledby="age-title">
@@ -22,6 +22,19 @@
         <p>Your delivery request has been received and you will receive a confirmation e-mail</p>
         <div class="age-actions">
           <button type="button" class="age-btn age-btn-primary" (click)="closeOrderThanks()">Close</button>
+        </div>
+      </div>
+    </section>
+  }
+
+  @if (errorPopupMessage()) {
+    <section class="age-modal-backdrop" aria-live="assertive">
+      <div class="age-modal" role="dialog" aria-modal="true" aria-labelledby="error-popup-title">
+        <p class="eyebrow">Error</p>
+        <h2 id="error-popup-title">Something went wrong</h2>
+        <p>{{ errorPopupMessage() }}</p>
+        <div class="age-actions">
+          <button type="button" class="age-btn age-btn-primary" (click)="closeErrorPopup()">Close</button>
         </div>
       </div>
     </section>
@@ -57,7 +70,7 @@
       </div>
 
       @if (showCheckout()) {
-        <app-checkout [basket]="basket()" [total]="basketTotal()" (submitOrder)="handleOrderSubmit($event)" (increaseQty)="increaseItemQuantity($event.name, $event.packaging)" (decreaseQty)="decreaseItemQuantity($event.name, $event.packaging)" />
+        <app-checkout [basket]="basket()" [total]="basketTotal()" (submitOrder)="handleOrderSubmit($event)" (increaseQty)="increaseItemQuantity($event.name, $event.packaging)" (decreaseQty)="decreaseItemQuantity($event.name, $event.packaging)" (checkoutError)="errorPopupMessage.set($event)" />
       } @else if (activeLegalPage() === 'terms') {
         <app-terms />
       } @else if (activeLegalPage() === 'privacy') {

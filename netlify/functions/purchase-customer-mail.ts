@@ -86,7 +86,7 @@ const handler: Handler = async function(event) {
         "netlify-emails-secret": process.env.NETLIFY_EMAILS_SECRET || "",
       },
       body: JSON.stringify({
-        from: "orders@ladwine.com",
+        from: "orders@ladwine.eu",
         to: requestBody.purchaseEmail,
         subject: "Expect your order soon!",
         parameters: {

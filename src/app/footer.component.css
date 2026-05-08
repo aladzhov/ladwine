@@ -43,7 +43,7 @@
   justify-content: center;
   gap: 0.8rem;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding: 0;
   border: 0;
   margin: 0;
@@ -56,24 +56,21 @@
   gap: 0;
   color: #fff;
   text-decoration: none;
-  width: 2.25rem;
-  height: 2.25rem;
   padding: 0;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: none;
+  border: none;
   transition: all 0.2s ease;
-  font-size: 0.85rem;
 }
 
 .social-link:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  opacity: 0.8;
 }
 
-.social-icon {
-  font-size: 1.2rem;
+.social-icon-img {
+  width: 3.15rem;
+  height: 3.15rem;
+  object-fit: contain;
 }
 
 .social-name {
@@ -210,6 +207,11 @@
   }
 
   .social-links {
-    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .social-icon-img {
+    width: clamp(2rem, 10vw, 3.15rem);
+    height: clamp(2rem, 10vw, 3.15rem);
   }
 }

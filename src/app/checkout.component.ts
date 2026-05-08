@@ -55,6 +55,7 @@ export class CheckoutComponent {
   public readonly submitOrder = output<CheckoutOrder>();
   public readonly increaseQty = output<QuantityChange>();
   public readonly decreaseQty = output<QuantityChange>();
+  public readonly checkoutError = output<string>();
 
   public readonly econtDelivery = viewChild(EcontDeliveryComponent);
   public readonly speedyDelivery = viewChild(SpeedyDeliveryComponent);
@@ -178,14 +179,14 @@ export class CheckoutComponent {
     if (this.deliveryMethod() === 'econt') {
       deliveryAddress = econtComponent?.getSelectedOfficeAddress() ?? '';
       if (!deliveryAddress) {
-        alert('Please select an Econt office');
+        this.checkoutError.emit('Please select an Econt office');
         this.isSubmitting.set(false);
         return;
       }
     } else if (this.deliveryMethod() === 'speedy') {
       deliveryAddress = speedyComponent?.getSelectedOfficeAddress() ?? '';
       if (!deliveryAddress) {
-        alert('Please select a Speedy office');
+        this.checkoutError.emit('Please select a Speedy office');
         this.isSubmitting.set(false);
         return;
       }
@@ -196,8 +197,7 @@ export class CheckoutComponent {
     try {
       recaptchaToken = await this.executeRecaptcha();
     } catch (error) {
-      console.error('reCAPTCHA v3 execution failed:', error);
-      alert('reCAPTCHA verification could not be completed. Please refresh the page and try again.');
+      this.checkoutError.emit('reCAPTCHA verification could not be completed. Please refresh the page and try again.');
       this.isSubmitting.set(false);
       return;
     }

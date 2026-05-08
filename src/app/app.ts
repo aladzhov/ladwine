@@ -66,6 +66,7 @@ export class App {
   public readonly showOrderThanks = signal(false);
   public readonly lastOrder = signal<CheckoutOrder | null>(null);
   public readonly checkoutPulse = signal(false);
+  public readonly errorPopupMessage = signal<string | null>(null);
 
   public readonly basketTotal = computed(() => {
     return this.basket().reduce((sum, wine) => sum + wine.price, 0);
@@ -211,7 +212,7 @@ export class App {
     if (!order) return;
 
     if (!order.recaptchaToken) {
-      alert('reCAPTCHA verification is required. Please try again.');
+      this.errorPopupMessage.set('reCAPTCHA verification is required. Please try again.');
       return;
     }
 
@@ -222,16 +223,18 @@ export class App {
           if (result.success) {
             this.processOrder(order);
           } else {
-            console.error('reCAPTCHA verification rejected:', result);
-            alert(result.message || 'reCAPTCHA verification failed. Please try again.');
+            this.errorPopupMessage.set(result.message || 'reCAPTCHA verification failed. Please try again.');
           }
         },
         error: (err) => {
           const body = err?.error;
-          console.error('reCAPTCHA verification error:', body || err);
-          alert(body?.message || 'reCAPTCHA verification failed. Please try again.');
+          this.errorPopupMessage.set(body?.message || 'reCAPTCHA verification failed. Please try again.');
         }
       });
+  }
+
+  public closeErrorPopup(): void {
+    this.errorPopupMessage.set(null);
   }
 
   private processOrder(order: CheckoutOrder): void {
@@ -313,5 +316,8 @@ export class App {
     this.selectedWine.set(null);
     this.activeLegalPage.set(page);
     this.router.navigate([`/${page}`]);
+    setTimeout(() => {
+      document.querySelector('.site-content')?.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 }

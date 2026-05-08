@@ -14,7 +14,7 @@
         <h2 class="company-name">Ladwine Family Winery</h2>
         <p class="company-address">Vinogradets village</p>
         <p class="company-phone">+359 12345</p>
-        <p class="company-email">office{{'@'}}ladwine.com</p>
+        <p class="company-email">office{{'@'}}ladwine.eu</p>
       </div>
 
       <!-- Social Links (center) -->
@@ -27,7 +27,7 @@
             [attr.aria-label]="social.name"
             class="social-link"
           >
-            <span class="social-icon">{{ social.icon }}</span>
+            <img [src]="social.icon" [alt]="social.name" class="social-icon-img" />
             <span class="social-name">{{ social.name }}</span>
           </a>
         }
