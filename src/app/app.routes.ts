@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import {InvoiceScanner} from './invoice-scanner/invoice-scanner';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'winery', pathMatch: 'full' },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'terms', data: { tab: 'terms' }, children: [] },
   { path: 'privacy', data: { tab: 'privacy' }, children: [] },
   { path: 'delivery-info', data: { tab: 'delivery-info' }, children: [] },
+  { path: 'invoice-scanner', component: InvoiceScanner },
   { path: '**', redirectTo: 'winery' },
 ];

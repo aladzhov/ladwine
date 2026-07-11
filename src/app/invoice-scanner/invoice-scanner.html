@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=camera" />
+
+<div>
+  <input
+    type="file"
+    accept="image/*"
+    capture="environment"
+    (change)="onFileSelected($event)"
+    #fileInput
+    style="display: none;"
+  >
+
+  @if (isUploading) {
+    <div class="spinner"></div>
+
+    <div class="progress-bar-wrapper">
+      <progress [value]="uploadPercent" max="100"></progress>
+      <span>{{ uploadPercent }}% uploaded ...</span>
+    </div>
+  } @else {
+    <span style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      Scan an invoice
+      <span (click)="fileInput.click()" class="fullscreen-icon material-symbols-outlined">camera</span>
+    </span>
+  }
+</div>

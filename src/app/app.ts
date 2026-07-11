@@ -1,323 +1,48 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, computed, effect, inject, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
-import {BrowseProducedWinesComponent} from './browse-produced-wines.component';
-import {OurFamilyComponent} from './our-family.component';
-import {TheWineryComponent} from './the-winery.component';
-import {VineyardsComponent} from './vineyards.component';
-import {WineDetailsComponent} from './wine-details.component';
-import {CheckoutComponent, type CheckoutOrder} from './checkout.component';
-import {HeaderComponent} from './header.component';
-import {FooterComponent} from './footer.component';
-import {TermsComponent} from './terms.component';
-import {PrivacyPolicyComponent} from './privacy-policy.component';
-import {DeliveryInfoComponent} from './delivery-info.component';
-import {Wine} from './wine.model';
-import {WINES} from './wines.data';
-import {CookieService} from './cookie.service';
-
-type TabKey = 'family' | 'winery' | 'vineyards' | 'wines';
-
-interface Tab {
-  key: TabKey;
-  label: string;
-}
+import {Component, inject, OnInit, signal} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    HeaderComponent,
-    FooterComponent,
-    OurFamilyComponent,
-    TheWineryComponent,
-    VineyardsComponent,
-    BrowseProducedWinesComponent,
-    WineDetailsComponent,
-    CheckoutComponent,
-    TermsComponent,
-    PrivacyPolicyComponent,
-    DeliveryInfoComponent
-  ],
   templateUrl: './app.html',
-  styleUrl: './winery.css'
+  standalone: true,
+  imports: [
+    RouterOutlet
+  ],
+  styleUrl: './app.css'
 })
-export class App {
-  private readonly http = inject(HttpClient);
-  private readonly cookieService = inject(CookieService);
+export class App implements OnInit {
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
 
-  public readonly wines = signal<ReadonlyArray<Wine>>(WINES);
+  private static readonly UNLOCK_CLICK_COUNT = 5;
+  private static readonly UNLOCK_WINDOW_MS = 2000;
 
-  public readonly tabs: ReadonlyArray<Tab> = [
-    { key: 'winery', label: 'Winery' },
-    { key: 'vineyards', label: 'Vineyards' },
-    { key: 'family', label: 'History' },
-    { key: 'wines', label: 'Wines' }
-  ];
+  public readonly isUnderConstruction = signal<boolean>(environment.production);
 
-  public readonly activeTab = signal<TabKey>('winery');
-  public readonly isAgeConfirmed = signal<boolean | null>(null);
-  public readonly selectedWine = signal<Wine | null>(null);
-  public readonly basket = signal<ReadonlyArray<Wine>>([]);
-  public readonly showCheckout = signal(false);
-  public readonly activeLegalPage = signal<'terms' | 'privacy' | 'delivery-info' | null>(null);
-  public readonly showOrderThanks = signal(false);
-  public readonly lastOrder = signal<CheckoutOrder | null>(null);
-  public readonly checkoutPulse = signal(false);
-  public readonly errorPopupMessage = signal<string | null>(null);
+  private clickTimestamps: number[] = [];
 
-  public readonly basketTotal = computed(() => {
-    return this.basket().reduce((sum, wine) => sum + wine.price, 0);
-  });
-
-  constructor() {
-    this.loadBasketFromCookie();
-    this.loadAgeConfirmationFromCookie();
-
-    // Save basket to cookie whenever it changes
-    effect(() => {
-      const basket = this.basket();
-      this.saveBasketToCookie(basket);
-    });
-
-    // Save age confirmation to cookie whenever it changes
-    effect(() => {
-      const confirmed = this.isAgeConfirmed();
-      this.saveAgeConfirmationToCookie(confirmed);
-    });
-
-    // Sync route → signals on navigation
-    this.router.events.subscribe(() => {
-      const snapshot = this.route.firstChild?.snapshot;
-      if (!snapshot) return;
-
-      const tab = snapshot.data['tab'] as string;
-      const slug = snapshot.params['slug'] as string | undefined;
-
-      if (tab === 'checkout') {
-        this.showCheckout.set(true);
-        this.selectedWine.set(null);
-        this.activeLegalPage.set(null);
-      } else if (tab === 'terms' || tab === 'privacy' || tab === 'delivery-info') {
-        this.activeLegalPage.set(tab);
-        this.showCheckout.set(false);
-        this.selectedWine.set(null);
-      } else if (tab) {
-        this.showCheckout.set(false);
-        this.activeLegalPage.set(null);
-        this.activeTab.set(tab as TabKey);
-
-        if (slug) {
-          const wine = this.wines().find(w => w.slug === slug) || null;
-          this.selectedWine.set(wine);
-        } else {
-          this.selectedWine.set(null);
-        }
-      }
-    });
-  }
-
-  private loadBasketFromCookie(): void {
-    const cookieValue = this.cookieService.getCookie('ladwine_basket');
-    if (cookieValue) {
-      try {
-        const parsed = JSON.parse(decodeURIComponent(cookieValue)) as Wine[];
-        this.basket.set(parsed);
-      } catch {
-        // Invalid cookie, ignore
-      }
-    }
-  }
-
-  private saveBasketToCookie(basket: ReadonlyArray<Wine>): void {
-    const cookieValue = JSON.stringify(basket);
-    this.cookieService.setCookie('ladwine_basket', cookieValue, 24);
-  }
-
-  private loadAgeConfirmationFromCookie(): void {
-    const cookieValue = this.cookieService.getCookie('ladwine_age_confirmed');
-    if (cookieValue) {
-      try {
-        const confirmed = JSON.parse(decodeURIComponent(cookieValue)) as boolean;
-        this.isAgeConfirmed.set(confirmed);
-      } catch {
-        // Invalid cookie, ignore
-      }
-    }
-  }
-
-  private saveAgeConfirmationToCookie(confirmed: boolean | null): void {
-    if (confirmed === null) {
-      // Remove cookie if confirmation is reset to null
-      this.cookieService.deleteCookie('ladwine_age_confirmed');
+  ngOnInit() {
+    const hostname = window.location.hostname;
+    this.router.navigate(['/invoice-scanner']);
+    // // Проверяваме дали потребителят е дошъл от поддомейна i.
+    if (hostname.startsWith('i.')) {
+      this.router.navigate(['/invoice-scanner']);
     } else {
-      const cookieValue = JSON.stringify(confirmed);
-      this.cookieService.setCookie('ladwine_age_confirmed', cookieValue, 24);
+      // Ако е на основния сайт
+      this.router.navigate(['']);
     }
   }
 
-  public confirmAdult(): void {
-    this.isAgeConfirmed.set(true);
-  }
+  public registerConstructionClick(): void {
+    const now = Date.now();
+    this.clickTimestamps.push(now);
+    this.clickTimestamps = this.clickTimestamps.filter(
+      (timestamp) => now - timestamp < App.UNLOCK_WINDOW_MS
+    );
 
-  public denyMinor(): void {
-    this.isAgeConfirmed.set(false);
-  }
-
-  public openWineDetails(wine: Wine): void {
-    this.selectedWine.set(wine);
-    this.activeTab.set('wines');
-    this.showCheckout.set(false);
-    this.router.navigate(['/wines', wine.slug]);
-  }
-
-  public closeWineDetails(): void {
-    this.selectedWine.set(null);
-    this.router.navigate(['/wines']);
-  }
-
-  public addToBasket(wine: Wine): void {
-    const bottleWine: Wine = { ...wine, packaging: 'bottle'}
-    this.basket.update((basket) => [...basket, bottleWine]);
-    this.pulseCheckout();
-  }
-
-  public addSixPack(wine: Wine): void {
-    const bottleWine: Wine = { ...wine, packaging: 'bottle'}
-    this.basket.update((basket) => [...basket, bottleWine, bottleWine, bottleWine, bottleWine, bottleWine, bottleWine]);
-    this.pulseCheckout();
-  }
-
-  public addBagInBox(wine: Wine): void {
-    const bagInBoxWine: Wine = { ...wine, packaging: 'bag-in-box' };
-    this.basket.update((basket) => [...basket, bagInBoxWine]);
-    this.pulseCheckout();
-  }
-
-  private pulseCheckout(): void {
-    this.checkoutPulse.set(true);
-    window.setTimeout(() => this.checkoutPulse.set(false), 320);
-  }
-
-  public openCheckout(): void {
-    this.selectedWine.set(null);
-    this.showCheckout.set(true);
-    this.activeLegalPage.set(null);
-    this.router.navigate(['/checkout']);
-  }
-
-  public handleOrderSubmit(order: CheckoutOrder): void {
-    if (!order) return;
-
-    if (!order.recaptchaToken) {
-      this.errorPopupMessage.set('reCAPTCHA verification is required. Please try again.');
-      return;
+    if (this.clickTimestamps.length >= App.UNLOCK_CLICK_COUNT) {
+      this.clickTimestamps = [];
+      this.isUnderConstruction.set(false);
     }
-
-    this.http
-      .post<{ success: boolean; message?: string }>('/.netlify/functions/verify-recaptcha', { token: order.recaptchaToken })
-      .subscribe({
-        next: (result) => {
-          if (result.success) {
-            this.processOrder(order);
-          } else {
-            this.errorPopupMessage.set(result.message || 'reCAPTCHA verification failed. Please try again.');
-          }
-        },
-        error: (err) => {
-          const body = err?.error;
-          this.errorPopupMessage.set(body?.message || 'reCAPTCHA verification failed. Please try again.');
-        }
-      });
-  }
-
-  public closeErrorPopup(): void {
-    this.errorPopupMessage.set(null);
-  }
-
-  private processOrder(order: CheckoutOrder): void {
-    const payload = {
-      purchaseName: order.name,
-      purchaseEmail: order.email,
-      basket: this.basket(),
-      deliveryAddress: order.deliveryAddress
-    };
-
-    this.http
-      .post('/.netlify/functions/purchase-customer-mail', payload)
-      .subscribe({
-        error: () => {
-          // Keep UX flow unchanged even if email delivery fails.
-        }
-      });
-
-    this.http
-      .post('/.netlify/functions/purchase-discord', payload)
-      .subscribe({
-        error: () => {
-          // Keep UX flow unchanged even if Discord delivery fails.
-        }
-      });
-
-    this.http
-      .post('/.netlify/functions/purchase-google', payload)
-      .subscribe({
-        error: () => {
-          // Keep UX flow unchanged even if Google Sheets delivery fails.
-        }
-      });
-
-    this.basket.set([]);
-    this.cookieService.deleteCookie('ladwine_basket');
-    this.lastOrder.set(order);
-    this.showOrderThanks.set(true);
-  }
-
-  public increaseItemQuantity(name: string, packaging: string): void {
-    const wine = this.basket().find(w => w.name === name && (w.packaging || 'bottle') === packaging);
-    if (wine) {
-      this.basket.update(basket => [...basket, wine]);
-    }
-  }
-
-  public decreaseItemQuantity(name: string, packaging: string): void {
-    const index = this.basket().findIndex(w => w.name === name && (w.packaging || 'bottle') === packaging);
-    if (index !== -1) {
-      this.basket.update(basket => basket.filter((_, i) => i !== index));
-    }
-  }
-
-  public closeOrderThanks(): void {
-    this.lastOrder.set(null);
-    this.showOrderThanks.set(false);
-    this.showCheckout.set(false);
-    this.selectedWine.set(null);
-    this.activeTab.set('winery');
-    this.router.navigate(['/winery']);
-  }
-
-  public setActiveTab(tab: TabKey): void {
-    this.showCheckout.set(false);
-    this.activeLegalPage.set(null);
-    this.activeTab.set(tab);
-    const routeMap: Record<TabKey, string> = {
-      winery: '/winery',
-      family: '/history',
-      vineyards: '/vineyards',
-      wines: '/wines'
-    };
-    this.router.navigate([routeMap[tab]]);
-  }
-
-  public navigateToLegalPage(page: 'terms' | 'privacy' | 'delivery-info'): void {
-    this.showCheckout.set(false);
-    this.selectedWine.set(null);
-    this.activeLegalPage.set(page);
-    this.router.navigate([`/${page}`]);
-    setTimeout(() => {
-      document.querySelector('.site-content')?.scrollTo({ top: 0, behavior: 'smooth' });
-    });
   }
 }

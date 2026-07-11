@@ -1,117 +1,12 @@
-<router-outlet style="display:none"></router-outlet>
-<main class="page" [class.site-dimmed]="isAgeConfirmed() === null || showOrderThanks() || errorPopupMessage()">
-  @if (isAgeConfirmed() === null) {
-    <section class="age-modal-backdrop" aria-live="assertive">
-      <div class="age-modal" role="dialog" aria-modal="true" aria-labelledby="age-title">
-        <p class="eyebrow">Age Confirmation</p>
-        <h2 id="age-title">Are you 18 years old or older?</h2>
-        <p>Please confirm your age before entering the winery website.</p>
-        <div class="age-actions">
-          <button type="button" class="age-btn age-btn-primary" (click)="confirmAdult()">Yes, I am 18+</button>
-          <button type="button" class="age-btn" (click)="denyMinor()">No, I am under 18</button>
-        </div>
-      </div>
-    </section>
-  }
-
-  @if (showOrderThanks()) {
-    <section class="age-modal-backdrop" aria-live="assertive">
-      <div class="age-modal" role="dialog" aria-modal="true" aria-labelledby="order-thanks-title">
-        <p class="eyebrow">Order Confirmed</p>
-        <h2 id="order-thanks-title">Thank you for your order!</h2>
-        <p>Your delivery request has been received and you will receive a confirmation e-mail</p>
-        <div class="age-actions">
-          <button type="button" class="age-btn age-btn-primary" (click)="closeOrderThanks()">Close</button>
-        </div>
-      </div>
-    </section>
-  }
-
-  @if (errorPopupMessage()) {
-    <section class="age-modal-backdrop" aria-live="assertive">
-      <div class="age-modal" role="dialog" aria-modal="true" aria-labelledby="error-popup-title">
-        <p class="eyebrow">Error</p>
-        <h2 id="error-popup-title">Something went wrong</h2>
-        <p>{{ errorPopupMessage() }}</p>
-        <div class="age-actions">
-          <button type="button" class="age-btn age-btn-primary" (click)="closeErrorPopup()">Close</button>
-        </div>
-      </div>
-    </section>
-  }
-
-  @if (isAgeConfirmed() !== false) {
-    <app-header
-      [tabs]="tabs"
-      [activeTab]="activeTab()"
-      (tabSelect)="setActiveTab($event)"
-      (headerClick)="setActiveTab('winery')"
+@if (isUnderConstruction()) {
+  <div class="under-construction">
+    <img
+      src="/images/under-construction.png"
+      alt="Site under construction"
+      class="under-construction-image"
+      (click)="registerConstructionClick()"
     />
-
-    <div class="site-content">
-      <div class="tab-row">
-        @if (basket().length > 0) {
-          <button
-            type="button"
-            class="checkout-cta"
-            [class.active]="showCheckout()"
-            [class.pulse]="checkoutPulse()"
-            (click)="openCheckout()"
-            aria-label="Checkout basket"
-          >
-            <svg class="basket-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="9" cy="21" r="1"></circle>
-              <circle cx="20" cy="21" r="1"></circle>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-            </svg>
-            <span class="basket-count">{{ basket().length }}</span>
-          </button>
-        }
-      </div>
-
-      @if (showCheckout()) {
-        <app-checkout [basket]="basket()" [total]="basketTotal()" (submitOrder)="handleOrderSubmit($event)" (increaseQty)="increaseItemQuantity($event.name, $event.packaging)" (decreaseQty)="decreaseItemQuantity($event.name, $event.packaging)" (checkoutError)="errorPopupMessage.set($event)" />
-      } @else if (activeLegalPage() === 'terms') {
-        <app-terms />
-      } @else if (activeLegalPage() === 'privacy') {
-        <app-privacy-policy />
-      } @else if (activeLegalPage() === 'delivery-info') {
-        <app-delivery-info />
-      } @else {
-        @if (activeTab() === 'family') {
-          <app-our-family />
-        }
-
-        @if (activeTab() === 'winery') {
-          <app-the-winery />
-        }
-
-        @if (activeTab() === 'vineyards') {
-          <app-vineyards />
-        }
-
-        @if (activeTab() === 'wines') {
-          @if (selectedWine(); as wine) {
-            <app-wine-details [wine]="wine" (back)="closeWineDetails()" (addToBasket)="addToBasket($event)" (addSixPack)="addSixPack($event)" (addBagInBox)="addBagInBox($event)" />
-          } @else {
-            <app-browse-produced-wines
-              [wines]="wines()"
-              (wineSelected)="openWineDetails($event)"
-            />
-          }
-        }
-      }
-
-      @if (isAgeConfirmed() !== false) {
-        <app-footer (legalNavigate)="navigateToLegalPage($event)" />
-      }
-    </div>
-  } @else {
-    <section class="age-gate" aria-live="polite">
-      <h2>Age Restricted</h2>
-      <p>You must be at least 18 years old to enter this site.</p>
-      <p>Please come back when you meet the legal drinking age in your region.</p>
-    </section>
-  }
-</main>
-
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}
