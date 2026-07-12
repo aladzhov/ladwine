@@ -2,6 +2,13 @@
   publish = "dist/ladwine/browser"
   command = "npm run build"
 
+[dev]
+  command = "ng serve --host 127.0.0.1"
+  targetPort = 4200
+  port = 8888
+  framework = "#custom"
+  autoLaunch = false
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
