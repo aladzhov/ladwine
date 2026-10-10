@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-terms',
   standalone: true,
   templateUrl: './terms.component.html',
-  styleUrl: './terms.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './terms.component.css',
 })
 export class TermsComponent {}
-

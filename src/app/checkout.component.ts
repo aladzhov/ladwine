@@ -1,5 +1,13 @@
-import {CurrencyPipe, NgClass} from '@angular/common';
-import { Component, computed, input, output, signal, viewChild } from '@angular/core';
+import { CurrencyPipe, NgClass } from '@angular/common';
+import {
+  Component,
+  computed,
+  input,
+  output,
+  signal,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import { Wine, PackagingType } from './wine.model';
@@ -41,9 +49,18 @@ interface QuantityChange {
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CurrencyPipe, FormsModule, EcontDeliveryComponent, SpeedyDeliveryComponent, MyPosPaymentComponent, RevolutPaymentComponent, NgClass],
+  imports: [
+    CurrencyPipe,
+    FormsModule,
+    EcontDeliveryComponent,
+    SpeedyDeliveryComponent,
+    MyPosPaymentComponent,
+    RevolutPaymentComponent,
+    NgClass,
+  ],
   templateUrl: './checkout.component.html',
-  styleUrl: './checkout.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './checkout.component.css',
 })
 export class CheckoutComponent {
   public readonly basket = input.required<ReadonlyArray<Wine>>();
@@ -85,7 +102,7 @@ export class CheckoutComponent {
           name: wine.name,
           packaging: packaging,
           quantity: 1,
-          subtotal: wine.price
+          subtotal: wine.price,
         });
       }
     }
@@ -119,10 +136,12 @@ export class CheckoutComponent {
   });
 
   public isDeliveryFormValid(): boolean {
-    return this.name.trim().length > 0
-      && this.email.trim().length > 0
-      && this.phone.trim().length > 0
-      && this.address.trim().length > 0;
+    return (
+      this.name.trim().length > 0 &&
+      this.email.trim().length > 0 &&
+      this.phone.trim().length > 0 &&
+      this.address.trim().length > 0
+    );
   }
 
   public proceedToDelivery(): void {
@@ -197,7 +216,9 @@ export class CheckoutComponent {
     try {
       recaptchaToken = await this.executeRecaptcha();
     } catch (error) {
-      this.checkoutError.emit('reCAPTCHA verification could not be completed. Please refresh the page and try again.');
+      this.checkoutError.emit(
+        'reCAPTCHA verification could not be completed. Please refresh the page and try again.',
+      );
       this.isSubmitting.set(false);
       return;
     }
@@ -209,7 +230,7 @@ export class CheckoutComponent {
       address: this.address,
       deliveryAddress: deliveryAddress || this.address,
       paymentMethod: this.paymentMethod(),
-      recaptchaToken
+      recaptchaToken,
     });
     this.showDeliveryForm.set(false);
     this.isSubmitting.set(false);
@@ -225,7 +246,9 @@ export class CheckoutComponent {
     return new Promise((resolve, reject) => {
       recaptcha.ready(() => {
         recaptcha
-          .execute(CheckoutComponent.RECAPTCHA_SITE_KEY, { action: CheckoutComponent.RECAPTCHA_ACTION })
+          .execute(CheckoutComponent.RECAPTCHA_SITE_KEY, {
+            action: CheckoutComponent.RECAPTCHA_ACTION,
+          })
           .then(resolve)
           .catch(reject);
       });

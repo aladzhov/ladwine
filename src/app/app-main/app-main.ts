@@ -1,20 +1,27 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, computed, effect, inject, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
-import {BrowseProducedWinesComponent} from '../browse-produced-wines.component';
-import {OurFamilyComponent} from '../our-family.component';
-import {TheWineryComponent} from '../the-winery.component';
-import {VineyardsComponent} from '../vineyards.component';
-import {WineDetailsComponent} from '../wine-details.component';
-import {CheckoutComponent, type CheckoutOrder} from '../checkout.component';
-import {HeaderComponent} from '../header.component';
-import {FooterComponent} from '../footer.component';
-import {TermsComponent} from '../terms.component';
-import {PrivacyPolicyComponent} from '../privacy-policy.component';
-import {DeliveryInfoComponent} from '../delivery-info.component';
-import {Wine} from '../wine.model';
-import {WINES} from '../wines.data';
-import {CookieService} from '../cookie.service';
+import { HttpClient } from '@angular/common/http';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { BrowseProducedWinesComponent } from '../browse-produced-wines.component';
+import { OurFamilyComponent } from '../our-family.component';
+import { TheWineryComponent } from '../the-winery.component';
+import { VineyardsComponent } from '../vineyards.component';
+import { WineDetailsComponent } from '../wine-details.component';
+import { CheckoutComponent, type CheckoutOrder } from '../checkout.component';
+import { HeaderComponent } from '../header.component';
+import { FooterComponent } from '../footer.component';
+import { TermsComponent } from '../terms.component';
+import { PrivacyPolicyComponent } from '../privacy-policy.component';
+import { DeliveryInfoComponent } from '../delivery-info.component';
+import { Wine } from '../wine.model';
+import { WINES } from '../wines.data';
+import { CookieService } from '../cookie.service';
 
 type TabKey = 'family' | 'winery' | 'vineyards' | 'wines';
 
@@ -37,11 +44,12 @@ interface Tab {
     CheckoutComponent,
     TermsComponent,
     PrivacyPolicyComponent,
-    DeliveryInfoComponent
+    DeliveryInfoComponent,
   ],
   templateUrl: './app-main.html',
   standalone: true,
-  styleUrl: '../winery.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: '../winery.css',
 })
 export class AppMain {
   private readonly http = inject(HttpClient);
@@ -55,7 +63,7 @@ export class AppMain {
     { key: 'winery', label: 'Winery' },
     { key: 'vineyards', label: 'Vineyards' },
     { key: 'family', label: 'History' },
-    { key: 'wines', label: 'Wines' }
+    { key: 'wines', label: 'Wines' },
   ];
 
   public readonly activeTab = signal<TabKey>('winery');
@@ -111,7 +119,7 @@ export class AppMain {
         this.activeTab.set(tab as TabKey);
 
         if (slug) {
-          const wine = this.wines().find(w => w.slug === slug) || null;
+          const wine = this.wines().find((w) => w.slug === slug) || null;
           this.selectedWine.set(wine);
         } else {
           this.selectedWine.set(null);
@@ -180,14 +188,22 @@ export class AppMain {
   }
 
   public addToBasket(wine: Wine): void {
-    const bottleWine: Wine = { ...wine, packaging: 'bottle'}
+    const bottleWine: Wine = { ...wine, packaging: 'bottle' };
     this.basket.update((basket) => [...basket, bottleWine]);
     this.pulseCheckout();
   }
 
   public addSixPack(wine: Wine): void {
-    const bottleWine: Wine = { ...wine, packaging: 'bottle'}
-    this.basket.update((basket) => [...basket, bottleWine, bottleWine, bottleWine, bottleWine, bottleWine, bottleWine]);
+    const bottleWine: Wine = { ...wine, packaging: 'bottle' };
+    this.basket.update((basket) => [
+      ...basket,
+      bottleWine,
+      bottleWine,
+      bottleWine,
+      bottleWine,
+      bottleWine,
+      bottleWine,
+    ]);
     this.pulseCheckout();
   }
 
@@ -218,19 +234,26 @@ export class AppMain {
     }
 
     this.http
-      .post<{ success: boolean; message?: string }>('/.netlify/functions/verify-recaptcha', { token: order.recaptchaToken })
+      .post<{
+        success: boolean;
+        message?: string;
+      }>('/.netlify/functions/verify-recaptcha', { token: order.recaptchaToken })
       .subscribe({
         next: (result) => {
           if (result.success) {
             this.processOrder(order);
           } else {
-            this.errorPopupMessage.set(result.message || 'reCAPTCHA verification failed. Please try again.');
+            this.errorPopupMessage.set(
+              result.message || 'reCAPTCHA verification failed. Please try again.',
+            );
           }
         },
         error: (err) => {
           const body = err?.error;
-          this.errorPopupMessage.set(body?.message || 'reCAPTCHA verification failed. Please try again.');
-        }
+          this.errorPopupMessage.set(
+            body?.message || 'reCAPTCHA verification failed. Please try again.',
+          );
+        },
       });
   }
 
@@ -243,32 +266,26 @@ export class AppMain {
       purchaseName: order.name,
       purchaseEmail: order.email,
       basket: this.basket(),
-      deliveryAddress: order.deliveryAddress
+      deliveryAddress: order.deliveryAddress,
     };
 
-    this.http
-      .post('/.netlify/functions/purchase-customer-mail', payload)
-      .subscribe({
-        error: () => {
-          // Keep UX flow unchanged even if email delivery fails.
-        }
-      });
+    this.http.post('/.netlify/functions/purchase-customer-mail', payload).subscribe({
+      error: () => {
+        // Keep UX flow unchanged even if email delivery fails.
+      },
+    });
 
-    this.http
-      .post('/.netlify/functions/purchase-discord', payload)
-      .subscribe({
-        error: () => {
-          // Keep UX flow unchanged even if Discord delivery fails.
-        }
-      });
+    this.http.post('/.netlify/functions/purchase-discord', payload).subscribe({
+      error: () => {
+        // Keep UX flow unchanged even if Discord delivery fails.
+      },
+    });
 
-    this.http
-      .post('/.netlify/functions/purchase-google', payload)
-      .subscribe({
-        error: () => {
-          // Keep UX flow unchanged even if Google Sheets delivery fails.
-        }
-      });
+    this.http.post('/.netlify/functions/purchase-google', payload).subscribe({
+      error: () => {
+        // Keep UX flow unchanged even if Google Sheets delivery fails.
+      },
+    });
 
     this.basket.set([]);
     this.cookieService.deleteCookie('ladwine_basket');
@@ -277,16 +294,20 @@ export class AppMain {
   }
 
   public increaseItemQuantity(name: string, packaging: string): void {
-    const wine = this.basket().find(w => w.name === name && (w.packaging || 'bottle') === packaging);
+    const wine = this.basket().find(
+      (w) => w.name === name && (w.packaging || 'bottle') === packaging,
+    );
     if (wine) {
-      this.basket.update(basket => [...basket, wine]);
+      this.basket.update((basket) => [...basket, wine]);
     }
   }
 
   public decreaseItemQuantity(name: string, packaging: string): void {
-    const index = this.basket().findIndex(w => w.name === name && (w.packaging || 'bottle') === packaging);
+    const index = this.basket().findIndex(
+      (w) => w.name === name && (w.packaging || 'bottle') === packaging,
+    );
     if (index !== -1) {
-      this.basket.update(basket => basket.filter((_, i) => i !== index));
+      this.basket.update((basket) => basket.filter((_, i) => i !== index));
     }
   }
 
@@ -307,7 +328,7 @@ export class AppMain {
       winery: '/winery',
       family: '/history',
       vineyards: '/vineyards',
-      wines: '/wines'
+      wines: '/wines',
     };
     this.router.navigate([routeMap[tab]]);
   }

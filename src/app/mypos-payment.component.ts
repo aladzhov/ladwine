@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
@@ -20,7 +20,8 @@ export interface MyPosSessionResponse {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './mypos-payment.component.html',
-  styleUrl: './mypos-payment.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './mypos-payment.component.css',
 })
 export class MyPosPaymentComponent {
   private readonly http = inject(HttpClient);
@@ -50,22 +51,19 @@ export class MyPosPaymentComponent {
       customerName: this.customerName(),
     };
 
-    this.http
-      .post<MyPosSessionResponse>('/.netlify/functions/mypos-checkout', payload)
-      .subscribe({
-        next: (response) => {
-          this.isProcessing.set(false);
-          this.paymentInitiated.emit();
-          // Redirect user to MyPOS hosted checkout page
-          window.location.href = response.paymentUrl;
-        },
-        error: (err) => {
-          this.isProcessing.set(false);
-          const message = err?.error?.message || 'Payment initialization failed. Please try again.';
-          this.error.set(message);
-          this.paymentError.emit(message);
-        }
-      });
+    this.http.post<MyPosSessionResponse>('/.netlify/functions/mypos-checkout', payload).subscribe({
+      next: (response) => {
+        this.isProcessing.set(false);
+        this.paymentInitiated.emit();
+        // Redirect user to MyPOS hosted checkout page
+        window.location.href = response.paymentUrl;
+      },
+      error: (err) => {
+        this.isProcessing.set(false);
+        const message = err?.error?.message || 'Payment initialization failed. Please try again.';
+        this.error.set(message);
+        this.paymentError.emit(message);
+      },
+    });
   }
 }
-

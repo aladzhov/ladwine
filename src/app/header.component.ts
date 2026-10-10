@@ -1,4 +1,13 @@
-import { Component, computed, HostListener, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  HostListener,
+  inject,
+  input,
+  output,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { TranslationService, Language } from './translation.service';
 
 export type HeaderTabKey = 'family' | 'winery' | 'vineyards' | 'wines';
@@ -11,7 +20,8 @@ export interface HeaderTab {
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   private readonly translationService = inject(TranslationService);
@@ -30,7 +40,7 @@ export class HeaderComponent {
     { code: 'bg', label: 'БГ' },
     { code: 'en', label: 'EN' },
     { code: 'es', label: 'ES' },
-    { code: 'de', label: 'DE' }
+    { code: 'de', label: 'DE' },
   ];
 
   public readonly selectedLanguage = computed(() => this.translationService.currentLanguage());
@@ -80,7 +90,7 @@ export class HeaderComponent {
   }
 
   public getLanguageLabel(code: Language): string {
-    return this.languages.find(lang => lang.code === code)?.label || 'EN';
+    return this.languages.find((lang) => lang.code === code)?.label || 'EN';
   }
 
   @HostListener('document:click')

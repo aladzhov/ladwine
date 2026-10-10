@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 
 import { Wine } from './wine.model';
 
@@ -6,7 +6,8 @@ import { Wine } from './wine.model';
   selector: 'app-wine-details',
   standalone: true,
   templateUrl: './wine-details.component.html',
-  styleUrl: './wine-details.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './wine-details.component.css',
 })
 export class WineDetailsComponent {
   public readonly wine = input.required<Wine>();

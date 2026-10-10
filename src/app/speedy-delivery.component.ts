@@ -1,4 +1,14 @@
-import { Component, inject, OnInit, OnDestroy, output, signal, ElementRef, viewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  OnDestroy,
+  output,
+  signal,
+  ElementRef,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -31,7 +41,8 @@ interface SpeedyApiResponse {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './speedy-delivery.component.html',
-  styleUrl: './speedy-delivery.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './speedy-delivery.component.css',
 })
 export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
   private readonly http = inject(HttpClient);
@@ -57,14 +68,22 @@ export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
     shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
   });
 
   private selectedIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-    iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    iconUrl:
+      'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    iconRetinaUrl:
+      'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
     shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
   });
 
   ngOnInit(): void {
@@ -85,8 +104,9 @@ export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
     this.map = L.map(container.nativeElement, { zoomControl: true }).setView([42.7, 25.5], 7);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
     }).addTo(this.map);
 
     this.markersLayer.addTo(this.map);
@@ -103,7 +123,7 @@ export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
       const isSelected = this.selectedOfficeId() === office.id;
       const marker = L.marker([office.latitude, office.longitude], {
         icon: isSelected ? this.selectedIcon : this.defaultIcon,
-        title: office.name
+        title: office.name,
       });
 
       marker.bindPopup(`<strong>${office.name}</strong><br>${office.fullAddress}`);
@@ -132,27 +152,25 @@ export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
     this.isLoading.set(true);
     this.error.set(null);
 
-    this.http
-      .get<SpeedyApiResponse>('/.netlify/functions/speedy-offices')
-      .subscribe({
-        next: (response) => {
-          const mapped = (response.offices || []).map(o => this.mapSpeedyToOffice(o));
-          const sorted = sortOffices(mapped);
-          this.offices.set(sorted);
-          this.filteredOffices.set(sorted);
-          this.isLoading.set(false);
-          setTimeout(() => {
-            this.initMap();
-            this.updateMarkers();
-            this.requestUserLocation();
-          }, 0);
-        },
-        error: (err) => {
-          console.error('Error loading Speedy offices:', err);
-          this.error.set('Failed to load Speedy offices. Please try again.');
-          this.isLoading.set(false);
-        }
-      });
+    this.http.get<SpeedyApiResponse>('/.netlify/functions/speedy-offices').subscribe({
+      next: (response) => {
+        const mapped = (response.offices || []).map((o) => this.mapSpeedyToOffice(o));
+        const sorted = sortOffices(mapped);
+        this.offices.set(sorted);
+        this.filteredOffices.set(sorted);
+        this.isLoading.set(false);
+        setTimeout(() => {
+          this.initMap();
+          this.updateMarkers();
+          this.requestUserLocation();
+        }, 0);
+      },
+      error: (err) => {
+        console.error('Error loading Speedy offices:', err);
+        this.error.set('Failed to load Speedy offices. Please try again.');
+        this.isLoading.set(false);
+      },
+    });
   }
 
   public selectOffice(officeId: number): void {
@@ -207,7 +225,7 @@ export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
         this.zoomToLocationAndSelectClosest(position.coords.latitude, position.coords.longitude);
       },
       () => this.locationStatus.set('denied'),
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
     );
   }
 
@@ -226,11 +244,10 @@ export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
     this.updateMarkers();
   }
 
-
   public getSelectedOffice(): Office | null {
     const officeId = this.selectedOfficeId();
     if (officeId === null) return null;
-    return this.offices().find(office => office.id === officeId) || null;
+    return this.offices().find((office) => office.id === officeId) || null;
   }
 
   public getSelectedOfficeAddress(): string {
@@ -239,4 +256,3 @@ export class SpeedyDeliveryComponent implements OnInit, OnDestroy {
     return `Speedy Office: ${office.name}, ${office.fullAddress}`;
   }
 }
-

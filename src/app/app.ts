@@ -1,21 +1,20 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
-import {environment} from '../environments/environment';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   standalone: true,
-  imports: [
-    RouterOutlet
-  ],
-  styleUrl: './app.css'
+  imports: [RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './app.css',
 })
 export class App implements OnInit {
   private readonly router = inject(Router);
 
   private static readonly UNLOCK_CLICK_COUNT = 5;
-  private static readonly UNLOCK_WINDOW_MS = 2000;
+  private static readonly UNLOCK_WINDOW_MS = 1000;
 
   public readonly isUnderConstruction = signal<boolean>(environment.production);
 
@@ -37,7 +36,7 @@ export class App implements OnInit {
     const now = Date.now();
     this.clickTimestamps.push(now);
     this.clickTimestamps = this.clickTimestamps.filter(
-      (timestamp) => now - timestamp < App.UNLOCK_WINDOW_MS
+      (timestamp) => now - timestamp < App.UNLOCK_WINDOW_MS,
     );
 
     if (this.clickTimestamps.length >= App.UNLOCK_CLICK_COUNT) {

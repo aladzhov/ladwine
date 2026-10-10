@@ -10,12 +10,12 @@
     style="display: none;"
   >
 
-  @if (isUploading) {
+  @if (isUploading()) {
     <div class="spinner"></div>
 
     <div class="progress-bar-wrapper">
-      <progress [value]="uploadPercent" max="100"></progress>
-      <span>{{ uploadPercent }}% uploaded ...</span>
+      <progress [value]="uploadPercent()" max="100"></progress>
+      <span>{{ uploadPercent() }}% uploaded ...</span>
     </div>
   } @else {
     <span style="display: flex; flex-direction: column; align-items: center; justify-content: center;">

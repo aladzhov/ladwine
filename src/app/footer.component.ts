@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './footer.component.css',
 })
 export class FooterComponent {
   public email = '';
@@ -14,11 +15,19 @@ export class FooterComponent {
   public readonly legalNavigate = output<'terms' | 'privacy' | 'delivery-info'>();
 
   public readonly socialLinks = [
-    { name: 'Facebook', url: 'https://www.facebook.com/groups/1302380510154263', icon: '/images/social/facebook.png' },
+    {
+      name: 'Facebook',
+      url: 'https://www.facebook.com/profile.php?id=61594973502143',
+      icon: '/images/social/facebook.png',
+    },
     { name: 'Instagram', url: 'https://instagram.com', icon: '/images/social/instagram.png' },
-    { name: 'Youtube', url: 'https://www.youtube.com/@ladwinery', icon: '/images/social/youtube.png' },
+    {
+      name: 'Youtube',
+      url: 'https://www.youtube.com/@ladwinery',
+      icon: '/images/social/youtube.png',
+    },
     { name: 'TikTok', url: 'https://tiktok.com', icon: '/images/social/tiktok.png' },
-    { name: 'Discord', url: 'https://discord.gg/5R43pmZ5', icon: '/images/social/discord.png' }
+    { name: 'Discord', url: 'https://discord.gg/5R43pmZ5', icon: '/images/social/discord.png' },
   ];
 
   public subscribe(): void {
@@ -36,4 +45,3 @@ export class FooterComponent {
     this.legalNavigate.emit(page);
   }
 }
-

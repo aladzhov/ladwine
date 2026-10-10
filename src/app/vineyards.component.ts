@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-vineyards',
   standalone: true,
   templateUrl: './vineyards.component.html',
-  styleUrl: './vineyards.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './vineyards.component.css',
 })
 export class VineyardsComponent {}
-

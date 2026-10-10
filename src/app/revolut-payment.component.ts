@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
@@ -12,7 +12,8 @@ export interface RevolutSessionResponse {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './revolut-payment.component.html',
-  styleUrl: './revolut-payment.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './revolut-payment.component.css',
 })
 export class RevolutPaymentComponent {
   private readonly http = inject(HttpClient);
@@ -55,8 +56,7 @@ export class RevolutPaymentComponent {
           const message = err?.error?.message || 'Payment initialization failed. Please try again.';
           this.error.set(message);
           this.paymentError.emit(message);
-        }
+        },
       });
   }
 }
-
