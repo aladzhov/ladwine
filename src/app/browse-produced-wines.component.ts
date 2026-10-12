@@ -12,4 +12,7 @@ import { Wine } from './wine.model';
 export class BrowseProducedWinesComponent {
   public readonly wines = input.required<ReadonlyArray<Wine>>();
   public readonly wineSelected = output<Wine>();
+  public readonly addToBasket = output<Wine>();
+  public readonly addSixPack = output<Wine>();
+  public readonly addBagInBox = output<Wine>();
 }

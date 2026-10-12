@@ -184,13 +184,32 @@ p {
   font-size: 0.9rem;
   line-height: 1.45;
   margin: 0.25rem 0 0;
+  white-space: pre-line;
 }
 
-.wine-pairing {
-  color: #6d5b49;
-  font-size: 0.85rem;
-  line-height: 1.35;
-  margin: 0.5rem 0 0;
+.wine-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.action-btn {
+  background: #fff;
+  border: 1px solid #cfbaa5;
+  border-radius: 999px;
+  color: #5c3724;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+}
+
+.action-btn-primary {
+  background: #74290f;
+  border-color: #74290f;
+  color: #fff;
 }
 
 .empty {

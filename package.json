@@ -4,7 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prestart": "npm run generate:backgrounds",
     "build": "ng build",
+    "prebuild": "npm run generate:backgrounds",
+    "prewatch": "npm run generate:backgrounds",
+    "generate:backgrounds": "node scripts/generate-background-manifest.mjs",
     "netlify:build": "netlify build",
     "netlify:dev": "netlify dev",
     "watch": "ng build --watch --configuration development",

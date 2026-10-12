@@ -22,6 +22,7 @@ import { DeliveryInfoComponent } from '../delivery-info.component';
 import { Wine } from '../wine.model';
 import { WINES } from '../wines.data';
 import { CookieService } from '../cookie.service';
+import { SiteBackgroundService } from '../site-background.service';
 
 type TabKey = 'family' | 'winery' | 'vineyards' | 'wines';
 
@@ -56,8 +57,16 @@ export class AppMain {
   private readonly cookieService = inject(CookieService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly siteBackground = inject(SiteBackgroundService);
 
   public readonly wines = signal<ReadonlyArray<Wine>>(WINES);
+
+  public readonly backgroundLayers = this.siteBackground.layers;
+  public readonly backgroundFront = this.siteBackground.front;
+
+  public backgroundImage(url: string): string {
+    return `linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('${url}')`;
+  }
 
   public readonly tabs: ReadonlyArray<Tab> = [
     { key: 'winery', label: 'Winery' },
@@ -84,6 +93,7 @@ export class AppMain {
   constructor() {
     this.loadBasketFromCookie();
     this.loadAgeConfirmationFromCookie();
+    this.siteBackground.start();
 
     // Save basket to cookie whenever it changes
     effect(() => {

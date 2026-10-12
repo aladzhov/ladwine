@@ -20,14 +20,23 @@ export class FooterComponent {
       url: 'https://www.facebook.com/profile.php?id=61594973502143',
       icon: '/images/social/facebook.png',
     },
-    { name: 'Instagram', url: 'https://instagram.com', icon: '/images/social/instagram.png' },
+    { name: 'Instagram',
+      url: 'https://www.instagram.com/ladzhovswinery',
+      icon: '/images/social/instagram.png'
+    },
     {
       name: 'Youtube',
       url: 'https://www.youtube.com/@ladwinery',
       icon: '/images/social/youtube.png',
     },
-    { name: 'TikTok', url: 'https://tiktok.com', icon: '/images/social/tiktok.png' },
-    { name: 'Discord', url: 'https://discord.gg/5R43pmZ5', icon: '/images/social/discord.png' },
+    { name: 'TikTok',
+      url: 'https://tiktok.com',
+      icon: '/images/social/tiktok.png'
+    },
+    { name: 'Discord',
+      url: 'https://discord.gg/5R43pmZ5',
+      icon: '/images/social/discord.png'
+    },
   ];
 
   public subscribe(): void {

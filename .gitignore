@@ -45,3 +45,6 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify
+
+# Generated at build time by scripts/generate-background-manifest.mjs
+/public/ladwine/images/site-background/manifest.json

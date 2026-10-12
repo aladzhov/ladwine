@@ -2,54 +2,40 @@ import { Wine } from './wine.model';
 
 export const WINES: ReadonlyArray<Wine> = [
   {
-    name: 'Old Oak Cabernet',
-    slug: 'old-oak-cabernet',
+    name: 'Купаж Дядо Наско',
+    slug: 'diado-nasko',
     type: 'Red',
-    year: 2022,
-    notes: 'Dark cherry, cedar, and gentle spice with soft tannins.',
-    pairWith: 'Roasted lamb',
-    price: 24.9,
+    year: 2027,
+    notes: 'Червено сухо вино, Купаж на 70% мерло с 15% каберне совиньон и 15% сира. Грозде изцяло от нашето лозе в село Виноградец.\nТова е виното, от което получихме толкова много добри отзиви, че решихме да създадем винарна!',
+    price: 10,
     imageSrc: '/images/wines/old-oak-cabernet.png'
   },
   {
-    name: 'Sunny Hill Chardonnay',
-    slug: 'sunny-hill-chardonnay',
+    name: 'Сухата чешма',
+    slug: 'suhata-cheshma-2027',
+    type: 'Red',
+    year: 2027,
+    notes: 'Червено сухо вино. Купаж на 80% мерло с 20% мавруд. Грозде изцяло от нашето лозе в местност Сухата чешма до село Виноградец.\nКогато купихме лозето, не знаехме, че част от него е засадено с Мавруд. Гроздето ферментира по отделно, но в последствие решихме да направим купаж, който да представи лозето!',
+    price: 10,
+    imageSrc: '/images/wines/old-oak-cabernet.png'
+  },
+  {
+    name: 'Мускат Отонел',
+    slug: 'muskat-2027',
     type: 'White',
-    year: 2024,
-    notes: 'Crisp citrus, pear, and a light touch of vanilla.',
-    pairWith: 'Sea bass or creamy pasta',
-    price: 19.5,
+    year: 2027,
+    notes: 'Бяло сухо вино. Грозде изцяло от нашето лозе в местност Долна Слатина до село Лесичово.\nИзненадващо ароматно и вкусно вино от лозето ни с най-хубава гледка!',
+    price: 10,
     imageSrc: '/images/wines/sunny-hill-chardonnay.png'
   },
   {
-    name: 'Garden Rose',
-    slug: 'garden-rose',
-    type: 'Rose',
-    year: 2025,
-    notes: 'Fresh strawberry and watermelon with floral finish.',
-    pairWith: 'Summer salads',
-    price: 17.9,
-    imageSrc: '/images/wines/garden-rose.png'
-  },
-  {
-    name: 'Morning Mist Brut',
-    slug: 'morning-mist-brut',
-    type: 'Sparkling',
-    year: 2023,
-    notes: 'Fine bubbles with green apple and toasted brioche.',
-    pairWith: 'Celebration appetizers',
-    price: 28.4,
-    imageSrc: '/images/wines/morning-mist-brut.png'
-  },
-  {
-    name: 'Estate Merlot',
-    slug: 'estate-merlot',
-    type: 'Red',
-    year: 2021,
-    notes: 'Plum and cocoa aromas with velvety texture.',
-    pairWith: 'Mushroom risotto',
-    price: 22.3,
-    imageSrc: '/images/wines/estate-merlot.png'
+    name: 'Памид Х',
+    slug: 'pamid-x-2027',
+    type: 'Experiment',
+    year: 2027,
+    notes: 'Сепаж на 70% памид с ркацители.\nБурна и тиха ферментация в контакт с ципите. Опит да свържем два типични за региона сорта търсейки баланс на вкус и структура.',
+    price: 8,
+    imageSrc: '/images/wines/sunny-hill-chardonnay.png'
   }
 ];
 
