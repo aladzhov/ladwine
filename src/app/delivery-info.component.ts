@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { PRIMARY_EMAIL, PRIMARY_PHONE } from './contact-info';
 
 @Component({
   selector: 'app-delivery-info',
@@ -7,4 +8,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './delivery-info.component.css',
 })
-export class DeliveryInfoComponent {}
+export class DeliveryInfoComponent {
+  protected readonly email = PRIMARY_EMAIL.address;
+  protected readonly phone = PRIMARY_PHONE.number;
+}

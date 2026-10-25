@@ -11,10 +11,14 @@
     <div class="footer-main">
       <!-- Company Info -->
       <div class="company-info">
-        <h2 class="company-name">Ladwine Family Winery</h2>
-        <p class="company-address">Vinogradets village</p>
-        <p class="company-phone">+359 12345</p>
-        <p class="company-email">office{{'@'}}ladwine.eu</p>
+        <h2 class="company-name">{{ companyName }}</h2>
+        <p class="company-address">{{ companyAddress }}</p>
+        @for (phone of phones; track phone.number) {
+          <p class="company-phone">{{ phone.number }}</p>
+        }
+        @for (email of emails; track email.address) {
+          <p class="company-email">{{ email.address }}</p>
+        }
       </div>
 
       <!-- Social Links (center) -->

@@ -1,4 +1,5 @@
 import type { Handler } from "@netlify/functions";
+import { emailById } from "../../src/app/contact-info";
 
 type BasketItem = {
   name: string;
@@ -86,7 +87,7 @@ const handler: Handler = async function(event) {
         "netlify-emails-secret": process.env.NETLIFY_EMAILS_SECRET || "",
       },
       body: JSON.stringify({
-        from: "orders@ladwine.eu",
+        from: emailById("orders").address,
         to: requestBody.purchaseEmail,
         subject: "Expect your order soon!",
         parameters: {

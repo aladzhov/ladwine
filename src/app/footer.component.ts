@@ -1,5 +1,6 @@
 import { Component, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { COMPANY_ADDRESS, COMPANY_NAME, EMAILS, PHONES, SOCIAL_LINKS } from './contact-info';
 
 @Component({
   selector: 'app-footer',
@@ -14,30 +15,11 @@ export class FooterComponent {
   public readonly subscriptionMessage = signal<string | null>(null);
   public readonly legalNavigate = output<'terms' | 'privacy' | 'delivery-info'>();
 
-  public readonly socialLinks = [
-    {
-      name: 'Facebook',
-      url: 'https://www.facebook.com/profile.php?id=61594973502143',
-      icon: '/images/social/facebook.png',
-    },
-    { name: 'Instagram',
-      url: 'https://www.instagram.com/ladzhovswinery',
-      icon: '/images/social/instagram.png'
-    },
-    {
-      name: 'Youtube',
-      url: 'https://www.youtube.com/@ladwinery',
-      icon: '/images/social/youtube.png',
-    },
-    { name: 'TikTok',
-      url: 'https://tiktok.com',
-      icon: '/images/social/tiktok.png'
-    },
-    { name: 'Discord',
-      url: 'https://discord.gg/5R43pmZ5',
-      icon: '/images/social/discord.png'
-    },
-  ];
+  public readonly companyName = COMPANY_NAME.en;
+  public readonly companyAddress = COMPANY_ADDRESS.en;
+  public readonly phones = PHONES;
+  public readonly emails = EMAILS.filter((email) => email.id === 'office');
+  public readonly socialLinks = SOCIAL_LINKS;
 
   public subscribe(): void {
     if (this.email) {
