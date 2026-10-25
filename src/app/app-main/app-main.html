@@ -1,13 +1,16 @@
 <router-outlet style="display:none"></router-outlet>
 <main class="page" [class.site-dimmed]="isAgeConfirmed() === null || showOrderThanks() || errorPopupMessage()">
-  @for (layer of backgroundLayers; track $index) {
-    <div
-      class="page-background"
-      [style.background-image]="backgroundImage(layer.image())"
-      [style.opacity]="layer.opacity()"
-      [style.z-index]="$index === backgroundFront() ? -1 : -2"
-    ></div>
-  }
+  <div class="page-backdrop" aria-hidden="true">
+    @for (layer of backgroundLayers; track $index) {
+      <div
+        class="page-background"
+        [style.background-image]="backgroundImage(layer.image())"
+        [style.opacity]="layer.opacity()"
+        [style.z-index]="$index === backgroundFront() ? 2 : 1"
+      ></div>
+    }
+    <div class="page-overlay"></div>
+  </div>
   @if (isAgeConfirmed() === null) {
     <section class="age-modal-backdrop" aria-live="assertive">
       <div class="age-modal" role="dialog" aria-modal="true" aria-labelledby="age-title">

@@ -16,18 +16,32 @@
   overflow: hidden;
 }
 
-.page-background {
+.page-backdrop {
   position: absolute;
   inset: 0;
   z-index: -1;
+  isolation: isolate;
   background-color: #000;
-  background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
-    url('/images/site-background.jpg');
+  pointer-events: none;
+}
+
+.page-background {
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  background-image: url('/images/site-background.jpg');
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   transition: opacity 1.2s ease-in-out;
+}
+
+.page-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
   pointer-events: none;
 }
 
@@ -66,7 +80,7 @@ app-footer {
 
 .panel {
   background: rgba(255, 255, 255, 0.98);
-  border: 1px solid #eddccb;
+  border: 1px solid var(--color-peach);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
   flex: 1;
@@ -90,7 +104,7 @@ app-footer {
 
 .tabs button {
   background: #fff;
-  border: 1px solid #cfbaa5;
+  border: 1px solid var(--color-peach);
   border-radius: 999px;
   color: #5c3724;
   cursor: pointer;
@@ -100,8 +114,8 @@ app-footer {
 }
 
 .tabs button.active {
-  background: #74290f;
-  border-color: #74290f;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #fff;
 }
 
@@ -111,8 +125,8 @@ app-footer {
 }
 
 .tabs button:disabled {
-  background: #f3ece4;
-  border-color: #d8c5b3;
+  background: var(--color-cream);
+  border-color: var(--color-peach);
   color: #a18c7a;
   cursor: not-allowed;
 }
@@ -138,7 +152,7 @@ app-footer {
 
 .checkout-cta {
   background: #fff;
-  border: 1px solid #cfbaa5;
+  border: 1px solid var(--color-peach);
   border-radius: 999px;
   color: #5c3724;
   cursor: pointer;
@@ -159,7 +173,7 @@ app-footer {
 }
 
 .basket-count {
-  background: #74290f;
+  background: var(--color-primary);
   border-radius: 50%;
   color: #fff;
   font-size: 0.75rem;
@@ -173,14 +187,14 @@ app-footer {
 }
 
 .checkout-cta.active {
-  background: #74290f;
-  border-color: #74290f;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #fff;
 }
 
 .checkout-cta.active .basket-count {
   background: #fff;
-  color: #74290f;
+  color: var(--color-primary);
 }
 
 .checkout-cta.pulse {
@@ -206,7 +220,7 @@ app-footer {
 
 .age-gate {
   background: #fff;
-  border: 1px solid #eddccb;
+  border: 1px solid var(--color-peach);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
   margin-top: 1rem;
@@ -215,7 +229,7 @@ app-footer {
 }
 
 .age-gate h2 {
-  color: #74290f;
+  color: var(--color-primary);
   margin: 0 0 0.75rem;
 }
 
@@ -236,8 +250,8 @@ app-footer {
 }
 
 .age-modal {
-  background: #fff8f1;
-  border: 1px solid #e7c8ab;
+  background: var(--color-cream);
+  border: 1px solid var(--color-peach);
   border-radius: 12px;
   box-shadow: 0 12px 30px rgb(64 30 9 / 22%);
   max-width: 520px;
@@ -246,7 +260,7 @@ app-footer {
 }
 
 .age-modal h2 {
-  color: #74290f;
+  color: var(--color-primary);
   margin: 0;
 }
 
@@ -265,7 +279,7 @@ app-footer {
 
 .age-btn {
   background: #fff;
-  border: 1px solid #cfbaa5;
+  border: 1px solid var(--color-peach);
   border-radius: 999px;
   color: #5c3724;
   cursor: pointer;
@@ -275,8 +289,8 @@ app-footer {
 }
 
 .age-btn-primary {
-  background: #74290f;
-  border-color: #74290f;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #fff;
 }
 

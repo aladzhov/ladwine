@@ -4,7 +4,7 @@
 
 .panel {
   background: rgb(255 255 255 / 80%);
-  border: 1px solid #eddccb;
+  border: 1px solid var(--color-peach);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
   margin-top: 1rem;
@@ -22,7 +22,7 @@
 }
 
 h2 {
-  color: #74290f;
+  color: var(--color-primary);
   margin: 0;
 }
 
@@ -44,7 +44,7 @@ h2 {
 
 .checkout-item {
   align-items: center;
-  border: 1px solid #ecd7c0;
+  border: 1px solid var(--color-peach);
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -68,8 +68,8 @@ h2 {
 }
 
 .qty-btn {
-  background: #eddccb;
-  border: 1px solid #cfbaa5;
+  background: var(--color-peach);
+  border: 1px solid var(--color-peach);
   border-radius: 6px;
   color: #5c3724;
   cursor: pointer;
@@ -80,12 +80,12 @@ h2 {
 }
 
 .qty-btn:hover {
-  background: #dfcab5;
+  background: var(--color-peach);
   border-color: #b5a495;
 }
 
 .qty-btn:active {
-  background: #d1b8a3;
+  background: var(--color-peach);
 }
 
 .qty-display {
@@ -103,7 +103,7 @@ h2 {
 }
 
 .checkout-summary {
-  border-top: 1px solid #ecd7c0;
+  border-top: 1px solid var(--color-peach);
   margin-top: 1rem;
   padding-top: 1rem;
 }
@@ -118,7 +118,7 @@ h2 {
 }
 
 .summary-total {
-  border-top: 2px solid #cfbaa5;
+  border-top: 2px solid var(--color-peach);
   color: #5c3724;
   font-size: 1.1rem;
   font-weight: 700;
@@ -129,8 +129,8 @@ h2 {
 .proceed-btn,
 .back-btn,
 .submit-btn {
-  background: #74290f;
-  border: 1px solid #74290f;
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
   border-radius: 999px;
   color: #fff;
   cursor: pointer;
@@ -157,7 +157,7 @@ h2 {
 }
 
 .proceed-btn:disabled {
-  background: #cfbaa5;
+  background: var(--color-peach);
   border-color: #b5a495;
   color: #8b7a6f;
   cursor: not-allowed;
@@ -167,7 +167,7 @@ h2 {
 .back-btn {
   background: #fff;
   color: #5c3724;
-  border-color: #cfbaa5;
+  border-color: var(--color-peach);
 }
 
 .submit-btn {
@@ -175,7 +175,7 @@ h2 {
 }
 
 .submit-btn--disabled {
-  background: #cfbaa5;
+  background: var(--color-peach);
   border-color: #b5a495;
   color: #8b7a6f;
   cursor: not-allowed;
@@ -193,7 +193,7 @@ h2 {
 }
 
 .delivery-method-section h3 {
-  color: #74290f;
+  color: var(--color-primary);
   margin: 0 0 0.75rem;
 }
 
@@ -206,7 +206,7 @@ h2 {
 .delivery-method-option {
   align-items: center;
   background: rgb(255 255 255 / 70%);
-  border: 1px solid #cfbaa5;
+  border: 1px solid var(--color-peach);
   border-radius: 10px;
   cursor: pointer;
   display: flex;
@@ -216,12 +216,12 @@ h2 {
 }
 
 .delivery-method-option:hover {
-  background: #f7eee6;
+  background: var(--color-cream);
   border-color: #b9876f;
 }
 
 .delivery-method-option input[type='radio'] {
-  accent-color: #74290f;
+  accent-color: var(--color-primary);
   cursor: pointer;
 }
 
@@ -242,7 +242,7 @@ h2 {
 }
 
 .delivery-form input {
-  border: 1px solid #cfbaa5;
+  border: 1px solid var(--color-peach);
   border-radius: 8px;
   font: inherit;
   padding: 0.5rem 0.65rem;

@@ -1,5 +1,5 @@
 .revolut-payment {
-  border: 1px solid #eddccb;
+  border: 1px solid var(--color-peach);
   border-radius: 12px;
   padding: 1.25rem;
   margin-top: 0.75rem;
@@ -34,10 +34,10 @@
 }
 
 .payment-error {
-  background: #fdf0ed;
-  border: 1px solid #e8a99a;
+  background: var(--color-cream);
+  border: 1px solid var(--color-peach);
   border-radius: 8px;
-  color: #a0342a;
+  color: var(--color-primary);
   font-size: 0.9rem;
   margin-bottom: 1rem;
   padding: 0.6rem 0.85rem;

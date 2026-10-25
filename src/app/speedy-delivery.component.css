@@ -4,7 +4,7 @@
 
 .speedy-selection {
   padding: 20px;
-  background-color: #f5f9f5;
+  background-color: var(--color-cream);
   border-radius: 8px;
 }
 
@@ -57,8 +57,8 @@
 }
 
 .office-option.office-selected {
-  background-color: #e8f5e9;
-  border-left: 3px solid #4caf50;
+  background-color: var(--color-secondary);
+  border-left: 3px solid var(--color-secondary-dark);
 }
 
 @media (max-width: 768px) {
@@ -87,7 +87,7 @@
   display: block;
   margin: 10px auto;
   padding: 8px 16px;
-  background-color: #0e7a0e;
+  background-color: var(--color-secondary-deep);
   color: white;
   border: none;
   border-radius: 4px;
@@ -96,7 +96,7 @@
 }
 
 .retry-btn:hover {
-  background-color: #065a06;
+  background-color: var(--color-secondary-deep);
 }
 
 .office-search {
@@ -111,7 +111,7 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #0e4e0e;
+  color: var(--color-secondary-deep);
 }
 
 .office-search input {
@@ -124,7 +124,7 @@
 
 .office-search input:focus {
   outline: none;
-  border-color: #0e7a0e;
+  border-color: var(--color-secondary-deep);
 }
 
 .office-list {
@@ -177,7 +177,7 @@
 
 .office-name {
   font-weight: 600;
-  color: #0e4e0e;
+  color: var(--color-secondary-deep);
   font-size: 14px;
 }
 
@@ -195,15 +195,15 @@
 .selected-office-info {
   margin-top: 20px;
   padding: 15px;
-  background-color: #e8f5e9;
-  border-left: 4px solid #4caf50;
+  background-color: var(--color-secondary);
+  border-left: 4px solid var(--color-secondary-dark);
   border-radius: 4px;
 }
 
 .selected-office-info strong {
   display: block;
   margin-bottom: 8px;
-  color: #2e7d32;
+  color: var(--color-secondary-deep);
 }
 
 .selected-office-info p {

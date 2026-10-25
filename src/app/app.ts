@@ -16,11 +16,16 @@ export class App implements OnInit {
   private static readonly UNLOCK_CLICK_COUNT = 5;
   private static readonly UNLOCK_WINDOW_MS = 1000;
 
-  public readonly isUnderConstruction = signal<boolean>(environment.production);
+  private readonly isPublicPage = /^\/(contacts|qr)(\/|$)/.test(window.location.pathname);
+
+  public readonly isUnderConstruction = signal<boolean>(environment.production && !this.isPublicPage);
 
   private clickTimestamps: number[] = [];
 
   ngOnInit() {
+    if (this.isPublicPage) {
+      return;
+    }
     const hostname = window.location.hostname;
     this.router.navigate(['/invoice-scanner']);
     // // Проверяваме дали потребителят е дошъл от поддомейна i.

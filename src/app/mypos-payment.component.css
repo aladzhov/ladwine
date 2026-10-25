@@ -1,5 +1,5 @@
 .mypos-payment {
-  border: 1px solid #eddccb;
+  border: 1px solid var(--color-peach);
   border-radius: 12px;
   padding: 1.25rem;
   margin-top: 0.75rem;
@@ -27,22 +27,22 @@
 }
 
 .payment-description strong {
-  color: #74290f;
+  color: var(--color-primary);
 }
 
 .payment-error {
-  background: #fdf0ed;
-  border: 1px solid #e8a99a;
+  background: var(--color-cream);
+  border: 1px solid var(--color-peach);
   border-radius: 8px;
-  color: #a0342a;
+  color: var(--color-primary);
   font-size: 0.9rem;
   margin-bottom: 1rem;
   padding: 0.6rem 0.85rem;
 }
 
 .pay-now-btn {
-  background: #74290f;
-  border: 1px solid #74290f;
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
   border-radius: 999px;
   color: #fff;
   cursor: pointer;
@@ -56,11 +56,11 @@
 }
 
 .pay-now-btn:hover:not(:disabled) {
-  background: #5e200b;
+  background: var(--color-primary-dark);
 }
 
 .pay-now-btn:disabled {
-  background: #cfbaa5;
+  background: var(--color-peach);
   border-color: #b5a495;
   color: #8b7a6f;
   cursor: not-allowed;

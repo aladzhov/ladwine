@@ -8,7 +8,7 @@
 
 .back-link {
   background: transparent;
-  border: 1px solid #cfbaa5;
+  border: 1px solid var(--color-peach);
   border-radius: 999px;
   color: #5c3724;
   cursor: pointer;
@@ -19,7 +19,7 @@
 
 .wine-focus-card {
   background: #fff;
-  border: 1px solid #eddccb;
+  border: 1px solid var(--color-peach);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
   padding: 1.5rem;
@@ -28,7 +28,7 @@
 }
 
 .wine-focus-card h2 {
-  color: #74290f;
+  color: var(--color-primary);
   margin: 0;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .wine-focus-grid h3 {
-  color: #74290f;
+  color: var(--color-primary);
   margin: 0;
 }
 
@@ -87,7 +87,7 @@
 
 .action-btn {
   background: #fff;
-  border: 1px solid #cfbaa5;
+  border: 1px solid var(--color-peach);
   border-radius: 999px;
   color: #5c3724;
   cursor: pointer;
@@ -97,13 +97,13 @@
 }
 
 .action-btn-primary {
-  background: #74290f;
-  border-color: #74290f;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #fff;
 }
 
 .wine-image {
-  border: 1px solid #eddccb;
+  border: 1px solid var(--color-peach);
   border-radius: 10px;
   display: block;
   height: 260px;

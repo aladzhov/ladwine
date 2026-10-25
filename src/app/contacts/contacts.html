@@ -1,0 +1,42 @@
+<main class="contacts">
+  <article class="card">
+    <header class="card-header">
+      <a [href]="website" target="_blank" rel="noopener noreferrer" class="logo-link">
+        <img ngSrc="/ladwine.png" width="156" height="86" alt="Ladwine – visit ladwine.eu" priority class="logo" />
+      </a>
+      <h1 class="name">{{ name }}</h1>
+    </header>
+
+    <button type="button" class="save-btn" (click)="saveContact()">
+      <span class="material-icons" aria-hidden="true">person_add</span>
+      Save contact
+    </button>
+
+    <ul class="actions">
+      @for (action of actions; track action.label) {
+        <li>
+          <a
+            class="action"
+            [href]="action.href"
+            [attr.target]="action.external ? '_blank' : null"
+            [attr.rel]="action.external ? 'noopener noreferrer' : null"
+          >
+            <span class="material-icons action-icon" aria-hidden="true">{{ action.icon }}</span>
+            <span class="action-text">
+              <span class="action-label">{{ action.label }}</span>
+              <span class="action-value">{{ action.value }}</span>
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+
+    <nav class="social" aria-label="Social media">
+      @for (social of socialLinks; track social.name) {
+        <a [href]="social.url" target="_blank" rel="noopener noreferrer" class="social-link" [attr.aria-label]="social.name">
+          <img [ngSrc]="social.icon" width="48" height="48" alt="" />
+        </a>
+      }
+    </nav>
+  </article>
+</main>

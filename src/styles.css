@@ -1,5 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  /* Brand palette */
+  --color-primary: #8a0d26; /* Bordeaux */
+  --color-primary-dark: #6e0a1e; /* derived: hover/active */
+  --color-secondary: #b5d5b9; /* Sage green */
+  --color-secondary-dark: #4f8a5b; /* derived: accents/borders */
+  --color-secondary-deep: #2e6238; /* derived: text / solid buttons */
+  --color-cream: #fff4ec; /* Warm cream */
+  --color-peach: #f4c3a7; /* Peach */
+}
+
 /* Hide reCAPTCHA v3 badge – branding is included in Terms & Privacy Policy pages per Google's policy */
 .grecaptcha-badge {
   visibility: hidden !important;

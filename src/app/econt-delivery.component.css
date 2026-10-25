@@ -57,8 +57,8 @@
 }
 
 .office-option.office-selected {
-  background-color: #e8f5e9;
-  border-left: 3px solid #4caf50;
+  background-color: var(--color-secondary);
+  border-left: 3px solid var(--color-secondary-dark);
 }
 
 @media (max-width: 768px) {
@@ -190,15 +190,15 @@
 .selected-office-info {
   margin-top: 20px;
   padding: 15px;
-  background-color: #e8f5e9;
-  border-left: 4px solid #4caf50;
+  background-color: var(--color-secondary);
+  border-left: 4px solid var(--color-secondary-dark);
   border-radius: 4px;
 }
 
 .selected-office-info strong {
   display: block;
   margin-bottom: 8px;
-  color: #2e7d32;
+  color: var(--color-secondary-deep);
 }
 
 .selected-office-info p {

@@ -65,7 +65,7 @@ export class AppMain {
   public readonly backgroundFront = this.siteBackground.front;
 
   public backgroundImage(url: string): string {
-    return `linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('${url}')`;
+    return `url('${url}')`;
   }
 
   public readonly tabs: ReadonlyArray<Tab> = [

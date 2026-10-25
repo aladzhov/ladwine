@@ -4,6 +4,8 @@ import { AppMain } from './app-main/app-main';
 
 export const routes: Routes = [
   { path: 'invoice-scanner', component: InvoiceScanner },
+  { path: 'contacts', loadComponent: () => import('./contacts/contacts').then((m) => m.Contacts) },
+  { path: 'qr', loadComponent: () => import('./qr/qr').then((m) => m.Qr) },
   {
     path: '',
     component: AppMain,

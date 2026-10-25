@@ -9,7 +9,7 @@
 }
 
 .legal-panel h2 {
-  color: #74290f;
+  color: var(--color-primary);
   margin-bottom: 0.25rem;
 }
 
@@ -22,7 +22,7 @@
 .legal-panel h3 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-  color: #5d1e04;
+  color: var(--color-primary-dark);
 }
 
 .legal-panel p {
@@ -40,11 +40,11 @@
 }
 
 .legal-panel a {
-  color: #74290f;
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
 .legal-panel a:hover {
-  color: #5d1e04;
+  color: var(--color-primary-dark);
 }
 
