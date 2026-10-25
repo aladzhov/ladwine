@@ -16,11 +16,11 @@ interface ContactAction {
   styleUrl: './contacts.css',
 })
 export class Contacts {
-  protected readonly name = 'Ladwine Family Winery';
+  protected readonly name = 'Семейна винарна Ладжови';
   protected readonly phone = '+359 12345';
   protected readonly email = 'office@ladwine.eu';
   protected readonly website = 'https://www.ladwine.eu';
-  protected readonly address = 'Vinogradets village, Bulgaria';
+  protected readonly address = 'Виноградец, България';
 
   protected readonly actions: ContactAction[] = [
     { label: 'Website', value: 'www.ladwine.eu', href: this.website, icon: 'language', external: true },

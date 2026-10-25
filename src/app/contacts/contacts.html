@@ -34,7 +34,7 @@
     <nav class="social" aria-label="Social media">
       @for (social of socialLinks; track social.name) {
         <a [href]="social.url" target="_blank" rel="noopener noreferrer" class="social-link" [attr.aria-label]="social.name">
-          <img [ngSrc]="social.icon" width="48" height="48" alt="" />
+          <img [ngSrc]="social.icon" width="32" height="32" alt="" />
         </a>
       }
     </nav>

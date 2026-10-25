@@ -125,25 +125,24 @@
 
 .social {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .social-link {
   display: grid;
   place-items: center;
-  width: 72px;
-  height: 72px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #fff;
   border: 1px solid var(--color-peach);
 }
 
 .social-link img {
-  width: 42px;
-  height: 42px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
