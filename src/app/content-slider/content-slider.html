@@ -1,0 +1,62 @@
+<div
+  class="slider"
+  role="region"
+  aria-roledescription="carousel"
+  [attr.aria-label]="label()"
+  (touchstart)="onTouchStart($event)"
+  (touchend)="onTouchEnd($event)"
+>
+  @if (hasMany()) {
+    <button type="button" class="arrow arrow-prev" aria-label="Previous" (click)="prev()">
+      <span class="material-icons" aria-hidden="true">chevron_left</span>
+    </button>
+  }
+
+  <div class="viewport" aria-live="polite">
+    <div class="track" [style.transform]="'translateX(' + -index() * 100 + '%)'">
+      @for (slide of slides(); track $index) {
+        <div
+          class="slide"
+          [class.reverse]="slide.reverse"
+          role="group"
+          aria-roledescription="slide"
+          [attr.aria-label]="$index + 1 + ' / ' + slides().length"
+          [attr.aria-hidden]="$index !== index() ? 'true' : null"
+          [inert]="$index !== index()"
+        >
+          <figure class="slide-figure">
+            <img [src]="slide.image" [alt]="slide.alt" class="slide-image" />
+          </figure>
+          @if (slide.text) {
+            <div class="slide-text">
+              @for (paragraph of paragraphs(slide.text); track $index) {
+                <p>{{ paragraph }}</p>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (hasMany()) {
+    <button type="button" class="arrow arrow-next" aria-label="Next" (click)="next()">
+      <span class="material-icons" aria-hidden="true">chevron_right</span>
+    </button>
+  }
+</div>
+
+@if (hasMany()) {
+  <div class="dots">
+    @for (slide of slides(); track $index) {
+      <button
+        type="button"
+        class="dot"
+        [class.active]="$index === index()"
+        [attr.aria-label]="'Go to slide ' + ($index + 1)"
+        [attr.aria-current]="$index === index() ? 'true' : null"
+        (click)="goTo($index)"
+      ></button>
+    }
+  </div>
+}

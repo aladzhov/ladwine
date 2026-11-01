@@ -1,6 +1,23 @@
 {
-  "familyName": "Ladwine Familienweingut",
+  "familyName": "Ladzhovs Familienweingut",
   "familyOwnedSince": "In Familienbesitz Seit 1988",
-  "familyIntro": "Drei Generationen pflegen unsere Reben, keltern Weine in kleinen Chargen und heißen Gäste in unserem Zuhause im Tal willkommen."
+  "familyIntro": "Drei Generationen pflegen unsere Reben, keltern Weine in kleinen Chargen und heißen Gäste in unserem Zuhause im Tal willkommen.",
+  "homeWelcome": "Willkommen!",
+  "menuHome": "Startseite",
+  "menuWinery": "Weingut",
+  "menuVineyards": "Weinberge",
+  "menuHistory": "Geschichte",
+  "menuWines": "Weine",
+  "wineryText1": "Mit den Jahren wurde unser Wunsch, unseren Wein mit mehr Menschen zu teilen, immer stärker.\n\nSo trafen wir 2022 eine mutige Entscheidung – aus unserer Lieblingsbeschäftigung etwas mehr zu machen und ein eigenes Familienweingut zu gründen.\n\nWir wussten, dass der Weg nicht kurz sein würde. Wir beschlossen, unser Weingut aus eigener Kraft und mit eigenen Mitteln aufzubauen – Schritt für Schritt, mit viel Arbeit, Geduld und Ausdauer.\n\nWir begannen mit der Suche nach einem geeigneten Grundstück für das künftige Weingut und dessen Kauf. Es folgten die Planung, die Vorbereitung des Baus und unzählige kleine und große Entscheidungen.\n\nParallel dazu erweiterten wir stetig unser Wissen und Können in der Weinherstellung. Unsere Neugier und unser Wunsch, dazuzulernen, führten uns auch an die Universität, wo Bilyana einen Master in „Weintechnologie“ abschloss. Damit machten wir einen weiteren wichtigen Schritt in Richtung unseres Traums – einen diplomierten Önologen in der Familie zu haben und bei der Herstellung unserer Weine Tradition und praktische Erfahrung mit Fachwissen zu verbinden.\n\nDas Weingut Ladzhovi ist unser Weg, die Familientradition fortzuführen und ihr unsere eigenen Ideen, unser Wissen und unsere Träume hinzuzufügen.\n\nWir bauen es in der Überzeugung auf, dass guter Wein Zeit, Aufmerksamkeit und persönliche Hingabe verdient – genau wie das Weingut selbst.\n\nWir möchten, dass unsere Weine nicht nur unsere Familie und Freunde erreichen, sondern jeden, der Wein schätzt, der mit Hingabe und Respekt vor der Tradition entstanden ist.\n\nWein, in dem ein Stück unserer Geschichte, Respekt vor unseren Wurzeln und der Glaube an die Zukunft stecken.",
+  "vineyardText1": "Unsere Weinberge liegen im Dorf Vinogradets in der Region Pazardzhik – einer Gegend mit langer Tradition im Wein- und Rebbau.\n\nIn unserem Familienweinberg bauen wir Merlot, Cabernet Sauvignon und Syrah an – die drei Rebsorten, aus denen wir die charakteristische Cuvée unseres jungen Rotweins keltern.\n\n2025 sind wir einen weiteren Schritt gegangen und haben einen zweiten kleinen Weinberg mit den Sorten Merlot und Mavrud gekauft.\n\nWir experimentieren gern, entdecken neue Kombinationen und fordern unser eigenes Können heraus. Gleichzeitig bewahren wir unseren Respekt vor den traditionellen Methoden der Weinherstellung, die sich über die Jahre bewährt haben.\n\nFür uns ist jede Lese eine neue Gelegenheit, etwas zu lernen, etwas anderes auszuprobieren und einen Wein zu schaffen, den wir mit Freude auf unseren eigenen Tisch stellen würden.",
+  "historyText1": "Wir sind Bilyana und Atanas Ladzhovi.\n\nIn unserer Familie wird seit mehr als 30 Jahren Rotwein gemacht. Den Grundstein für diese Tradition legte Großvater Nasko, der uns die Liebe zum Weinberg weitergab und uns lehrte, ihn mit Geduld und Ausdauer zu pflegen.\n\n2016 haben wir Seite an Seite mit unseren Eltern die Pflege des Familienweinbergs fortgesetzt und die Tradition bewahrt, unseren eigenen Rotwein zu machen.\n\nMit der Zeit wurden Weinbau und Weinherstellung ganz unmerklich zu unserer Lieblingsbeschäftigung. Jedes Jahr bringt neue Herausforderungen, neue Lektionen und neue Anlässe, besser zu werden.\n\nBis heute gibt es kein größeres Vergnügen, als einen Schluck Wein zu trinken, der aus selbst angebauten Trauben entstanden ist. Und wenn wir die Früchte unserer Arbeit mit Familie und Freunden teilen, verhehlen wir nicht, dass wir auch ein gutes Stück Stolz empfinden!",
+  "companyAddress": "Dorf Vinogradets",
+  "footerSocialLinks": "Soziale Netzwerke",
+  "footerNewsletterText": "Abonnieren Sie unseren Newsletter für die neuesten Weine und Sonderangebote.",
+  "footerEmailPlaceholder": "Ihre E-Mail-Adresse",
+  "footerSubscribe": "Abonnieren",
+  "footerSubscribed": "Vielen Dank für Ihr Abonnement!",
+  "footerTerms": "AGB",
+  "footerPrivacy": "Datenschutzerklärung",
+  "footerDelivery": "Lieferinformationen"
 }
-

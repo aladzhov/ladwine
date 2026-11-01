@@ -1,26 +1,3 @@
 <section class="panel" role="tabpanel" aria-labelledby="family-tab">
-  <div class="alternating-content">
-    <div class="alternating-row">
-      <div class="alternating-text">
-        <p>
-          Ladwine started as a weekend vineyard project by Elena and Marco Ladwine. Today, the family works side by side:
-          grandparents in the cellar, parents in the vineyard, and the next generation hosting tastings.
-        </p>
-      </div>
-      <figure class="alternating-figure">
-        <img src="/images/history/the-old-house.jpg" alt="The old house at Ladwine Family Winery" class="alternating-image" />
-        <figcaption>Where it all started</figcaption>
-      </figure>
-    </div>
-
-    <div class="alternating-row reverse">
-      <figure class="alternating-figure">
-        <img src="/images/history/2-key.jpg" alt="The family keys symbolizing heritage" class="alternating-image" />
-        <figcaption>Keys to our legacy</figcaption>
-      </figure>
-      <div class="alternating-text">
-      </div>
-    </div>
-  </div>
+  <app-content-slider [slides]="slides()" label="History" />
 </section>
-

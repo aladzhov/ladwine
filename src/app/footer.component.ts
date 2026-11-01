@@ -1,6 +1,8 @@
-import { Component, output, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { COMPANY_ADDRESS, COMPANY_NAME, EMAILS, PHONES, SOCIAL_LINKS } from './contact-info';
+import { environment } from '../environments/environment';
+import { EMAILS, PHONES, SOCIAL_LINKS } from './contact-info';
+import { TranslationService, Translations } from './translation.service';
 
 @Component({
   selector: 'app-footer',
@@ -11,25 +13,30 @@ import { COMPANY_ADDRESS, COMPANY_NAME, EMAILS, PHONES, SOCIAL_LINKS } from './c
   styleUrl: './footer.component.css',
 })
 export class FooterComponent {
+  private readonly i18n = inject(TranslationService);
+
+  public readonly showLegalLinks = !environment.production;
   public email = '';
   public readonly subscriptionMessage = signal<string | null>(null);
   public readonly legalNavigate = output<'terms' | 'privacy' | 'delivery-info'>();
 
-  public readonly companyName = COMPANY_NAME.en;
-  public readonly companyAddress = COMPANY_ADDRESS.en;
   public readonly phones = PHONES;
   public readonly emails = EMAILS.filter((email) => email.id === 'office');
   public readonly socialLinks = SOCIAL_LINKS;
 
   public subscribe(): void {
     if (this.email) {
-      this.subscriptionMessage.set('Thank you for subscribing!');
+      this.subscriptionMessage.set(this.t('footerSubscribed'));
       this.email = '';
 
       setTimeout(() => {
         this.subscriptionMessage.set(null);
       }, 3000);
     }
+  }
+
+  public t(key: keyof Translations): string {
+    return this.i18n.translate(key);
   }
 
   public goToLegal(page: 'terms' | 'privacy' | 'delivery-info'): void {

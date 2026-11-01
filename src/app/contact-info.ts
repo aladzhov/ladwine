@@ -21,7 +21,7 @@ export interface SocialLink {
 
 export const COMPANY_NAME = {
   bg: 'Винарна Ладжови',
-  en: 'Ladwine Family Winery',
+  en: 'Ladzhovs Family Winery',
 };
 
 export const COMPANY_ADDRESS = {

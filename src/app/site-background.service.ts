@@ -8,6 +8,7 @@ type BackgroundManifest = Record<string, string[]>;
 interface BackgroundLayer {
   image: Signal<string>;
   opacity: Signal<number>;
+  zoom: Signal<boolean>;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -32,12 +33,21 @@ export class SiteBackgroundService {
     signal(SiteBackgroundService.FALLBACK_IMAGE),
   ];
   private readonly layerOpacity = [signal(1), signal(0)];
+  private readonly layerZoom = [signal(false), signal(false)];
   private readonly frontLayer = signal(0);
 
   /** The two background layers, consumed by the template. */
   public readonly layers: ReadonlyArray<BackgroundLayer> = [
-    { image: this.layerImage[0].asReadonly(), opacity: this.layerOpacity[0].asReadonly() },
-    { image: this.layerImage[1].asReadonly(), opacity: this.layerOpacity[1].asReadonly() },
+    {
+      image: this.layerImage[0].asReadonly(),
+      opacity: this.layerOpacity[0].asReadonly(),
+      zoom: this.layerZoom[0].asReadonly(),
+    },
+    {
+      image: this.layerImage[1].asReadonly(),
+      opacity: this.layerOpacity[1].asReadonly(),
+      zoom: this.layerZoom[1].asReadonly(),
+    },
   ];
 
   /** Index of the layer currently rendered on top. */
@@ -45,6 +55,7 @@ export class SiteBackgroundService {
 
   private timer: ReturnType<typeof setInterval> | undefined;
   private fadeTimer: ReturnType<typeof setTimeout> | undefined;
+  private zoomTimer: ReturnType<typeof setTimeout> | undefined;
   private started = false;
 
   /** Loads the current month's images and begins rotating through them. */
@@ -57,6 +68,7 @@ export class SiteBackgroundService {
     const month = String(new Date().getMonth() + 1).padStart(2, '0');
 
     this.destroyRef.onDestroy(() => this.stopRotation());
+    this.restartZoom(this.frontLayer());
 
     this.http
       .get<BackgroundManifest>(SiteBackgroundService.MANIFEST_URL)
@@ -68,6 +80,7 @@ export class SiteBackgroundService {
           if (this.images.length > 0) {
             this.index = 0;
             this.layerImage[this.frontLayer()].set(this.images[0]);
+            this.restartZoom(this.frontLayer());
             this.preload(this.images);
             this.startRotation();
           }
@@ -98,11 +111,29 @@ export class SiteBackgroundService {
     this.layerImage[incoming].set(nextImage);
     this.frontLayer.set(incoming);
     this.layerOpacity[incoming].set(1);
+    this.restartZoom(incoming);
 
     this.fadeTimer = setTimeout(() => {
       // Hidden behind the now-opaque incoming layer: reset for the next cycle.
       this.layerOpacity[outgoing].set(0);
+      this.layerZoom[outgoing].set(false);
     }, SiteBackgroundService.FADE_MS);
+  }
+
+  /**
+   * Resets a layer to its unzoomed size, then re-enables the zoom on the next
+   * tick so the CSS transform transition (10% over 10s) runs from the start.
+   * The transition ends at the zoomed size, so a single image simply stops.
+   */
+  private restartZoom(layer: number): void {
+    if (this.zoomTimer !== undefined) {
+      clearTimeout(this.zoomTimer);
+    }
+    this.layerZoom[layer].set(false);
+    this.zoomTimer = setTimeout(() => {
+      this.zoomTimer = undefined;
+      this.layerZoom[layer].set(true);
+    }, 50);
   }
 
   private stopRotation(): void {
@@ -113,6 +144,10 @@ export class SiteBackgroundService {
     if (this.fadeTimer !== undefined) {
       clearTimeout(this.fadeTimer);
       this.fadeTimer = undefined;
+    }
+    if (this.zoomTimer !== undefined) {
+      clearTimeout(this.zoomTimer);
+      this.zoomTimer = undefined;
     }
   }
 

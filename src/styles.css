@@ -9,6 +9,12 @@
   --color-secondary-deep: #2e6238; /* derived: text / solid buttons */
   --color-cream: #fff4ec; /* Warm cream */
   --color-peach: #f4c3a7; /* Peach */
+
+  /* Tab content panels (Winery, Vineyards, History) */
+  --content-bg-color: #000000;
+  --content-bg-opacity: 30%; /* 100% = opaque, 0% = fully transparent */
+  --content-text-color: var(--color-cream);
+  --content-font-size: 1.1rem;
 }
 
 /* Hide reCAPTCHA v3 badge – branding is included in Terms & Privacy Policy pages per Google's policy */

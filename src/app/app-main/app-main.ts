@@ -8,9 +8,11 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { environment } from '../../environments/environment';
 import { BrowseProducedWinesComponent } from '../browse-produced-wines.component';
 import { OurFamilyComponent } from '../our-family.component';
 import { TheWineryComponent } from '../the-winery.component';
+import { Home } from '../home/home';
 import { VineyardsComponent } from '../vineyards.component';
 import { WineDetailsComponent } from '../wine-details.component';
 import { CheckoutComponent, type CheckoutOrder } from '../checkout.component';
@@ -24,7 +26,7 @@ import { WINES } from '../wines.data';
 import { CookieService } from '../cookie.service';
 import { SiteBackgroundService } from '../site-background.service';
 
-type TabKey = 'family' | 'winery' | 'vineyards' | 'wines';
+type TabKey = 'home' | 'family' | 'winery' | 'vineyards' | 'wines';
 
 interface Tab {
   key: TabKey;
@@ -38,6 +40,7 @@ interface Tab {
     HeaderComponent,
     FooterComponent,
     OurFamilyComponent,
+    Home,
     TheWineryComponent,
     VineyardsComponent,
     BrowseProducedWinesComponent,
@@ -69,13 +72,14 @@ export class AppMain {
   }
 
   public readonly tabs: ReadonlyArray<Tab> = [
+    { key: 'home', label: 'Home' },
     { key: 'winery', label: 'Winery' },
     { key: 'vineyards', label: 'Vineyards' },
     { key: 'family', label: 'History' },
-    { key: 'wines', label: 'Wines' },
+    ...(environment.production ? [] : [{ key: 'wines' as const, label: 'Wines' }]),
   ];
 
-  public readonly activeTab = signal<TabKey>('winery');
+  public readonly activeTab = signal<TabKey>('home');
   public readonly isAgeConfirmed = signal<boolean | null>(null);
   public readonly selectedWine = signal<Wine | null>(null);
   public readonly basket = signal<ReadonlyArray<Wine>>([]);
@@ -326,8 +330,8 @@ export class AppMain {
     this.showOrderThanks.set(false);
     this.showCheckout.set(false);
     this.selectedWine.set(null);
-    this.activeTab.set('winery');
-    this.router.navigate(['/winery']);
+    this.activeTab.set('home');
+    this.router.navigate(['/home']);
   }
 
   public setActiveTab(tab: TabKey): void {
@@ -335,6 +339,7 @@ export class AppMain {
     this.activeLegalPage.set(null);
     this.activeTab.set(tab);
     const routeMap: Record<TabKey, string> = {
+      home: '/home',
       winery: '/winery',
       family: '/history',
       vineyards: '/vineyards',

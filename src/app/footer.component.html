@@ -1,28 +1,24 @@
 <footer class="footer">
   <div class="footer-content">
-    <div class="footer-legal">
-      <a href="javascript:void(0)" (click)="goToLegal('terms')">Terms &amp; Conditions</a>
-      <span class="legal-separator">|</span>
-      <a href="javascript:void(0)" (click)="goToLegal('privacy')">Privacy Policy</a>
-      <span class="legal-separator">|</span>
-      <a href="javascript:void(0)" (click)="goToLegal('delivery-info')">Delivery Information</a>
-    </div>
-
     <div class="footer-main">
       <!-- Company Info -->
       <div class="company-info">
-        <h2 class="company-name">{{ companyName }}</h2>
-        <p class="company-address">{{ companyAddress }}</p>
-        @for (phone of phones; track phone.number) {
-          <p class="company-phone">{{ phone.number }}</p>
-        }
-        @for (email of emails; track email.address) {
-          <p class="company-email">{{ email.address }}</p>
-        }
+        <div class="company-details">
+          <div class="company-col">
+            <p class="company-address">{{ t('companyAddress') }}</p>
+            @for (email of emails; track email.address) {
+              <p class="company-email">{{ email.address }}</p>
+            }
+          </div>
+          <div class="company-col">
+            @for (phone of phones; track phone.number) {
+              <p class="company-phone">{{ phone.number }}</p>
+            }
+          </div>
+        </div>
       </div>
 
-      <!-- Social Links (center) -->
-      <div class="social-links" aria-label="Social links">
+      <div class="social-links" [attr.aria-label]="t('footerSocialLinks')">
         @for (social of socialLinks; track social.name) {
           <a
             [href]="social.url"
@@ -37,25 +33,31 @@
         }
       </div>
 
-      <!-- Newsletter Subscription -->
       <div class="newsletter">
-        <h3>Stay in touch</h3>
-        <p>Subscribe to our newsletter for the latest wines and special offers.</p>
+        <p>{{ t('footerNewsletterText') }}</p>
         <form class="newsletter-form" (ngSubmit)="subscribe()">
           <input
             type="email"
             name="email"
             [(ngModel)]="email"
-            placeholder="Enter your email"
+            [placeholder]="t('footerEmailPlaceholder')"
             required
             class="newsletter-input"
           />
-          <button type="submit" class="newsletter-btn">Subscribe</button>
+          <button type="submit" class="newsletter-btn">{{ t('footerSubscribe') }}</button>
         </form>
-        @if (subscriptionMessage()) {
-          <p class="subscription-message">{{ subscriptionMessage() }}</p>
-        }
+        <p class="subscription-message" aria-live="polite">{{ subscriptionMessage() }}</p>
       </div>
     </div>
+
+    @if (showLegalLinks) {
+    <div class="footer-legal">
+      <a href="javascript:void(0)" (click)="goToLegal('terms')">{{ t('footerTerms') }}</a>
+      <span class="legal-separator">|</span>
+      <a href="javascript:void(0)" (click)="goToLegal('privacy')">{{ t('footerPrivacy') }}</a>
+      <span class="legal-separator">|</span>
+      <a href="javascript:void(0)" (click)="goToLegal('delivery-info')">{{ t('footerDelivery') }}</a>
+    </div>
+    }
   </div>
 </footer>

@@ -6,6 +6,7 @@
         class="page-background"
         [style.background-image]="backgroundImage(layer.image())"
         [style.opacity]="layer.opacity()"
+        [class.zoom]="layer.zoom()"
         [style.z-index]="$index === backgroundFront() ? 2 : 1"
       ></div>
     }
@@ -52,11 +53,12 @@
   }
 
   @if (isAgeConfirmed() !== false) {
+    <div class="page-main">
     <app-header
       [tabs]="tabs"
       [activeTab]="activeTab()"
       (tabSelect)="setActiveTab($event)"
-      (headerClick)="setActiveTab('winery')"
+      (headerClick)="setActiveTab('home')"
     />
 
     <div class="site-content">
@@ -89,6 +91,10 @@
       } @else if (activeLegalPage() === 'delivery-info') {
         <app-delivery-info />
       } @else {
+        @if (activeTab() === 'home') {
+          <app-home />
+        }
+
         @if (activeTab() === 'family') {
           <app-our-family />
         }
@@ -115,11 +121,10 @@
           }
         }
       }
-
-      @if (isAgeConfirmed() !== false) {
-        <app-footer (legalNavigate)="navigateToLegalPage($event)" />
-      }
     </div>
+    </div>
+
+    <app-footer (legalNavigate)="navigateToLegalPage($event)" />
   } @else {
     <section class="age-gate" aria-live="polite">
       <h2>Age Restricted</h2>

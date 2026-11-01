@@ -17,8 +17,9 @@
 }
 
 .page-backdrop {
-  position: absolute;
+  position: fixed;
   inset: 0;
+  overflow: hidden;
   z-index: -1;
   isolation: isolate;
   background-color: #000;
@@ -30,19 +31,37 @@
   inset: 0;
   background-color: #000;
   background-image: url('/images/site-background.jpg');
-  background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   transition: opacity 1.2s ease-in-out;
 }
 
+/* Slow zoom: 10% over 10s (1%/s), matching the background rotation period. */
+.page-background.zoom {
+  transform: scale(1.1);
+  transition: opacity 1.2s ease-in-out, transform 10s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-background.zoom {
+    transform: none;
+  }
+}
+
 .page-overlay {
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.15));
   pointer-events: none;
+}
+
+.page-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 app-header {
@@ -59,20 +78,21 @@ app-header {
   margin: 0 auto;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
   transition: filter 0.2s ease, opacity 0.2s ease;
-  padding: 2rem 1rem;
+  padding: 0 1rem 2rem;
   box-sizing: border-box;
 }
 
 app-footer {
   flex-shrink: 0;
-  margin-top: auto;
   z-index: 40;
   width: 100%;
   box-sizing: border-box;
 }
 
-.page.site-dimmed .site-content {
+.page.site-dimmed .site-content,
+.page.site-dimmed app-footer {
   filter: brightness(0.55);
   pointer-events: none;
   user-select: none;
@@ -299,10 +319,28 @@ app-footer {
   outline-offset: 2px;
 }
 
-app-our-family .panel,
-app-the-winery .panel,
 app-checkout .panel {
   background: rgb(255 255 255 / 80%) !important;
+}
+
+/* Phones: the footer is too tall to stay pinned, so the whole page scrolls. */
+@media (max-width: 768px) {
+  .page {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  /* Header + content fill the first screen; the footer follows below. */
+  .page-main {
+    flex: none;
+    min-height: 100dvh;
+  }
+
+  .site-content {
+    flex: 1 0 auto;
+    overflow: visible;
+  }
 }
 
 @media (max-width: 640px) {

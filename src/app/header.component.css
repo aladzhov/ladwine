@@ -1,17 +1,12 @@
 .hero {
   background: transparent;
   border-radius: 16px;
-  color: #fff;
+  color: var(--color-cream);
   cursor: pointer;
   margin-bottom: 1rem;
   padding: 1.4rem;
   position: relative;
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.hero:active {
-  transform: translateY(0);
 }
 
 .language-selector {
@@ -28,7 +23,7 @@
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgb(255 255 255 / 55%);
   border-radius: 8px;
-  color: #fff;
+  color: var(--color-cream);
   box-shadow: 0 4px 14px rgb(0 0 0 / 22%);
   cursor: pointer;
   display: flex;
@@ -46,6 +41,7 @@
 .menu-toggle:hover {
   background: rgb(255 255 255 / 38%);
   border-color: rgb(255 255 255 / 75%);
+  color: var(--color-peach);
 }
 
 .dropdown-arrow {
@@ -91,7 +87,7 @@
 .menu-option {
   background: transparent;
   border: none;
-  color: #fff;
+  color: var(--color-cream);
   cursor: pointer;
   font-size: 0.92rem;
   font-weight: 600;
@@ -108,12 +104,13 @@
 .language-option:hover,
 .menu-option:hover {
   background: rgb(255 255 255 / 22%);
+  color: var(--color-peach);
 }
 
 .language-option.active,
 .menu-option.active {
   background: rgb(255 255 255 / 36%);
-  color: #fff;
+  color: var(--color-peach);
   font-weight: 700;
 }
 
@@ -132,7 +129,12 @@
 
 .hero h1 {
   font-size: clamp(1.4rem, 2.8vw, 2rem);
+  line-height: 1.2;
+  height: 1.2em;
   margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .eyebrow {
@@ -143,9 +145,17 @@
 }
 
 .intro {
+  /* Fixed 2-line box so language changes never resize the header. */
+  --intro-lines: 2;
   line-height: 1.45;
+  height: calc(var(--intro-lines) * 1.45em);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--intro-lines);
+  line-clamp: var(--intro-lines);
+  overflow: hidden;
   margin: 0.6rem auto 0;
-  max-width: 56ch;
+  max-width: 80ch;
 }
 
 .language-toggle:focus-visible,
@@ -173,7 +183,92 @@
   line-height: 1;
 }
 
+.menu-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 1rem -1.4rem 0;
+  /* Align the right edge with the content panel (.site-content: max-width 1200px, 1rem side padding).
+     The negative margin cancels .hero's padding, so 100% + 2.8rem is the full page width. */
+  padding-inline: max(1rem, calc((100% + 2.8rem - 1200px) / 2 + 1rem));
+}
+
+.menu-bar-option {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.25rem 0;
+}
+
+.menu-bar-option + .menu-bar-option::before {
+  content: '|';
+  display: inline-block;
+  margin: 0 0.75rem;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.menu-bar-option:hover,
+.menu-bar-option.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.menu-bar-option.active {
+  font-weight: 800;
+  color: var(--color-peach);
+}
+
+.menu-bar-option:focus-visible {
+  outline: 2px solid var(--color-cream);
+  outline-offset: 2px;
+}
+
+@media (min-width: 641px) {
+  .menu-selector {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
+  .menu-bar {
+    display: none;
+  }
+
+  .hero h1 {
+    white-space: normal;
+    height: 2.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .intro {
+    --intro-lines: 4;
+  }
+
+  .language-toggle,
+  .menu-toggle,
+  .language-option,
+  .menu-option {
+    color: var(--color-primary);
+  }
+
+  .language-toggle:hover,
+  .menu-toggle:hover,
+  .language-option:hover,
+  .menu-option:hover,
+  .language-option.active,
+  .menu-option.active {
+    color: var(--color-primary-dark);
+  }
+
   .menu-selector {
     position: fixed;
     top: 0.4rem;
@@ -250,12 +345,14 @@
     padding: 0.5rem 0.7rem;
   }
 
-  .menu-option.active {
+  .menu-option.active,
+  .language-option.active {
     font-size: 0.9rem;
+    font-weight: 800;
   }
 
   .hero {
-    padding: 2.4rem 1rem 1rem;
+    padding: 3.4rem 1rem 1rem;
   }
 }
 
@@ -293,4 +390,10 @@
     min-width: 112px;
     width: 112px;
   }
+}
+
+.globe-icon {
+  display: block;
+  width: 1.15em;
+  height: 1.15em;
 }

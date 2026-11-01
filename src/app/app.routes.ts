@@ -10,7 +10,8 @@ export const routes: Routes = [
     path: '',
     component: AppMain,
     children: [
-      { path: '', redirectTo: 'winery', pathMatch: 'full' },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', data: { tab: 'home' }, children: [] },
       { path: 'winery', data: { tab: 'winery' }, children: [] },
       { path: 'history', data: { tab: 'family' }, children: [] },
       { path: 'vineyards', data: { tab: 'vineyards' }, children: [] },

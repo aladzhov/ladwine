@@ -1,7 +1,7 @@
 .footer {
   background: transparent;
   border-radius: 16px;
-  color: #fff;
+  color: var(--color-cream);
   margin: 1rem;
   padding: 1.5rem 1.5rem 1rem;
 }
@@ -14,26 +14,26 @@
 /* Legal Links */
 .footer-legal {
   text-align: center;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .footer-legal a {
-  color: rgba(255, 255, 255, 0.9);
+  color: color-mix(in srgb, var(--color-cream) 90%, transparent);
   text-decoration: none;
   font-size: 0.8rem;
   transition: color 0.2s ease;
 }
 
 .footer-legal a:hover {
-  color: #fff;
+  color: var(--color-cream);
   text-decoration: underline;
 }
 
 .legal-separator {
   margin: 0 0.75rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: color-mix(in srgb, var(--color-cream) 40%, transparent);
   font-size: 0.8rem;
 }
 
@@ -54,7 +54,7 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  color: #fff;
+  color: var(--color-cream);
   text-decoration: none;
   padding: 0;
   background: none;
@@ -104,16 +104,22 @@
 .company-name {
   font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   margin: 0 0 0.75rem;
-  color: #fff;
+  color: var(--color-cream);
   font-weight: 700;
+}
+
+.company-details {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 2rem;
 }
 
 .company-address,
 .company-phone,
 .company-email {
   margin: 0.4rem 0;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  color: color-mix(in srgb, var(--color-cream) 90%, transparent);
 }
 
 .company-email {
@@ -127,14 +133,20 @@
 
 .newsletter h3 {
   margin: 0 0 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 1.1rem;
-  color: #fff;
+  color: var(--color-cream);
 }
 
-.newsletter > p {
+.newsletter > p:not(.subscription-message) {
   margin: 0 0 0.75rem;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+  height: 2.8em;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--color-cream) 85%, transparent);
 }
 
 .newsletter-form {
@@ -150,12 +162,12 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: var(--color-cream);
   font-size: 0.85rem;
 }
 
 .newsletter-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: color-mix(in srgb, var(--color-cream));
 }
 
 .newsletter-input:focus {
@@ -166,7 +178,7 @@
 
 .newsletter-btn {
   padding: 0.6rem 1.2rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--color-cream);
   color: var(--color-primary);
   border: 1px solid #fff;
   border-radius: 6px;
@@ -186,7 +198,9 @@
 }
 
 .subscription-message {
-  margin-top: 0.5rem;
+  margin: 0.5rem 0 0;
+  min-height: 1.2em;
+  line-height: 1.2;
   color: var(--color-secondary);
   font-weight: 600;
   font-size: 0.8rem;
@@ -195,6 +209,7 @@
 @media (max-width: 768px) {
   .newsletter {
     text-align: left;
+    color: var(--color-cream);
   }
 
   .newsletter-form {

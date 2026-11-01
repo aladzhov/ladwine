@@ -1,5 +1,6 @@
 import { Injectable, signal, computed, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
 
 export type Language = 'bg' | 'en' | 'es' | 'de';
 
@@ -7,6 +8,24 @@ export interface Translations {
   familyName: string;
   familyOwnedSince: string;
   familyIntro: string;
+  menuHome?: string;
+  homeWelcome?: string;
+  menuWinery?: string;
+  menuVineyards?: string;
+  menuHistory?: string;
+  menuWines?: string;
+  wineryText1?: string;
+  vineyardText1?: string;
+  historyText1?: string;
+  companyAddress?: string;
+  footerSocialLinks?: string;
+  footerNewsletterText?: string;
+  footerEmailPlaceholder?: string;
+  footerSubscribe?: string;
+  footerSubscribed?: string;
+  footerTerms?: string;
+  footerPrivacy?: string;
+  footerDelivery?: string;
 }
 
 @Injectable({
@@ -14,20 +33,30 @@ export interface Translations {
 })
 export class TranslationService {
   private readonly http = inject(HttpClient);
+  private readonly document = inject(DOCUMENT);
 
-  public readonly currentLanguage = signal<Language>('en');
+  public readonly currentLanguage = signal<Language>('bg');
   private readonly translationsData = signal<Translations>({
-    familyName: 'Ladwine Family Winery',
+    familyName: 'Ladzhovs Family Winery',
     familyOwnedSince: 'Family Owned Since 1988',
     familyIntro: 'Three generations caring for our vines, crafting small-batch wines, and welcoming guests to our valley home.'
   });
 
-  public readonly translations = computed(() => this.translationsData());
+  /** English texts used for keys missing in the selected language. */
+  private readonly fallbackData = signal<Partial<Translations>>({});
+
+  public readonly translations = computed<Translations>(() => ({ ...this.fallbackData(), ...this.translationsData() }));
 
   constructor() {
+    this.http.get<Translations>('/assets/i18n/en.json').subscribe({
+      next: (translations) => this.fallbackData.set(translations),
+      error: (err) => console.error('Failed to load fallback translations', err),
+    });
+
     // Watch for language changes and load translations
     effect(() => {
       const lang = this.currentLanguage();
+      this.document.documentElement.lang = lang;
       this.loadTranslations(lang);
     }, { allowSignalWrites: true });
   }
@@ -49,7 +78,7 @@ export class TranslationService {
   }
 
   public translate(key: keyof Translations): string {
-    return this.translations()[key];
+    return this.translations()[key] ?? '';
   }
 }
 

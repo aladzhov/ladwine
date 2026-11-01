@@ -1,6 +1,23 @@
 {
-  "familyName": "Ladwine Family Winery",
+  "familyName": "Ladzhovs Family Winery",
   "familyOwnedSince": "Family Owned Since 1988",
-  "familyIntro": "Three generations caring for our vines, crafting small-batch wines, and welcoming guests to our valley home."
+  "familyIntro": "Three generations caring for our vines and wines",
+  "homeWelcome": "Welcome!",
+  "menuHome": "Home",
+  "menuWinery": "Winery",
+  "menuVineyards": "Our vineyards",
+  "menuHistory": "History",
+  "menuWines": "Wines",
+  "wineryText1": "Over the years, our desire to share our wine with more people grew stronger and stronger.\n\nSo in 2022 we made a bold decision – to turn our favourite pastime into something more and create our own family winery.\n\nWe knew the road would not be short. We decided to build the winery with our own hands and our own means, step by step, with a lot of hard work, patience and perseverance.\n\nWe started by searching for and buying the right place for the future winery. Then came the design, the preparation for construction and countless small and big decisions.\n\nAt the same time, we kept expanding our knowledge and skills in winemaking. Our curiosity and eagerness to learn took us to university, where Bilyana completed a Master's degree in Wine Technology. This was another important step towards our dream – to have a qualified oenologist in the family and to combine tradition and hands-on experience with professional knowledge when making our wines.\n\nLadzhovi Winery is our way of continuing the family tradition while adding our own ideas, knowledge and dreams to it.\n\nWe are building it in the belief that good wine deserves time, care and a personal touch – just like the winery itself.\n\nWe want our wines to reach not only our family and friends, but everyone who appreciates wine made with dedication and respect for tradition.\n\nWine that holds a piece of our story, respect for our roots and faith in the future.",
+  "vineyardText1": "Our vineyards are located in the village of Vinogradets, Pazardzhik Province – an area with long-standing traditions in vine growing and winemaking.\n\nIn our family vineyard we grow Merlot, Cabernet Sauvignon and Syrah – the three varieties behind the distinctive blend of our young red wine.\n\nIn 2025 we took another step forward by buying a second small vineyard with Merlot and Mavrud.\n\nWe love to experiment, discover new combinations and challenge our own skills. At the same time, we keep our respect for the traditional winemaking methods that have proven their worth over the years.\n\nFor us, every harvest is a new opportunity to learn something, try something different and create a wine we would happily serve at our own table.",
+  "historyText1": "We are Bilyana and Atanas Ladzhovi.\n\nRed wine has been made in our family for more than 30 years. The tradition was started by Grandpa Nasko, who passed on to us his love for the vineyard and taught us to tend it with patience and perseverance.\n\nIn 2016, side by side with our parents, we continued caring for the family vineyard and keeping up the tradition of making our own red wine.\n\nOver time, vine growing and winemaking quietly became our favourite pastime. Every year brings new challenges, new lessons and new reasons to keep improving.\n\nTo this day, there is no greater pleasure than a sip of wine made from grapes we have grown ourselves. And when we share the fruits of our labour with family and friends, we won't hide that we feel quite a bit of pride!",
+  "companyAddress": "Vinogradets village",
+  "footerSocialLinks": "Social links",
+  "footerNewsletterText": "Subscribe to our newsletter for the latest wines and special offers.",
+  "footerEmailPlaceholder": "Enter your email",
+  "footerSubscribe": "Subscribe",
+  "footerSubscribed": "Thank you for subscribing!",
+  "footerTerms": "Terms & Conditions",
+  "footerPrivacy": "Privacy Policy",
+  "footerDelivery": "Delivery Information"
 }
-

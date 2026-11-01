@@ -8,13 +8,21 @@ import {
   signal,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { TranslationService, Language } from './translation.service';
+import { TranslationService, Language, Translations } from './translation.service';
 
-export type HeaderTabKey = 'family' | 'winery' | 'vineyards' | 'wines';
+export type HeaderTabKey = 'home' | 'family' | 'winery' | 'vineyards' | 'wines';
 export interface HeaderTab {
   key: HeaderTabKey;
   label: string;
 }
+
+const TAB_LABEL_KEYS: Record<HeaderTabKey, keyof Translations> = {
+  home: 'menuHome',
+  winery: 'menuWinery',
+  vineyards: 'menuVineyards',
+  family: 'menuHistory',
+  wines: 'menuWines',
+};
 
 @Component({
   selector: 'app-header',
@@ -72,8 +80,13 @@ export class HeaderComponent {
     this.showMenuDropdown.set(false);
   }
 
+  public tabLabel(tab: HeaderTab): string {
+    return this.translations()[TAB_LABEL_KEYS[tab.key]] || tab.label;
+  }
+
   public getActiveTabLabel(): string {
-    return this.tabs().find((tab) => tab.key === this.activeTab())?.label ?? 'Menu';
+    const tab = this.tabs().find((t) => t.key === this.activeTab());
+    return tab ? this.tabLabel(tab) : 'Menu';
   }
 
   public toggleLanguageDropdown(event: Event): void {

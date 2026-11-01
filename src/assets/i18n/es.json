@@ -1,6 +1,23 @@
 {
-  "familyName": "Bodega Familiar Ladwine",
+  "familyName": "Bodega Familiar Ladzhovs",
   "familyOwnedSince": "Propiedad Familiar Desde 1988",
-  "familyIntro": "Tres generaciones cuidando nuestras viñas, elaborando vinos en pequeños lotes y dando la bienvenida a los huéspedes a nuestro hogar en el valle."
+  "familyIntro": "Tres generaciones cuidando nuestras viñas, elaborando vinos en pequeños lotes y dando la bienvenida a los huéspedes a nuestro hogar en el valle.",
+  "homeWelcome": "¡Bienvenidos!",
+  "menuHome": "Inicio",
+  "menuWinery": "Bodega",
+  "menuVineyards": "Viñedos",
+  "menuHistory": "Historia",
+  "menuWines": "Vinos",
+  "wineryText1": "Con los años, nuestro deseo de compartir nuestro vino con más personas se hizo cada vez más fuerte.\n\nAsí, en 2022 tomamos una decisión valiente: convertir nuestra afición favorita en algo más y crear nuestra propia bodega familiar.\n\nSabíamos que el camino no sería corto. Decidimos construir nuestra bodega con nuestras propias fuerzas y recursos, paso a paso, con mucho trabajo, paciencia y constancia.\n\nEmpezamos buscando y comprando el lugar adecuado para la futura bodega. Después vinieron el diseño, la preparación de la obra e innumerables decisiones, pequeñas y grandes.\n\nAl mismo tiempo, seguimos ampliando nuestros conocimientos y habilidades en la elaboración del vino. Nuestra curiosidad y nuestras ganas de aprender nos llevaron también a la universidad, donde Bilyana completó un máster en «Tecnología del Vino». Así dimos otro paso importante hacia nuestro sueño: tener en la familia una enóloga titulada y combinar la tradición y la experiencia práctica con el conocimiento profesional al elaborar nuestros vinos.\n\nBodega Ladzhovi es nuestra manera de continuar la tradición familiar, añadiéndole nuestras propias ideas, conocimientos y sueños.\n\nLa construimos con la convicción de que un buen vino merece tiempo, atención y un trato personal, al igual que la propia bodega.\n\nQueremos que nuestros vinos lleguen no solo a nuestra familia y amigos, sino a todo aquel que aprecie un vino elaborado con dedicación y respeto por la tradición.\n\nUn vino que guarda una parte de nuestra historia, respeto por nuestras raíces y fe en el futuro.",
+  "vineyardText1": "Nuestros viñedos se encuentran en el pueblo de Vinogradets, provincia de Pazardzhik, una zona con una larga tradición vitícola y vinícola.\n\nEn nuestro viñedo familiar cultivamos Merlot, Cabernet Sauvignon y Syrah, las tres variedades con las que elaboramos el característico coupage de nuestro vino tinto joven.\n\nEn 2025 dimos un paso más al comprar un segundo pequeño viñedo con las variedades Merlot y Mavrud.\n\nNos encanta experimentar, descubrir nuevas combinaciones y poner a prueba nuestras propias habilidades. Al mismo tiempo, mantenemos nuestro respeto por los métodos tradicionales de vinificación, que han demostrado su valor a lo largo de los años.\n\nPara nosotros, cada vendimia es una nueva oportunidad de aprender algo, probar algo diferente y crear un vino que serviríamos con gusto en nuestra propia mesa.",
+  "historyText1": "Somos Bilyana y Atanas Ladzhovi.\n\nEn nuestra familia se elabora vino tinto desde hace más de 30 años. Esta tradición la inició el abuelo Nasko, que nos transmitió su amor por el viñedo y nos enseñó a cuidarlo con paciencia y constancia.\n\nEn 2016, codo con codo con nuestros padres, seguimos cuidando el viñedo familiar y manteniendo la tradición de elaborar nuestro propio vino tinto.\n\nCon el tiempo, la viticultura y la elaboración del vino se convirtieron, casi sin darnos cuenta, en nuestra afición favorita. Cada año trae nuevos retos, nuevas lecciones y nuevos motivos para mejorar.\n\nHasta hoy no hay mayor placer que tomar un sorbo de vino elaborado con uvas que hemos cultivado nosotros mismos. Y cuando compartimos los frutos de nuestro trabajo con familiares y amigos, no ocultamos que sentimos un buen orgullo.",
+  "companyAddress": "Pueblo de Vinogradets",
+  "footerSocialLinks": "Redes sociales",
+  "footerNewsletterText": "Suscríbete a nuestro boletín para conocer nuestros últimos vinos y ofertas especiales.",
+  "footerEmailPlaceholder": "Introduce tu correo electrónico",
+  "footerSubscribe": "Suscribirse",
+  "footerSubscribed": "¡Gracias por suscribirte!",
+  "footerTerms": "Términos y condiciones",
+  "footerPrivacy": "Política de privacidad",
+  "footerDelivery": "Información de envío"
 }
-

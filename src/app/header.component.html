@@ -8,7 +8,13 @@
     aria-haspopup="menu"
     [attr.aria-expanded]="showLanguageDropdown()"
   >
-    <span class="toggle-icon" aria-hidden="true">🌐</span>
+    <span class="toggle-icon" aria-hidden="true">
+      <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M2 12h20" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    </span>
     <span class="language-label">{{ getLanguageLabel(selectedLanguage()) }}</span>
     <span class="dropdown-arrow">▼</span>
   </button>
@@ -57,16 +63,31 @@
             (click)="selectTab(tab.key, $event)"
             role="menuitem"
           >
-            {{ tab.label }}
+            {{ tabLabel(tab) }}
           </button>
         }
       </div>
     }
   </div>
 
-  <p class="eyebrow">{{ familyOwnedSince() }}</p>
+
   <h1>{{ familyName() }}</h1>
   <p class="intro">
     {{ familyIntro() }}
   </p>
+
+  <nav class="menu-bar" aria-label="Sections">
+    @for (tab of tabs(); track tab.key) {
+      <button
+        type="button"
+        class="menu-bar-option"
+        [class.active]="activeTab() === tab.key"
+        [attr.aria-current]="activeTab() === tab.key ? 'page' : null"
+        (click)="selectTab(tab.key, $event)"
+        (keydown)="$event.stopPropagation()"
+      >
+        {{ tabLabel(tab) }}
+      </button>
+    }
+  </nav>
 </header>
