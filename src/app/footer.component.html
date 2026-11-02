@@ -5,14 +5,23 @@
       <div class="company-info">
         <div class="company-details">
           <div class="company-col">
-            <p class="company-address">{{ t('companyAddress') }}</p>
+            <p class="company-address">
+              <span class="material-icons contact-icon" aria-hidden="true">place</span>
+              <a class="address-link" [href]="mapsUrl" target="_blank" rel="noopener noreferrer">{{ t('companyAddress') }}</a>
+            </p>
             @for (email of emails; track email.address) {
-              <p class="company-email">{{ email.address }}</p>
+              <p class="company-email">
+                <span class="material-icons contact-icon" aria-hidden="true">mail</span>
+                <span class="email-text">{{ email.address }}</span>
+              </p>
             }
           </div>
           <div class="company-col">
             @for (phone of phones; track phone.number) {
-              <p class="company-phone">{{ phone.number }}</p>
+              <p class="company-phone">
+                <span class="material-icons contact-icon" aria-hidden="true">call</span>
+                <a class="phone-link" [href]="telHref(phone)">{{ phone.number }}</a>
+              </p>
             }
           </div>
         </div>

@@ -54,9 +54,9 @@ export const EMAILS: ContactEmail[] = [
 ];
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61594973502143', icon: '/images/social/facebook.png' },
-  { name: 'Instagram', url: 'https://www.instagram.com/ladzhovswinery', icon: '/images/social/instagram.png' },
-  { name: 'YouTube', url: 'https://www.youtube.com/@ladwinery', icon: '/images/social/youtube.png' },
+  { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61594973502143', icon: '/images/social/facebook-primary.png' },
+  { name: 'Instagram', url: 'https://www.instagram.com/ladzhovswinery', icon: '/images/social/instagram-primary.png' },
+  { name: 'YouTube', url: 'https://www.youtube.com/@ladwinery', icon: '/images/social/youtube-primary.png' },
 ];
 
 export const PRIMARY_PHONE = PHONES[0];
@@ -69,6 +69,9 @@ export function emailById(id: string): ContactEmail {
 export function telHref(phone: ContactPhone): string {
   return `tel:${phone.number.replace(/\s/g, '')}`;
 }
+
+/** Google Maps universal link: opens the Google Maps app on mobile (if installed) or the web otherwise. */
+export const GOOGLE_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${COMPANY_ADDRESS.latitude},${COMPANY_ADDRESS.longitude}`;
 
 export function mailtoHref(email: ContactEmail): string {
   return `mailto:${email.address}`;

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
+  --font-script: 'Great Vibes', cursive;
   /* Brand palette */
   --color-primary: #8a0d26; /* Bordeaux */
   --color-primary-dark: #6e0a1e; /* derived: hover/active */

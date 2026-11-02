@@ -10,6 +10,7 @@ import {
   WEBSITE_URL,
   mailtoHref,
   telHref,
+  GOOGLE_MAPS_URL,
 } from '../contact-info';
 
 const escapeVCard = (value: string): string => value.replace(/[\\,;]/g, (c) => `\\${c}`);
@@ -56,7 +57,7 @@ export class Contacts {
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     return isIos
       ? `https://maps.apple.com/?ll=${coords}&q=${encodeURIComponent(this.name)}`
-      : `https://www.google.com/maps/search/?api=1&query=${coords}`;
+      : GOOGLE_MAPS_URL;
   }
 
   protected saveContact(): void {

@@ -1,7 +1,7 @@
 import { Component, inject, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
-import { EMAILS, PHONES, SOCIAL_LINKS } from './contact-info';
+import { EMAILS, PHONES, SOCIAL_LINKS, GOOGLE_MAPS_URL, telHref } from './contact-info';
 import { TranslationService, Translations } from './translation.service';
 
 @Component({
@@ -21,6 +21,8 @@ export class FooterComponent {
   public readonly legalNavigate = output<'terms' | 'privacy' | 'delivery-info'>();
 
   public readonly phones = PHONES;
+  public readonly telHref = telHref;
+  public readonly mapsUrl = GOOGLE_MAPS_URL;
   public readonly emails = EMAILS.filter((email) => email.id === 'office');
   public readonly socialLinks = SOCIAL_LINKS;
 

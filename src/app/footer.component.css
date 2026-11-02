@@ -14,8 +14,6 @@
 /* Legal Links */
 .footer-legal {
   text-align: center;
-  margin-top: 1.25rem;
-  padding-top: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -68,8 +66,8 @@
 }
 
 .social-icon-img {
-  width: 3.15rem;
-  height: 3.15rem;
+  width: 2.15rem;
+  height: 2.15rem;
   object-fit: contain;
 }
 
@@ -101,13 +99,6 @@
   text-align: left;
 }
 
-.company-name {
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-  margin: 0 0 0.75rem;
-  color: var(--color-cream);
-  font-weight: 700;
-}
-
 .company-details {
   display: flex;
   flex-wrap: wrap;
@@ -122,22 +113,46 @@
   color: color-mix(in srgb, var(--color-cream) 90%, transparent);
 }
 
+.company-address,
+.company-phone,
 .company-email {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.email-text {
   text-decoration: underline;
+}
+
+/* Round icons matching the /contacts card. */
+.contact-icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  font-size: 17px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  color: var(--color-secondary-deep);
+}
+
+.address-link {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* Phone numbers are tel: links, but only act as links on mobile. */
+.phone-link {
+  color: inherit;
+  text-decoration: none;
+  pointer-events: none;
 }
 
 /* Newsletter */
 .newsletter {
   text-align: right;
-}
-
-.newsletter h3 {
-  margin: 0 0 0.4rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1.1rem;
-  color: var(--color-cream);
 }
 
 .newsletter > p:not(.subscription-message) {
@@ -223,6 +238,11 @@
 
   .social-links {
     justify-content: center;
+  }
+
+  .phone-link {
+    pointer-events: auto;
+    text-decoration: underline;
   }
 
   .social-icon-img {

@@ -1,5 +1,5 @@
 {
-  "familyName": "Семейна Винарна Ладжови",
+  "familyName": "Семейна винарна Ладжови",
   "familyOwnedSince": "История от 1988 г.",
   "familyIntro": "От нашето лозе до вашата трапеза",
   "homeWelcome": "Добре дошли!",
@@ -14,8 +14,8 @@
   "companyAddress": "село Виноградец",
   "footerSocialLinks": "Социални мрежи",
   "footerNewsletterText": "Абонирайте се, за да ви информираме за нашите предложения и събития!",
-  "footerEmailPlaceholder": "Въведете вашия имейл",
-  "footerSubscribe": "Абонирай се",
+  "footerEmailPlaceholder": "e-mail",
+  "footerSubscribe": "Абониране",
   "footerSubscribed": "Благодарим ви за абонамента!",
   "footerTerms": "Общи условия",
   "footerPrivacy": "Политика за поверителност",

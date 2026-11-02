@@ -98,63 +98,6 @@ app-footer {
   user-select: none;
 }
 
-.panel {
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid var(--color-peach);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgb(75 42 10 / 8%);
-  flex: 1;
-  margin-top: 1rem;
-  padding: 1.25rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.checkout-panel {
-  flex: none;
-}
-
-
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 1rem;
-}
-
-.tabs button {
-  background: #fff;
-  border: 1px solid var(--color-peach);
-  border-radius: 999px;
-  color: #5c3724;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 600;
-  padding: 0.45rem 0.95rem;
-}
-
-.tabs button.active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: #fff;
-}
-
-.tabs button:focus-visible {
-  outline: 2px solid #d17a34;
-  outline-offset: 2px;
-}
-
-.tabs button:disabled {
-  background: var(--color-cream);
-  border-color: var(--color-peach);
-  color: #a18c7a;
-  cursor: not-allowed;
-}
-
-.tabs button:disabled:focus-visible {
-  outline: none;
-}
-
 .tab-row {
   align-items: center;
   display: flex;
@@ -164,11 +107,6 @@ app-footer {
   width: 100%;
   box-sizing: border-box;
 }
-
-.tabs {
-  margin-top: 0;
-}
-
 
 .checkout-cta {
   background: #fff;
@@ -317,10 +255,6 @@ app-footer {
 .age-btn:focus-visible {
   outline: 2px solid #d17a34;
   outline-offset: 2px;
-}
-
-app-checkout .panel {
-  background: rgb(255 255 255 / 80%) !important;
 }
 
 /* Phones: the footer is too tall to stay pinned, so the whole page scrolls. */
