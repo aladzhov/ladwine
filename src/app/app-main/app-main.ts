@@ -9,18 +9,18 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { BrowseProducedWinesComponent } from '../browse-produced-wines.component';
-import { OurFamilyComponent } from '../our-family.component';
-import { TheWineryComponent } from '../the-winery.component';
+import { BrowseProducedWinesComponent } from '../browse-produced-wines/browse-produced-wines.component';
+import { OurFamilyComponent } from '../our-family/our-family.component';
+import { TheWineryComponent } from '../the-winery/the-winery.component';
 import { Home } from '../home/home';
-import { VineyardsComponent } from '../vineyards.component';
-import { WineDetailsComponent } from '../wine-details.component';
-import { CheckoutComponent, type CheckoutOrder } from '../checkout.component';
-import { HeaderComponent } from '../header.component';
-import { FooterComponent } from '../footer.component';
-import { TermsComponent } from '../terms.component';
-import { PrivacyPolicyComponent } from '../privacy-policy.component';
-import { DeliveryInfoComponent } from '../delivery-info.component';
+import { VineyardsComponent } from '../vineyards/vineyards.component';
+import { WineDetailsComponent } from '../wine-details/wine-details.component';
+import { CheckoutComponent, type CheckoutOrder } from '../checkout/checkout.component';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
+import { TermsComponent } from '../terms/terms.component';
+import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.component';
+import { DeliveryInfoComponent } from '../delivery-info/delivery-info.component';
 import { Wine } from '../wine.model';
 import { WINES } from '../wines.data';
 import { CookieService } from '../cookie.service';
@@ -53,7 +53,7 @@ interface Tab {
   templateUrl: './app-main.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: '../winery.css',
+  styleUrl: './app-main.css',
 })
 export class AppMain {
   private readonly http = inject(HttpClient);
@@ -73,9 +73,9 @@ export class AppMain {
 
   public readonly tabs: ReadonlyArray<Tab> = [
     { key: 'home', label: 'Home' },
+    { key: 'family', label: 'History' },
     { key: 'winery', label: 'Winery' },
     { key: 'vineyards', label: 'Vineyards' },
-    { key: 'family', label: 'History' },
     ...(environment.production ? [] : [{ key: 'wines' as const, label: 'Wines' }]),
   ];
 

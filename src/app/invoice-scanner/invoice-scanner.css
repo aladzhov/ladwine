@@ -25,14 +25,14 @@ progress {
 }
 
 span {
-  font-size: 0.9rem;
+  font-size: 1.17rem;
   color: #666;
   margin-top: 4px;
   display: block;
 }
 
 .fullscreen-icon {
-  font-size: 10vmin !important;
+  font-size: 13vmin !important;
 
   /* Ensure it doesn't wrap or clip weirdly */
   width: auto;

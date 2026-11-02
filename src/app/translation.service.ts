@@ -6,8 +6,6 @@ export type Language = 'bg' | 'en' | 'es' | 'de';
 
 export interface Translations {
   familyName: string;
-  familyOwnedSince: string;
-  familyIntro: string;
   menuHome?: string;
   homeWelcome?: string;
   menuWinery?: string;
@@ -38,8 +36,6 @@ export class TranslationService {
   public readonly currentLanguage = signal<Language>('bg');
   private readonly translationsData = signal<Translations>({
     familyName: 'Ladzhovs Family Winery',
-    familyOwnedSince: 'Family Owned Since 1988',
-    familyIntro: 'Three generations caring for our vines, crafting small-batch wines, and welcoming guests to our valley home.'
   });
 
   /** English texts used for keys missing in the selected language. */

@@ -1,0 +1,91 @@
+<div class="language-selector">
+  <button
+    type="button"
+    class="language-toggle"
+    [class.expanded]="showLanguageDropdown()"
+    (click)="toggleLanguageDropdown($event)"
+    [attr.aria-label]="'Select language'"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="showLanguageDropdown()"
+  >
+    <span class="toggle-icon" aria-hidden="true">
+      <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M2 12h20" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    </span>
+    <span class="language-label">{{ getLanguageLabel(selectedLanguage()) }}</span>
+    <span class="dropdown-arrow">▼</span>
+  </button>
+
+  @if (showLanguageDropdown()) {
+    <div class="language-dropdown" role="menu" aria-label="Language menu">
+      @for (lang of languages; track lang.code) {
+        <button
+          type="button"
+          class="language-option"
+          [class.active]="selectedLanguage() === lang.code"
+          (click)="selectLanguage(lang.code, $event)"
+          [attr.aria-label]="'Switch to ' + lang.label"
+          role="menuitem"
+        >
+          {{ lang.label }}
+        </button>
+      }
+    </div>
+  }
+</div>
+
+<header class="hero">
+  <div class="menu-selector">
+    <button
+      type="button"
+      class="menu-toggle"
+      [class.expanded]="showMenuDropdown()"
+      (click)="toggleMenuDropdown($event)"
+      aria-label="Select section"
+      aria-haspopup="menu"
+      [attr.aria-expanded]="showMenuDropdown()"
+    >
+      <span class="toggle-icon" aria-hidden="true">☰</span>
+      <span class="menu-label">{{ getActiveTabLabel() }}</span>
+      <span class="dropdown-arrow">▼</span>
+    </button>
+
+    @if (showMenuDropdown()) {
+      <div class="menu-dropdown" role="menu" aria-label="Section menu">
+        @for (tab of tabs(); track tab.key) {
+          <button
+            type="button"
+            class="menu-option"
+            [class.active]="activeTab() === tab.key"
+            (click)="selectTab(tab.key, $event)"
+            role="menuitem"
+          >
+            {{ tabLabel(tab) }}
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <nav class="menu-bar" aria-label="Sections">
+    @for (tab of tabs(); track tab.key) {
+      <button
+        type="button"
+        class="menu-bar-option"
+        [class.active]="activeTab() === tab.key"
+        [attr.aria-current]="activeTab() === tab.key ? 'page' : null"
+        (click)="selectTab(tab.key, $event)"
+      >
+        {{ tabLabel(tab) }}
+      </button>
+    }
+  </nav>
+
+  @if (activeTab() !== 'home') {
+    <h1>{{ familyName() }}</h1>
+  }
+
+</header>

@@ -1,0 +1,18 @@
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+
+import { Wine } from '../wine.model';
+
+@Component({
+  selector: 'app-wine-details',
+  standalone: true,
+  templateUrl: './wine-details.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './wine-details.component.css',
+})
+export class WineDetailsComponent {
+  public readonly wine = input.required<Wine>();
+  public readonly back = output();
+  public readonly addToBasket = output<Wine>();
+  public readonly addSixPack = output<Wine>();
+  public readonly addBagInBox = output<Wine>();
+}

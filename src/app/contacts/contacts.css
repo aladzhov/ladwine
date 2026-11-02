@@ -41,7 +41,7 @@
 
 .name {
   margin: 0.75rem 0 0;
-  font-size: 1.5rem;
+  font-size: 1.95rem;
   font-weight: 500;
   color: var(--color-primary);
 }
@@ -59,7 +59,7 @@
   background: var(--color-primary);
   color: #fff;
   font: inherit;
-  font-size: 1.05rem;
+  font-size: 1.365rem;
   font-weight: 500;
   cursor: pointer;
 }
@@ -102,7 +102,7 @@
   place-items: center;
   width: 34px;
   height: 34px;
-  font-size: 20px;
+  font-size: 26px;
   border-radius: 50%;
   background: var(--color-secondary);
   color: var(--color-secondary-deep);
@@ -115,7 +115,7 @@
 }
 
 .action-value {
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 500;
   overflow-wrap: anywhere;
 }
