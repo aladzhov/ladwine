@@ -249,6 +249,32 @@
   }
 }
 
+/* Short screens (phones in landscape): compact header to leave room for the content. */
+@media (min-width: 641px) and (max-height: 500px) {
+  .hero {
+    margin-bottom: 0.25rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .menu-bar {
+    min-height: 34px;
+    margin-bottom: 0.25rem;
+  }
+
+  .menu-bar-option {
+    font-size: 1.1rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .language-selector {
+    top: 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+}
+
 @media (max-width: 640px) {
   .menu-bar {
     display: none;

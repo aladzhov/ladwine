@@ -76,41 +76,37 @@
   display: none;
 }
 
-/* Main Footer Content */
+/* Main Footer Content: social icons, then contacts on one centered line, then newsletter. */
 .footer-main {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-
-@media (max-width: 768px) {
-  .footer-main {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .social-links {
-    justify-content: flex-start;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* Company Info */
 .company-info {
-  text-align: left;
+  text-align: center;
 }
 
 .company-details {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1.75rem;
+}
+
+/* Columns are flattened so address, e-mail and phones share a single row. */
+.company-col {
+  display: contents;
 }
 
 .company-address,
 .company-phone,
 .company-email {
   margin: 0.4rem 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: color-mix(in srgb, var(--color-cream) 90%, transparent);
 }
 
@@ -125,6 +121,15 @@
 .company-phone,
 .company-email {
   position: relative;
+}
+
+/* Desktop-only contact font size (excludes phones, including landscape). */
+@media (min-width: 769px) and (min-height: 501px) {
+  .company-address,
+  .company-phone,
+  .company-email {
+    font-size: 1.2rem;
+  }
 }
 
 .contact-trigger {
@@ -193,9 +198,9 @@
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
-  font-size: 17px;
+  width: 24px;
+  height: 24px;
+  font-size: 15px;
   border-radius: 50%;
   background: var(--color-secondary);
   color: var(--color-secondary-deep);
@@ -212,7 +217,7 @@
 
 /* Newsletter */
 .newsletter {
-  text-align: right;
+  text-align: center;
 }
 
 .newsletter > p:not(.subscription-message) {
@@ -227,7 +232,7 @@
 .newsletter-form {
   display: flex;
   gap: 0.5rem;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .newsletter-input {
@@ -283,13 +288,12 @@
 
 @media (max-width: 768px) {
   .newsletter {
-    text-align: left;
     color: var(--color-cream);
+    width: 100%;
   }
 
   .newsletter-form {
     flex-direction: column;
-    justify-content: flex-start;
   }
 
   .newsletter-input {

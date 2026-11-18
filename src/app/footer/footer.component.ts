@@ -1,8 +1,8 @@
-import { Component, HostListener, inject, output, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, HostListener, computed, inject, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../environments/environment';
 import { EMAILS, PHONES, SOCIAL_LINKS, GOOGLE_MAPS_URL, telHref, viberHref } from '../contact-info';
 import { TranslationService, Translations } from '../translation.service';
+import { SiteModeService } from '../site-mode.service';
 
 @Component({
   selector: 'app-footer',
@@ -15,7 +15,11 @@ import { TranslationService, Translations } from '../translation.service';
 export class FooterComponent {
   private readonly i18n = inject(TranslationService);
 
-  public readonly showLegalLinks = !environment.production;
+  private readonly siteMode = inject(SiteModeService);
+
+  public readonly showLegalLinks = computed(() => !this.siteMode.isProduction());
+  // Hidden in production until subscriptions are wired to a backend.
+  public readonly showNewsletter = computed(() => !this.siteMode.isProduction());
   public email = '';
   public readonly subscriptionMessage = signal<string | null>(null);
   public readonly legalNavigate = output<'terms' | 'privacy' | 'delivery-info'>();

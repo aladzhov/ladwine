@@ -31,7 +31,9 @@
   inset: 0;
   background-color: #000;
   background-image: url('/images/site-background.jpg');
-  background-position: center;
+  /* Anchor to the bottom so it's never cropped, by cover or by the zoom. */
+  background-position: center bottom;
+  transform-origin: center bottom;
   background-repeat: no-repeat;
   background-size: cover;
   transition: opacity 1.2s ease-in-out;
@@ -257,8 +259,8 @@ app-footer {
   outline-offset: 2px;
 }
 
-/* Phones: the footer is too tall to stay pinned, so the whole page scrolls. */
-@media (max-width: 768px) {
+/* Phones (incl. landscape): the footer is too tall to stay pinned, so the whole page scrolls. */
+@media (max-width: 768px), (max-height: 500px) {
   /*
    * svh/lvh instead of dvh: dvh changes while the browser toolbar collapses on scroll,
    * which resizes the layout mid-scroll and makes the page jump.

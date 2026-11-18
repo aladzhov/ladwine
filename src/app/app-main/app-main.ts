@@ -5,10 +5,10 @@ import {
   effect,
   inject,
   signal,
+  untracked,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { environment } from '../../environments/environment';
 import { BrowseProducedWinesComponent } from '../browse-produced-wines/browse-produced-wines.component';
 import { OurFamilyComponent } from '../our-family/our-family.component';
 import { TheWineryComponent } from '../the-winery/the-winery.component';
@@ -25,6 +25,7 @@ import { Wine } from '../wine.model';
 import { WINES } from '../wines.data';
 import { CookieService } from '../cookie.service';
 import { SiteBackgroundService } from '../site-background.service';
+import { SiteModeService } from '../site-mode.service';
 
 type TabKey = 'home' | 'family' | 'winery' | 'vineyards' | 'wines';
 
@@ -71,13 +72,15 @@ export class AppMain {
     return `url('${url}')`;
   }
 
-  public readonly tabs: ReadonlyArray<Tab> = [
+  private readonly siteMode = inject(SiteModeService);
+
+  public readonly tabs = computed<ReadonlyArray<Tab>>(() => [
     { key: 'home', label: 'Home' },
     { key: 'family', label: 'History' },
     { key: 'winery', label: 'Winery' },
     { key: 'vineyards', label: 'Vineyards' },
-    ...(environment.production ? [] : [{ key: 'wines' as const, label: 'Wines' }]),
-  ];
+    ...(this.siteMode.isProduction() ? [] : [{ key: 'wines' as const, label: 'Wines' }]),
+  ]);
 
   public readonly activeTab = signal<TabKey>('home');
   public readonly isAgeConfirmed = signal<boolean | null>(null);
@@ -95,6 +98,16 @@ export class AppMain {
   });
 
   constructor() {
+    // Leave a tab that the site mode switch just hid (e.g. Wines when previewing production).
+    effect(() => {
+      const tabs = this.tabs();
+      untracked(() => {
+        if (!tabs.some((tab) => tab.key === this.activeTab())) {
+          this.setActiveTab('home');
+        }
+      });
+    });
+
     this.loadBasketFromCookie();
     this.loadAgeConfirmationFromCookie();
     this.siteBackground.start();

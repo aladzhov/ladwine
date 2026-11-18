@@ -1,0 +1,34 @@
+<div class="dev-mode">
+  @if (open()) {
+    <div class="dev-mode-menu" role="menu" aria-label="Site mode">
+      <button
+        type="button"
+        role="menuitemradio"
+        class="dev-mode-option"
+        [attr.aria-checked]="!siteMode.isProduction()"
+        (click)="select(false, $event)"
+      >
+        Local
+      </button>
+      <button
+        type="button"
+        role="menuitemradio"
+        class="dev-mode-option"
+        [attr.aria-checked]="siteMode.isProduction()"
+        (click)="select(true, $event)"
+      >
+        Production preview
+      </button>
+    </div>
+  }
+  <button
+    type="button"
+    class="dev-mode-toggle"
+    [class.prod]="siteMode.isProduction()"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="open()"
+    (click)="toggle($event)"
+  >
+    {{ siteMode.isProduction() ? 'PROD' : 'LOCAL' }}
+  </button>
+</div>

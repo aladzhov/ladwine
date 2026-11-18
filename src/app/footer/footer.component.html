@@ -1,6 +1,21 @@
 <footer class="footer">
   <div class="footer-content">
     <div class="footer-main">
+      <div class="social-links" [attr.aria-label]="t('footerSocialLinks')">
+        @for (social of socialLinks; track social.name) {
+          <a
+            [href]="social.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="social.name"
+            class="social-link"
+          >
+            <img [src]="social.icon" [alt]="social.name" class="social-icon-img" />
+            <span class="social-name">{{ social.name }}</span>
+          </a>
+        }
+      </div>
+
       <!-- Company Info -->
       <div class="company-info">
         <div class="company-details">
@@ -57,39 +72,26 @@
         </div>
       </div>
 
-      <div class="social-links" [attr.aria-label]="t('footerSocialLinks')">
-        @for (social of socialLinks; track social.name) {
-          <a
-            [href]="social.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            [attr.aria-label]="social.name"
-            class="social-link"
-          >
-            <img [src]="social.icon" [alt]="social.name" class="social-icon-img" />
-            <span class="social-name">{{ social.name }}</span>
-          </a>
-        }
-      </div>
-
-      <div class="newsletter">
-        <p>{{ t('footerNewsletterText') }}</p>
-        <form class="newsletter-form" (ngSubmit)="subscribe()">
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="email"
-            [placeholder]="t('footerEmailPlaceholder')"
-            required
-            class="newsletter-input"
-          />
-          <button type="submit" class="newsletter-btn">{{ t('footerSubscribe') }}</button>
-        </form>
-        <p class="subscription-message" aria-live="polite">{{ subscriptionMessage() }}</p>
-      </div>
+      @if (showNewsletter()) {
+        <div class="newsletter">
+          <p>{{ t('footerNewsletterText') }}</p>
+          <form class="newsletter-form" (ngSubmit)="subscribe()">
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              [placeholder]="t('footerEmailPlaceholder')"
+              required
+              class="newsletter-input"
+            />
+            <button type="submit" class="newsletter-btn">{{ t('footerSubscribe') }}</button>
+          </form>
+          <p class="subscription-message" aria-live="polite">{{ subscriptionMessage() }}</p>
+        </div>
+      }
     </div>
 
-    @if (showLegalLinks) {
+    @if (showLegalLinks()) {
     <div class="footer-legal">
       <a href="javascript:void(0)" (click)="goToLegal('terms')">{{ t('footerTerms') }}</a>
       <span class="legal-separator">|</span>

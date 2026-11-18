@@ -54,7 +54,7 @@
   @if (isAgeConfirmed() !== false) {
     <div class="page-main">
     <app-header
-      [tabs]="tabs"
+      [tabs]="tabs()"
       [activeTab]="activeTab()"
       (tabSelect)="setActiveTab($event)"
     />

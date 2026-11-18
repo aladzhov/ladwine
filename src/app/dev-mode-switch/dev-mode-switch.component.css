@@ -1,0 +1,65 @@
+.dev-mode {
+  position: fixed;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  font-family: system-ui, sans-serif;
+}
+
+.dev-mode-toggle {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  background: #1f7a3a;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.dev-mode-toggle.prod {
+  background: #b3261e;
+}
+
+.dev-mode-toggle:hover {
+  opacity: 1;
+}
+
+.dev-mode-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 35%);
+}
+
+.dev-mode-option {
+  padding: 0.4rem 0.7rem;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: #222;
+  font-size: 0.85rem;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dev-mode-option:hover {
+  background: #eee;
+}
+
+.dev-mode-option[aria-checked='true'] {
+  font-weight: 700;
+}
+
+.dev-mode-option[aria-checked='true']::before {
+  content: '✓ ';
+}

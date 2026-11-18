@@ -33,3 +33,14 @@ img {
   min-height: 0;
   object-fit: contain;
 }
+
+/* Short screens (phones in landscape): size by height so the text doesn't dominate the logo. */
+@media (max-height: 500px) {
+  .welcome {
+    font-size: clamp(2rem, 11svh, 3.25rem);
+  }
+
+  img {
+    --logo-width: min(60vw, 80svh, 460px);
+  }
+}
