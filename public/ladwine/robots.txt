@@ -4,4 +4,4 @@ Disallow: /invoice-scanner
 Disallow: /checkout
 Disallow: /qr
 
-Sitemap: https://www.ladwine.eu/sitemap.xml
+Sitemap: https://ladwine.eu/sitemap.xml

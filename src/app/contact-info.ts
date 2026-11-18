@@ -33,7 +33,7 @@ export const COMPANY_ADDRESS = {
   longitude: 24.125267,
 };
 
-export const WEBSITE_URL = 'https://www.ladwine.eu';
+export const WEBSITE_URL = 'https://ladwine.eu';
 export const WEBSITE_LABEL = 'www.ladwine.eu';
 
 // Phones and emails are stored obfuscated (reversed, then base64) so they don't appear as plain text
