@@ -56,7 +56,7 @@ export const EMAILS: ContactEmail[] = [
 export const SOCIAL_LINKS: SocialLink[] = [
   { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61594973502143', icon: '/images/social/facebook-primary.png' },
   { name: 'Instagram', url: 'https://www.instagram.com/ladzhovswinery', icon: '/images/social/instagram-primary.png' },
-  { name: 'YouTube', url: 'https://www.youtube.com/@ladwinery', icon: '/images/social/youtube-primary.png' },
+  // { name: 'YouTube', url: 'https://www.youtube.com/@ladwinery', icon: '/images/social/youtube-primary.png' },
 ];
 
 export const PRIMARY_PHONE = PHONES[0];
@@ -68,6 +68,11 @@ export function emailById(id: string): ContactEmail {
 
 export function telHref(phone: ContactPhone): string {
   return `tel:${phone.number.replace(/\s/g, '')}`;
+}
+
+/** Opens a chat with the number in the Viber app (mobile or desktop), if installed. */
+export function viberHref(phone: ContactPhone): string {
+  return `viber://chat?number=${encodeURIComponent(phone.number.replace(/\s/g, ''))}`;
 }
 
 /** Google Maps universal link: opens the Google Maps app on mobile (if installed) or the web otherwise. */

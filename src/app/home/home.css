@@ -18,20 +18,18 @@
   line-height: 1;
   letter-spacing: 0.02em;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
-  color: var(--color-cream);
+  flex-shrink: 0;
 }
 
 img {
-  margin-top: -5.5rem;
-  width: min(80vw, 48dvh, 460px);
+  --logo-width: min(80vw, 48svh, 460px);
+  /* Overlap scales with the logo so its transparent top padding is tucked under the text at every size. */
+  margin-top: calc(var(--logo-width) * -0.19);
+  width: var(--logo-width);
   filter: drop-shadow(0 6px 18px rgb(0 0 0 / 35%));
   height: auto;
   /* Shrink the logo instead of overflowing, so Home never scrolls. */
   flex: 0 1 auto;
   min-height: 0;
   object-fit: contain;
-}
-
-.welcome {
-  flex-shrink: 0;
 }

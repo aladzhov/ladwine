@@ -43,12 +43,15 @@ export class HeaderComponent {
   public readonly showMenuDropdown = signal(false);
   public readonly showLanguageDropdown = signal(false);
 
-  public readonly languages: ReadonlyArray<{ code: Language; label: string }> = [
-    { code: 'bg', label: 'БГ' },
-    { code: 'en', label: 'EN' },
-    { code: 'es', label: 'ES' },
-    { code: 'de', label: 'DE' },
+  private readonly allLanguages: ReadonlyArray<{ code: Language; label: string; visible: boolean }> = [
+    { code: 'bg', label: 'БГ', visible: true },
+    { code: 'en', label: 'EN', visible: true },
+    // ES and DE translations are kept but hidden until ready.
+    { code: 'es', label: 'ES', visible: false },
+    { code: 'de', label: 'DE', visible: false },
   ];
+
+  public readonly languages = this.allLanguages.filter((lang) => lang.visible);
 
   public readonly selectedLanguage = computed(() => this.translationService.currentLanguage());
   public readonly translations = computed(() => this.translationService.translations());
@@ -89,7 +92,7 @@ export class HeaderComponent {
   }
 
   public getLanguageLabel(code: Language): string {
-    return this.languages.find((lang) => lang.code === code)?.label || 'EN';
+    return this.allLanguages.find((lang) => lang.code === code)?.label || 'EN';
   }
 
   @HostListener('document:click')

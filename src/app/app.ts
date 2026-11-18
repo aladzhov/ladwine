@@ -1,6 +1,5 @@
-import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,19 +7,11 @@ import { environment } from '../environments/environment';
   standalone: true,
   imports: [RouterOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './app.css',
 })
 export class App implements OnInit {
   private readonly router = inject(Router);
 
-  private static readonly UNLOCK_CLICK_COUNT = 5;
-  private static readonly UNLOCK_WINDOW_MS = 1000;
-
   private readonly isPublicPage = /^\/(contacts|qr)(\/|$)/.test(window.location.pathname);
-
-  public readonly isUnderConstruction = signal<boolean>(environment.production && !this.isPublicPage);
-
-  private clickTimestamps: number[] = [];
 
   ngOnInit() {
     if (this.isPublicPage) {
@@ -34,19 +25,6 @@ export class App implements OnInit {
     } else {
       // Ако е на основния сайт
       this.router.navigate(['']);
-    }
-  }
-
-  public registerConstructionClick(): void {
-    const now = Date.now();
-    this.clickTimestamps.push(now);
-    this.clickTimestamps = this.clickTimestamps.filter(
-      (timestamp) => now - timestamp < App.UNLOCK_WINDOW_MS,
-    );
-
-    if (this.clickTimestamps.length >= App.UNLOCK_CLICK_COUNT) {
-      this.clickTimestamps = [];
-      this.isUnderConstruction.set(false);
     }
   }
 }

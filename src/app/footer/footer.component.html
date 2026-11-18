@@ -12,7 +12,21 @@
             @for (email of emails; track email.address) {
               <p class="company-email">
                 <span class="material-icons contact-icon" aria-hidden="true">mail</span>
-                <span class="email-text">{{ email.address }}</span>
+                <button
+                  type="button"
+                  class="contact-trigger email-text"
+                  aria-haspopup="menu"
+                  [attr.aria-expanded]="openContactMenu() === email.address"
+                  (click)="toggleContactMenu(email.address, $event)"
+                >{{ email.address }}</button>
+                @if (openContactMenu() === email.address) {
+                  <span class="contact-menu" role="menu" (click)="$event.stopPropagation()">
+                    <button type="button" class="contact-menu-item" role="menuitem" (click)="copyToClipboard(email.address, $event)">
+                      <span class="material-icons" aria-hidden="true">{{ copiedValue() === email.address ? 'check' : 'content_copy' }}</span>
+                      {{ copiedValue() === email.address ? t('footerCopied') : t('footerCopy') }}
+                    </button>
+                  </span>
+                }
               </p>
             }
           </div>
@@ -20,7 +34,23 @@
             @for (phone of phones; track phone.number) {
               <p class="company-phone">
                 <span class="material-icons contact-icon" aria-hidden="true">call</span>
-                <a class="phone-link" [href]="telHref(phone)">{{ phone.number }}</a>
+                <button
+                  type="button"
+                  class="contact-trigger phone-link"
+                  aria-haspopup="menu"
+                  [attr.aria-expanded]="openContactMenu() === phone.number"
+                  (click)="toggleContactMenu(phone.number, $event)"
+                >{{ phone.number }}</button>
+                @if (openContactMenu() === phone.number) {
+                  <span class="contact-menu" role="menu" (click)="$event.stopPropagation()">
+                    <a class="contact-menu-item call-option" role="menuitem" [href]="telHref(phone)">
+                      <span class="material-icons" aria-hidden="true">call</span>{{ t('footerCall') }}
+                    </a>
+                    <a class="contact-menu-item" role="menuitem" [href]="viberHref(phone)">
+                      <span class="material-icons" aria-hidden="true">chat</span>{{ t('footerViber') }}
+                    </a>
+                  </span>
+                }
               </p>
             }
           </div>

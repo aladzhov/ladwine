@@ -266,11 +266,22 @@
     --intro-lines: 4;
   }
 
+  /* Same look as the desktop menu bar / language pill: cream text, gold for hover and active. */
+  .language-toggle,
+  .menu-toggle,
+  .language-dropdown,
+  .menu-dropdown {
+    background: rgb(255 255 255 / 12%);
+    border-color: rgb(255 255 255 / 50%);
+    box-shadow: none;
+  }
+
   .language-toggle,
   .menu-toggle,
   .language-option,
   .menu-option {
-    color: var(--color-primary);
+    color: var(--color-cream);
+    text-shadow: 0 1px 6px rgb(0 0 0 / 35%);
   }
 
   .language-toggle:hover,
@@ -279,7 +290,14 @@
   .menu-option:hover,
   .language-option.active,
   .menu-option.active {
-    color: var(--color-primary-dark);
+    background: transparent;
+    color: var(--color-gold);
+  }
+
+  .language-toggle:hover,
+  .menu-toggle:hover {
+    background: rgb(255 255 255 / 20%);
+    border-color: rgb(255 255 255 / 75%);
   }
 
   .menu-selector {

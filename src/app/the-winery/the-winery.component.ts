@@ -13,7 +13,7 @@ export class TheWineryComponent {
 
   protected readonly slides = computed<readonly ContentSlide[]>(() => [
     {
-      image: '/images/winery/the-winery.jpg',
+      image: '/images/history/2-key.jpg',
       alt: 'Wine in stainless steel',
       reverse: true,
       text: this.i18n.translate('wineryText1'),

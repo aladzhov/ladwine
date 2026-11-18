@@ -17,5 +17,9 @@
   "footerSubscribed": "Thank you for subscribing!",
   "footerTerms": "Terms & Conditions",
   "footerPrivacy": "Privacy Policy",
-  "footerDelivery": "Delivery Information"
+  "footerDelivery": "Delivery Information",
+  "footerCall": "Call",
+  "footerViber": "Send a message in Viber",
+  "footerCopy": "Copy",
+  "footerCopied": "Copied!"
 }

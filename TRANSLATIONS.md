@@ -10,6 +10,9 @@ This project uses a custom translation service for runtime language switching.
   - `es.json` - Spanish translations
   - `de.json` - German translations
 
+  ES and DE are currently hidden from the header language picker. To show them, set
+  `visible: true` in `allLanguages` in `src/app/header/header.component.ts`.
+
 - **Translation Service**: `src/app/translation.service.ts`
   - Manages current language state
   - Loads translation files dynamically via HTTP

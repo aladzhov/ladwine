@@ -32,3 +32,17 @@ app-footer {
   visibility: hidden !important;
 }
 
+
+/* Text is not selectable site-wide; form fields stay editable/selectable. */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable='true'] {
+  -webkit-user-select: text;
+  user-select: text;
+}

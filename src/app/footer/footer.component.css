@@ -122,6 +122,68 @@
   gap: 0.5rem;
 }
 
+.company-phone,
+.company-email {
+  position: relative;
+}
+
+.contact-trigger {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Footer sits at the bottom of the page, so the menu opens upwards. */
+.contact-menu {
+  position: absolute;
+  bottom: calc(100% + 0.35rem);
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 10rem;
+  padding: 0.3rem;
+  border-radius: 10px;
+  background: var(--color-cream);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+}
+
+.contact-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.contact-menu-item .material-icons {
+  font-size: 18px;
+}
+
+.contact-menu-item:hover,
+.contact-menu-item:focus-visible {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  outline: none;
+}
+
+/* Calling is only offered on mobile. */
+.call-option {
+  display: none;
+}
+
 .email-text {
   text-decoration: underline;
 }
@@ -144,11 +206,8 @@
   text-decoration: underline;
 }
 
-/* Phone numbers are tel: links, but only act as links on mobile. */
 .phone-link {
-  color: inherit;
   text-decoration: none;
-  pointer-events: none;
 }
 
 /* Newsletter */
@@ -242,8 +301,11 @@
   }
 
   .phone-link {
-    pointer-events: auto;
     text-decoration: underline;
+  }
+
+  .call-option {
+    display: flex;
   }
 
   .social-icon-img {

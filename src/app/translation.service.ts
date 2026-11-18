@@ -24,6 +24,10 @@ export interface Translations {
   footerTerms?: string;
   footerPrivacy?: string;
   footerDelivery?: string;
+  footerCall?: string;
+  footerViber?: string;
+  footerCopy?: string;
+  footerCopied?: string;
 }
 
 @Injectable({
