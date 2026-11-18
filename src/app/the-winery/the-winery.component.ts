@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { ContentSlider, ContentSlide } from '../content-slider/content-slider';
 import { TranslationService } from '../translation.service';
+import { WINERY_IMAGE } from '../slide-images';
 
 @Component({
   selector: 'app-the-winery',
@@ -13,9 +14,7 @@ export class TheWineryComponent {
 
   protected readonly slides = computed<readonly ContentSlide[]>(() => [
     {
-      image: '/images/history/2-key.jpg',
-      width: 1200,
-      height: 1600,
+      ...WINERY_IMAGE,
       reverse: true,
       text: this.i18n.translate('wineryText1'),
     },

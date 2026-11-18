@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { ContentSlider, ContentSlide } from '../content-slider/content-slider';
 import { TranslationService } from '../translation.service';
+import { FAMILY_IMAGE } from '../slide-images';
 
 @Component({
   selector: 'app-our-family',
@@ -13,9 +14,7 @@ export class OurFamilyComponent {
 
   protected readonly slides = computed<readonly ContentSlide[]>(() => [
     {
-      image: '/images/history/cheers.jpg',
-      width: 1600,
-      height: 1200,
+      ...FAMILY_IMAGE,
       text: this.i18n.translate('historyText1'),
     },
   ]);

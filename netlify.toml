@@ -14,3 +14,9 @@
   to = "/index.html"
   status = 200
 
+
+# Keep the contacts card (opened from the QR code) out of search results.
+[[headers]]
+  for = "/contacts"
+  [headers.values]
+    X-Robots-Tag = "noindex"

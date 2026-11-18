@@ -123,6 +123,11 @@
     </div>
 
     <app-footer (legalNavigate)="navigateToLegalPage($event)" />
+
+    <!-- Download the History / Winery / Vineyards images in the background once the page is idle. -->
+    @defer (on idle) {
+      <app-image-preloader />
+    }
   } @else {
     <section class="age-gate" aria-live="polite">
       <h2>Age Restricted</h2>

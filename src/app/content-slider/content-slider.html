@@ -29,7 +29,7 @@
               [ngSrc]="slide.image"
               [width]="slide.width"
               [height]="slide.height"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              [sizes]="imageSizes"
               [priority]="$index === 0"
               [alt]="slide.alt ?? ''"
               class="slide-image"

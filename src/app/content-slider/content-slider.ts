@@ -1,12 +1,9 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
+import { SLIDE_IMAGE_SIZES, type SlideImage } from '../slide-images';
 
-export interface ContentSlide {
-  image: string;
+export interface ContentSlide extends SlideImage {
   alt?: string;
-  /** Intrinsic image size in px (required by NgOptimizedImage, prevents layout shift). */
-  width: number;
-  height: number;
   text?: string;
   /** Image on the left instead of the right (desktop only). */
   reverse?: boolean;
@@ -27,6 +24,7 @@ const SWIPE_THRESHOLD_PX = 50;
 export class ContentSlider {
   public readonly slides = input.required<readonly ContentSlide[]>();
   public readonly label = input('Gallery');
+  protected readonly imageSizes = SLIDE_IMAGE_SIZES;
 
   protected readonly index = signal(0);
   protected readonly hasMany = computed(() => this.slides().length > 1);

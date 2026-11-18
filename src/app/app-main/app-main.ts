@@ -26,6 +26,7 @@ import { WINES } from '../wines.data';
 import { CookieService } from '../cookie.service';
 import { SiteBackgroundService } from '../site-background.service';
 import { SiteModeService } from '../site-mode.service';
+import { ImagePreloader } from '../image-preloader/image-preloader';
 import { Title } from '@angular/platform-browser';
 import { TranslationService, type Translations } from '../translation.service';
 
@@ -66,6 +67,7 @@ interface Tab {
     TermsComponent,
     PrivacyPolicyComponent,
     DeliveryInfoComponent,
+    ImagePreloader,
   ],
   templateUrl: './app-main.html',
   standalone: true,
