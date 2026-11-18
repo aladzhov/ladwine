@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-qr',
-  imports: [NgOptimizedImage],
   template: `
     <main class="qr">
-      <img ngSrc="/images/qr-code.png" width="2257" height="2257" alt="QR code for Ladwine contacts" priority />
+      <!-- Plain img: keep the original PNG, lossy CDN conversion could hurt scannability. -->
+      <img src="/images/qr-code.png" width="2257" height="2257" alt="QR code for Ladwine contacts" fetchpriority="high" />
     </main>
   `,
   styles: `

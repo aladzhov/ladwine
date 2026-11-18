@@ -1,8 +1,12 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
 
 export interface ContentSlide {
   image: string;
-  alt: string;
+  alt?: string;
+  /** Intrinsic image size in px (required by NgOptimizedImage, prevents layout shift). */
+  width: number;
+  height: number;
   text?: string;
   /** Image on the left instead of the right (desktop only). */
   reverse?: boolean;
@@ -12,6 +16,7 @@ const SWIPE_THRESHOLD_PX = 50;
 
 @Component({
   selector: 'app-content-slider',
+  imports: [NgOptimizedImage],
   templateUrl: './content-slider.html',
   styleUrl: './content-slider.css',
   host: {

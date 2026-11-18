@@ -14,7 +14,8 @@ export class OurFamilyComponent {
   protected readonly slides = computed<readonly ContentSlide[]>(() => [
     {
       image: '/images/history/cheers.jpg',
-      alt: 'The old house at Ladwine Family Winery',
+      width: 1600,
+      height: 1200,
       text: this.i18n.translate('historyText1'),
     },
   ]);

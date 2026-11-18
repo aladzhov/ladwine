@@ -14,7 +14,8 @@ export class VineyardsComponent {
   protected readonly slides = computed<readonly ContentSlide[]>(() => [
     {
       image: '/images/winery/vineyard-2.jpg',
-      alt: 'Vineyard landscape at Ladwine Family Winery',
+      width: 1280,
+      height: 960,
       text: this.i18n.translate('vineyardText1'),
     },
   ]);

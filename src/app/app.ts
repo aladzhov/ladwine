@@ -2,6 +2,8 @@ import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/cor
 import { Router, RouterOutlet } from '@angular/router';
 import { DevModeSwitchComponent } from './dev-mode-switch/dev-mode-switch.component';
 import { SiteModeService } from './site-mode.service';
+import { DOCUMENT } from '@angular/common';
+import { injectStructuredData } from './structured-data';
 
 @Component({
   selector: 'app-root',
@@ -16,18 +18,17 @@ export class App implements OnInit {
 
   private readonly isPublicPage = /^\/(contacts|qr)(\/|$)/.test(window.location.pathname);
 
+  constructor() {
+    injectStructuredData(inject(DOCUMENT));
+  }
+
   ngOnInit() {
     if (this.isPublicPage) {
       return;
     }
-    const hostname = window.location.hostname;
-    this.router.navigate(['/invoice-scanner']);
-    // // Проверяваме дали потребителят е дошъл от поддомейна i.
-    if (hostname.startsWith('i.')) {
+    // The i. subdomain hosts the invoice scanner; on the main site the router keeps the requested URL.
+    if (window.location.hostname.startsWith('i.')) {
       this.router.navigate(['/invoice-scanner']);
-    } else {
-      // Ако е на основния сайт
-      this.router.navigate(['']);
     }
   }
 }

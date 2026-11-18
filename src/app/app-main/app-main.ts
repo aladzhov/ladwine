@@ -26,6 +26,22 @@ import { WINES } from '../wines.data';
 import { CookieService } from '../cookie.service';
 import { SiteBackgroundService } from '../site-background.service';
 import { SiteModeService } from '../site-mode.service';
+import { Title } from '@angular/platform-browser';
+import { TranslationService, type Translations } from '../translation.service';
+
+const TAB_TITLE_KEYS: Record<TabKey, keyof Translations> = {
+  home: 'menuHome',
+  family: 'menuHistory',
+  winery: 'menuWinery',
+  vineyards: 'menuVineyards',
+  wines: 'menuWines',
+};
+
+const LEGAL_TITLE_KEYS: Record<'terms' | 'privacy' | 'delivery-info', keyof Translations> = {
+  terms: 'footerTerms',
+  privacy: 'footerPrivacy',
+  'delivery-info': 'footerDelivery',
+};
 
 type TabKey = 'home' | 'family' | 'winery' | 'vineyards' | 'wines';
 
@@ -98,6 +114,20 @@ export class AppMain {
   });
 
   constructor() {
+    // Browser tab / search result title: "<page> | <family winery name>" in the current language.
+    const title = inject(Title);
+    const translations = inject(TranslationService).translations;
+    effect(() => {
+      const t = translations();
+      const legalPage = this.activeLegalPage();
+      const page = this.showCheckout()
+        ? ''
+        : legalPage
+          ? t[LEGAL_TITLE_KEYS[legalPage]]
+          : (this.selectedWine()?.name ?? t[TAB_TITLE_KEYS[this.activeTab()]]);
+      title.setTitle(page ? `${page} | ${t.familyName}` : t.familyName);
+    });
+
     // Leave a tab that the site mode switch just hid (e.g. Wines when previewing production).
     effect(() => {
       const tabs = this.tabs();

@@ -25,7 +25,15 @@
           [inert]="$index !== index()"
         >
           <figure class="slide-figure">
-            <img [src]="slide.image" [alt]="slide.alt" class="slide-image" />
+            <img
+              [ngSrc]="slide.image"
+              [width]="slide.width"
+              [height]="slide.height"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              [priority]="$index === 0"
+              [alt]="slide.alt ?? ''"
+              class="slide-image"
+            />
           </figure>
           @if (slide.text) {
             <div class="slide-text">
