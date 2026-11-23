@@ -31,7 +31,7 @@ interface ContactAction {
 })
 export class Contacts {
   protected readonly name = COMPANY_NAME.bg;
-  protected readonly website = `${WEBSITE_URL}/winery`;
+  protected readonly website = `${WEBSITE_URL}/home`;
   protected readonly address = COMPANY_ADDRESS.bg;
 
   protected readonly actions: ContactAction[] = [

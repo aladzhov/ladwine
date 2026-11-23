@@ -9,6 +9,34 @@
     <link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <script>
+      // Start downloading the home-page logo before Angular boots. Must match the srcset/sizes that
+      // NgOptimizedImage + the Netlify loader generate in home.html (production only), including the
+      // width/height attributes (2048x1448) used to compute `h`. Update both places together.
+      (function () {
+        var host = location.hostname;
+        var path = location.pathname.replace(/\/+$/, '');
+        if (host === 'localhost' || host === '127.0.0.1' || (path !== '' && path !== '/home')) {
+          return;
+        }
+        var breakpoints = [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840];
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.fetchPriority = 'high';
+        link.imageSizes = '(max-width: 575px) 80vw, 40vw';
+        link.imageSrcset = breakpoints
+          .map(function (w) {
+            var params = new URLSearchParams();
+            params.set('url', '/images/ladwine-logo.webp');
+            params.set('w', String(w));
+            params.set('h', String(Math.round(w / (2048 / 1448))));
+            return '/.netlify/images?' + params.toString() + ' ' + w + 'w';
+          })
+          .join(', ');
+        document.head.appendChild(link);
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

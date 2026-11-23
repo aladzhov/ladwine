@@ -20,8 +20,8 @@ export function injectStructuredData(document: Document): void {
     name: COMPANY_NAME.bg,
     alternateName: COMPANY_NAME.en,
     url: WEBSITE_URL,
-    logo: `${WEBSITE_URL}/images/ladwine-logo.png`,
-    image: `${WEBSITE_URL}/images/ladwine-logo.png`,
+    logo: `${WEBSITE_URL}/images/ladwine-logo.webp`,
+    image: `${WEBSITE_URL}/images/ladwine-logo.webp`,
     telephone: PHONES[0].number,
     email: PRIMARY_EMAIL.address,
     address: {
