@@ -101,7 +101,9 @@ export class AppMain {
   ]);
 
   public readonly activeTab = signal<TabKey>('home');
-  public readonly isAgeConfirmed = signal<boolean | null>(null);
+  // Age verification popup is temporarily disabled; set to true when the checkout process goes live.
+  public readonly ageVerificationEnabled = false;
+  public readonly isAgeConfirmed = signal<boolean | null>(this.ageVerificationEnabled ? null : true);
   public readonly selectedWine = signal<Wine | null>(null);
   public readonly basket = signal<ReadonlyArray<Wine>>([]);
   public readonly showCheckout = signal(false);
@@ -141,7 +143,9 @@ export class AppMain {
     });
 
     this.loadBasketFromCookie();
-    this.loadAgeConfirmationFromCookie();
+    if (this.ageVerificationEnabled) {
+      this.loadAgeConfirmationFromCookie();
+    }
     this.siteBackground.start();
 
     // Save basket to cookie whenever it changes
@@ -151,10 +155,12 @@ export class AppMain {
     });
 
     // Save age confirmation to cookie whenever it changes
-    effect(() => {
-      const confirmed = this.isAgeConfirmed();
-      this.saveAgeConfirmationToCookie(confirmed);
-    });
+    if (this.ageVerificationEnabled) {
+      effect(() => {
+        const confirmed = this.isAgeConfirmed();
+        this.saveAgeConfirmationToCookie(confirmed);
+      });
+    }
 
     // Sync route → signals on navigation
     this.router.events.subscribe(() => {
