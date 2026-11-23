@@ -63,3 +63,18 @@
 .dev-mode-option[aria-checked='true']::before {
   content: '✓ ';
 }
+
+.dev-mode-month {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  padding: 0.4rem 0.7rem;
+  border-top: 1px solid #ddd;
+  color: #222;
+  font-size: 0.75rem;
+}
+
+.dev-mode-month select {
+  font-size: 0.85rem;
+}

@@ -36,6 +36,43 @@
           .join(', ');
         document.head.appendChild(link);
       })();
+
+      // Start downloading the site background before Angular boots: the current month's first image
+      // (same logic as SiteBackgroundService.start()), or the fallback if the month has none.
+      (function () {
+        if (/^\/(contacts|qr|invoice-scanner)(\/|$)/.test(location.pathname)) {
+          return;
+        }
+        var basePath = '/images/site-background';
+        var fallback = '/images/site-background.jpg';
+        var month = String(new Date().getMonth() + 1).padStart(2, '0');
+        // Locally, the dev mode switch can force a month (see SiteModeService).
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+          var override = localStorage.getItem('ladwine.previewMonth');
+          if (override && /^(0[1-9]|1[0-2])$/.test(override)) {
+            month = override;
+          }
+        }
+        function preload(href) {
+          var link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.fetchPriority = 'high';
+          link.href = href;
+          document.head.appendChild(link);
+        }
+        fetch(basePath + '/manifest.json')
+          .then(function (res) {
+            return res.ok ? res.json() : {};
+          })
+          .then(function (manifest) {
+            var names = (manifest && manifest[month]) || [];
+            preload(names.length > 0 ? basePath + '/' + month + '/' + names[0] : fallback);
+          })
+          .catch(function () {
+            preload(fallback);
+          });
+      })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

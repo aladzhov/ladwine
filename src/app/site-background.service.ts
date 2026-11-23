@@ -1,7 +1,8 @@
-import { DestroyRef, inject, Injectable, Signal, signal } from '@angular/core';
+import { DestroyRef, effect, inject, Injectable, Signal, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { SiteModeService } from './site-mode.service';
 
 type BackgroundManifest = Record<string, string[]>;
 
@@ -15,6 +16,7 @@ interface BackgroundLayer {
 export class SiteBackgroundService {
   private readonly http = inject(HttpClient);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly siteMode = inject(SiteModeService);
 
   private static readonly BASE_PATH = '/images/site-background';
   private static readonly FALLBACK_IMAGE = '/images/site-background.jpg';
@@ -28,10 +30,8 @@ export class SiteBackgroundService {
 
   // Two stacked layers crossfade into each other so no black frame appears:
   // the incoming image fades in on top while the current one stays visible.
-  private readonly layerImage = [
-    signal(SiteBackgroundService.FALLBACK_IMAGE),
-    signal(SiteBackgroundService.FALLBACK_IMAGE),
-  ];
+  // Empty until the manifest resolves, so the fallback isn't downloaded when the month has its own images.
+  private readonly layerImage = [signal(''), signal('')];
   private readonly layerOpacity = [signal(1), signal(0)];
   private readonly layerZoom = [signal(false), signal(false)];
   private readonly frontLayer = signal(0);
@@ -58,6 +58,20 @@ export class SiteBackgroundService {
   private zoomTimer: ReturnType<typeof setTimeout> | undefined;
   private started = false;
 
+  /** undefined while loading, null if it couldn't be loaded. */
+  private readonly manifest = signal<BackgroundManifest | null | undefined>(undefined);
+
+  constructor() {
+    // Re-applies the background whenever the manifest arrives or the month changes (dev mode switch).
+    effect(() => {
+      const manifest = this.manifest();
+      const month = this.siteMode.month();
+      if (manifest !== undefined) {
+        untracked(() => this.showMonth(month, manifest?.[month] ?? []));
+      }
+    });
+  }
+
   /** Loads the current month's images and begins rotating through them. */
   public start(): void {
     if (this.started) {
@@ -65,30 +79,39 @@ export class SiteBackgroundService {
     }
     this.started = true;
 
-    const month = String(new Date().getMonth() + 1).padStart(2, '0');
-
-    this.destroyRef.onDestroy(() => this.stopRotation());
-    this.restartZoom(this.frontLayer());
+    this.destroyRef.onDestroy(() => {
+      this.stopRotation();
+      this.cancelZoomTimer();
+    });
 
     this.http
       .get<BackgroundManifest>(SiteBackgroundService.MANIFEST_URL)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (manifest) => {
-          const names = manifest?.[month] ?? [];
-          this.images = names.map((name) => `${SiteBackgroundService.BASE_PATH}/${month}/${name}`);
-          if (this.images.length > 0) {
-            this.index = 0;
-            this.layerImage[this.frontLayer()].set(this.images[0]);
-            this.restartZoom(this.frontLayer());
-            this.preload(this.images);
-            this.startRotation();
-          }
-        },
-        error: () => {
-          // Manifest missing/unreachable: keep the static fallback image.
-        },
+        next: (manifest) => this.manifest.set(manifest ?? {}),
+        // Manifest missing/unreachable: show the static fallback image.
+        error: () => this.manifest.set(null),
       });
+  }
+
+  /** Shows the given month's images (or the fallback if it has none), replacing any current rotation. */
+  private showMonth(month: string, names: ReadonlyArray<string>): void {
+    this.stopRotation();
+    this.images = names.map((name) => `${SiteBackgroundService.BASE_PATH}/${month}/${name}`);
+    this.index = 0;
+
+    const front = this.frontLayer();
+    const back = front === 0 ? 1 : 0;
+    this.layerImage[front].set(this.images[0] ?? SiteBackgroundService.FALLBACK_IMAGE);
+    this.layerOpacity[front].set(1);
+    this.layerOpacity[back].set(0);
+    this.layerZoom[back].set(false);
+    this.restartZoom(front);
+
+    if (this.images.length > 0) {
+      this.preload(this.images);
+      this.startRotation();
+    }
   }
 
   private startRotation(): void {
@@ -96,7 +119,7 @@ export class SiteBackgroundService {
     if (this.images.length <= 1) {
       return;
     }
-    const period = environment.backgroundRotationMs ?? 10000;
+    const period = environment.backgroundRotationMs ?? 20000;
     this.timer = setInterval(() => this.advance(), period);
   }
 
@@ -126,9 +149,7 @@ export class SiteBackgroundService {
    * The transition ends at the zoomed size, so a single image simply stops.
    */
   private restartZoom(layer: number): void {
-    if (this.zoomTimer !== undefined) {
-      clearTimeout(this.zoomTimer);
-    }
+    this.cancelZoomTimer();
     this.layerZoom[layer].set(false);
     this.zoomTimer = setTimeout(() => {
       this.zoomTimer = undefined;
@@ -136,6 +157,14 @@ export class SiteBackgroundService {
     }, 50);
   }
 
+  private cancelZoomTimer(): void {
+    if (this.zoomTimer !== undefined) {
+      clearTimeout(this.zoomTimer);
+      this.zoomTimer = undefined;
+    }
+  }
+
+  /** Stops rotating and crossfading. Leaves a pending zoom restart alone so the current image still zooms. */
   private stopRotation(): void {
     if (this.timer !== undefined) {
       clearInterval(this.timer);
@@ -144,10 +173,6 @@ export class SiteBackgroundService {
     if (this.fadeTimer !== undefined) {
       clearTimeout(this.fadeTimer);
       this.fadeTimer = undefined;
-    }
-    if (this.zoomTimer !== undefined) {
-      clearTimeout(this.zoomTimer);
-      this.zoomTimer = undefined;
     }
   }
 

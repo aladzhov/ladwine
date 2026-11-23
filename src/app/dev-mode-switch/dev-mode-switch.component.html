@@ -1,6 +1,6 @@
 <div class="dev-mode">
   @if (open()) {
-    <div class="dev-mode-menu" role="menu" aria-label="Site mode">
+    <div class="dev-mode-menu" role="menu" aria-label="Site mode" (click)="$event.stopPropagation()">
       <button
         type="button"
         role="menuitemradio"
@@ -19,6 +19,15 @@
       >
         Production preview
       </button>
+      <label class="dev-mode-month">
+        Background month
+        <select (change)="selectMonth($event)">
+          <option value="" [selected]="!siteMode.monthOverride()">Current ({{ currentMonth }})</option>
+          @for (month of months; track month.value) {
+            <option [value]="month.value" [selected]="siteMode.monthOverride() === month.value">{{ month.label }}</option>
+          }
+        </select>
+      </label>
     </div>
   }
   <button
@@ -29,6 +38,6 @@
     [attr.aria-expanded]="open()"
     (click)="toggle($event)"
   >
-    {{ siteMode.isProduction() ? 'PROD' : 'LOCAL' }}
+    {{ siteMode.isProduction() ? 'PROD' : 'LOCAL' }}{{ siteMode.monthOverride() ? ' · ' + siteMode.monthOverride() : '' }}
   </button>
 </div>

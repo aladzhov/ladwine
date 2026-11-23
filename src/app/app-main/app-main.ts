@@ -87,7 +87,7 @@ export class AppMain {
   public readonly backgroundFront = this.siteBackground.front;
 
   public backgroundImage(url: string): string {
-    return `url('${url}')`;
+    return url ? `url('${url}')` : 'none';
   }
 
   private readonly siteMode = inject(SiteModeService);
